@@ -2,21 +2,22 @@
 #include <exception>
 #include <iostream>
 
+#ifdef STD
+	namespace test = std;
+	# define NAMESPACE_NAME "std"
+#else
+	namespace test = ft;
+	# define NAMESPACE_NAME "ft"
+#endif
+
 int main()
 {
+	std::cout << "===== Testing " << NAMESPACE_NAME << "::containers =====" << std::endl;
 	try
 	{
-		throw ft::exception();
+		throw test::exception();
 	}
-	catch(const ft::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	try
-	{
-		throw std::exception();
-	}
-	catch(const std::exception& e)
+	catch(const test::exception& e)
 	{
 		std::cerr << e.what() << '\n';
 	}

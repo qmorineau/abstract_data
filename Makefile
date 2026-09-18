@@ -6,31 +6,40 @@ CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj
+OBJ_DIR_FT = $(OBJ_DIR)/ft
+OBJ_DIR_STD = $(OBJ_DIR)/std
 INC_DIR = include
 
 # Include Paths
 INCLUDES = -I $(INC_DIR) \
 			
 
-SRC_CPP = $(shell find $(SRC_DIR) -name "*.cpp")
-OBJ_CPP = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
-ALL_OBJS = $(OBJ_CPP)
+SRC = $(shell find $(SRC_DIR) -name "*.cpp")
+OBJ_FT = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR_FT)/%.o, $(SRC))
+OBJ_STD = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR_STD)/%.o, $(SRC))
+ALL_OBJS = $(OBJ_FT) $(OBJ_STD)
 DEP = $(ALL_OBJS:.o=.d)
 
 NAME = abstract_data
+NAME_STD = abstract_data_std
 
-all: $(NAME)
+all: $(NAME) $(NAME_STD)
 
-$(NAME): $(GLFW_LIB) $(OBJ_DIR) $(OBJ_CPP)
-	@$(CCPP) $(CPPFLAGS) $(INCLUDES) $(OBJ_CPP) -o $(NAME)
+$(NAME): $(OBJ_FT)
+	@$(CCPP) $(CPPFLAGS) $(INCLUDES) $(OBJ_FT) -o $(NAME)
 	@echo "$(NAME) compiled"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+$(NAME_STD): $(OBJ_STD)
+	@$(CCPP) $(CPPFLAGS) $(INCLUDES) $(OBJ_STD) -D STD -o $(NAME_STD)
+	@echo "$(NAME_STD) compiled"
+
+$(OBJ_DIR_FT)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
 	@$(CCPP) $(CPPFLAGS) $(INCLUDES) -c $< -o $@
 
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR_STD)/%.o: $(SRC_DIR)/%.cpp
+	@mkdir -p $(dir $@)
+	@$(CCPP) $(CPPFLAGS) $(INCLUDES) -D STD -c $< -o $@
 
 re:	fclean all
 
@@ -44,6 +53,7 @@ fclean: clean
 
 test: all
 	./$(NAME)
+	./$(NAME_STD)
 
 .PHONY: all re clean fclean test
 
