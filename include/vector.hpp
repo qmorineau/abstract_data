@@ -3,57 +3,103 @@
 
 #include <memory>
 
+#include "iterator.hpp"
+
 namespace ft
 {
 	template <class T, class Allocator = std::allocator<T>>
 	class vector
 	{
 		public:
-			vector();
+			// types
+			typedef typename Allocator::reference reference;
+			typedef typename Allocator::const_reference const_reference;
+			typedef vector_iterator<T> iterator;
+			typedef vector_iterator<const T> const_iterator;
+			typedef size_t size_type;
+			typedef ptrdiff_t difference_type;
+			typedef T value_type;
+			typedef Allocator allocator_type;
+			typedef typename Allocator::pointer pointer;
+			typedef typename Allocator::const_pointer const_pointer;
+			typedef std::reverse_iterator<iterator> reverse_iterator;
+			typedef std::reverse_iterator<const_iterator> const_reverse_iterator;
+			// construct / copy / destroy
+			explicit vector(const Allocator& = Allocator());
+			explicit vector(size_type n, const T& value = T(),
+				const Allocator& = Allocator());
+			template <class InputIterator>
+			vector(InputIterator first, InputIterator last,
+				const Allocator& = Allocator());
+			vector(const vector<T,Allocator>& x);
 			~vector();
-			operator=()
-			assign();
-			get_allocator();
-			// element access
-			at();
-			operator[]();
-			front();
-			back();
-			data();
-			// iterators
-			begin();
-			end();
-			rbegin();
-			rend();
+			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
+			template <class InputIterator>
+			void assign(InputIterator first, InputIterator last);
+			void assign(size_type n, const T& u);
+			allocator_type get_allocator() const;
+			// iterators:
+			iterator begin();
+			const_iterator begin() const;
+			iterator end();
+			const_iterator end() const;
+			reverse_iterator rbegin();
+			const_reverse_iterator rbegin() const;
+			reverse_iterator rend();
+			const_reverse_iterator rend() const;
 			// capacity
-			empty();
-			size();
-			max_size();
-			reserve();
-			capacity();
-			shrink_to_fit(); // pas sur
+			size_type size() const;
+			size_type max_size() const;
+			void resize(size_type sz, T c = T());
+			size_type capacity() const;
+			bool empty() const;
+			void reserve(size_type n);
+			// element access
+			reference operator[](size_type n);
+			const_reference operator[](size_type n) const;
+			const_reference at(size_type n) const;
+			reference at(size_type n);
+			reference front();
+			const_reference front() const;
+			reference back();
+			const_reference back() const;
 			// modifiers
-			clear();
-			insert();
-			erase();
-			push_back();
-			pop_back();
-			resize();
-			swap();
-			// non member
-			static operator==();
-			static operator!=();
-			static operator<();
-			static operator<=();
-			static operator>();
-			static operator>=();
-			// std::swap(std::list) pas sur de ca
+			void push_back(const T& x);
+			void pop_back();
+			iterator insert(iterator position, const T& x);
+			void insert(iterator position, size_type n, const T& x);
+			template <class InputIterator>
+			void insert(iterator position,
+			InputIterator first, InputIterator last);
+			iterator erase(iterator position);
+			iterator erase(iterator first, iterator last);
+			void swap(vector<T,Allocator>&);
+			void clear();
 		private:
-			// member type
-			// T			value_type;
-			// Allocator	allocator_type;
-			// size_t		size_type;
+			
 	};
+	// operator
+	template <class T, class Allocator>
+	bool operator==(const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator< (const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator!=(const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator> (const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator>=(const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator<=(const vector<T,Allocator>& x,
+		const vector<T,Allocator>& y);
+	// specialized algorithms:
+	template <class T, class Allocator>
+	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 }
 
 #include "vector.tpp"

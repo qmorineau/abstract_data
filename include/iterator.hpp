@@ -21,21 +21,6 @@ namespace ft
 		typedef Reference reference;
 		typedef Category iterator_category;
 	};
-
-	class const_iterator
-	{
-		
-	};
-	class reverse_iterator
-	{
-		
-	};
-	class const_reverse_iterator
-	{
-		
-	};
 }
-
-#include "iterator.tpp"
 
 #endif
