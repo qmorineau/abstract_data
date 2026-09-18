@@ -17,7 +17,7 @@ OBJ_CPP = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC_CPP))
 ALL_OBJS = $(OBJ_CPP)
 DEP = $(ALL_OBJS:.o=.d)
 
-NAME = trainsim
+NAME = abstract_data
 
 all: $(NAME)
 
@@ -40,11 +40,10 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
-	@rm -rf *.result
 	@echo "Clear binary file"
 
 test: all
-	./$(NAME) file1 file2
+	./$(NAME)
 
 .PHONY: all re clean fclean test
 
