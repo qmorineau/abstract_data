@@ -10,6 +10,8 @@
 	# define NAMESPACE_NAME "ft"
 #endif
 
+void test_vector();
+
 int main()
 {
 	std::cout << "===== Testing " << NAMESPACE_NAME << "::containers =====" << std::endl;
@@ -21,5 +23,6 @@ int main()
 	{
 		std::cerr << e.what() << '\n';
 	}
+	test_vector();
 	return (0);
 }

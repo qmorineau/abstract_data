@@ -9,6 +9,8 @@ namespace ft
 	class vector_iterator : public iterator<ft::random_access_iterator_tag, T> 
 	{
 		public:
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference reference;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
 			/* 
 				i, a, b object of type It or const It
 				r, an lvalue of type It
@@ -26,15 +28,16 @@ namespace ft
 			bool operator<=(const vector_iterator&) const;		// a <= b
 			bool operator>=(const vector_iterator&) const;		// a >= b
 			// bidirectional_iterator
-			vector_iterator operator--(int);					// --a
-			vector_iterator& operator--(void);					// a--
+			vector_iterator operator--(int);					// a--
+			vector_iterator& operator--(void);					// --a
 			// forward_iterator
-			vector_iterator& operator++(void)					// r++
+			vector_iterator operator++(int);					// ++r
+			vector_iterator& operator++(void);					// r++
 			reference operator*(void) const;					// *a
 			// input_iterator
-			
+																// *a = value
 			// output_iterator
-
+																// value = *a
 		private:
 			T*	_ptr;
 	};

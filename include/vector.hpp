@@ -3,11 +3,12 @@
 
 #include <memory>
 
-#include "iterator.hpp"
+#include "cstddef.hpp"
+#include "vector_iterator.hpp"
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T>>
+	template <class T, class Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -16,8 +17,8 @@ namespace ft
 			typedef typename Allocator::const_reference const_reference;
 			typedef vector_iterator<T> iterator;
 			typedef vector_iterator<const T> const_iterator;
-			typedef size_t size_type;
-			typedef ptrdiff_t difference_type;
+			typedef ft::size_t size_type;
+			typedef ft::ptrdiff_t difference_type;
 			typedef T value_type;
 			typedef Allocator allocator_type;
 			typedef typename Allocator::pointer pointer;
@@ -76,30 +77,31 @@ namespace ft
 			void swap(vector<T,Allocator>&);
 			void clear();
 		private:
-			
+			T*			_data;
+			size_type	_size;
 	};
 	// operator
 	template <class T, class Allocator>
-	bool operator==(const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator==(const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator< (const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator< (const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator!=(const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator!=(const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator> (const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator> (const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator>=(const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator>=(const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator<=(const vector<T,Allocator>& x,
-		const vector<T,Allocator>& y);
+	bool operator<=(const ft::vector<T,Allocator>& x,
+		const ft::vector<T,Allocator>& y);
 	// specialized algorithms:
 	template <class T, class Allocator>
-	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
+	void swap(ft::vector<T,Allocator>& x, ft::vector<T,Allocator>& y);
 }
 
 #include "vector.tpp"

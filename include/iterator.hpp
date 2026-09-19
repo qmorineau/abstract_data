@@ -3,6 +3,8 @@
 
 #include <iterator>
 
+#include "cstddef.hpp"
+
 namespace ft
 {
 	// iterator tag
@@ -13,7 +15,7 @@ namespace ft
 	typedef std::random_access_iterator_tag random_access_iterator_tag;
 
 	// basic iterator
-	template <class Category, class T, class Distance = ptrdiff_t, class Pointer = T*, class Reference = T&> 
+	template <class Category, class T, class Distance = ft::ptrdiff_t, class Pointer = T*, class Reference = T&> 
 	struct iterator {
 		typedef T value_type;
 		typedef Distance difference_type;
