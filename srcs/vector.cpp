@@ -144,7 +144,7 @@ static void test_pop_back()
 static void test_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
-	nm::vector<std::string> test;	
+	nm::vector<std::string> test;
 	test.push_back(std::string(allocatedStr));
 	test.reserve(6);
 	print_vector(test, 0, test.size());
@@ -153,6 +153,21 @@ static void test_reserve()
 	std::cout << "capacity = " << test.capacity() << std::endl;
 	test.reserve(1);
 	std::cout << "capacity = " << test.capacity() << std::endl;
+}
+
+static void test_empty()
+{
+	std::cout << "===== Test: vector.empty() =====" << std::endl;
+	nm::vector<std::string> test;
+	std::cout << "empty = " << test.empty() << std::endl;
+	test.push_back(std::string(allocatedStr));
+	std::cout << "empty = " << test.empty() << std::endl;
+	test.push_back(std::string(allocatedStr));
+	std::cout << "empty = " << test.empty() << std::endl;
+	test.pop_back();
+	std::cout << "empty = " << test.empty() << std::endl;
+	test.pop_back();
+	std::cout << "empty = " << test.empty() << std::endl;
 }
 
 void test_vector()
@@ -168,4 +183,5 @@ void test_vector()
 	test_push_back();
 	test_pop_back();
 	test_reserve();
+	test_empty();
 }
