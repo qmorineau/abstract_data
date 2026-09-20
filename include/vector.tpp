@@ -179,7 +179,18 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::reserve(size_type n)
 	{
-		_data = _allocator.allocate(n); // to do
+		if (n > _capacity)
+		{
+			_capacity = n;
+			T* tmp = _allocator.allocate(n);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(tmp + i, *(_data + i));
+			for (size_type i = 0; i < _size; i++)
+				_allocator.destroy(_data + i);
+			if (_size)
+				_allocator.deallocate(_data, _size);
+			_data = tmp;
+		}
 	}
 
 	// ======================
@@ -276,10 +287,7 @@ namespace ft
 	ft::vector<T, Allocator>::pop_back()
 	{
 		if (_size)
-		{
-			_size--;
-			_allocator.destroy(_data + _size);
-		}
+			_allocator.destroy(_data + --_size);
 	}
 
 	template <class T, class Allocator>

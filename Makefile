@@ -53,8 +53,9 @@ fclean: clean
 	@echo "Clear binary file"
 
 test: all
-	-./$(NAME)
-	-./$(NAME_STD)
+	-./$(NAME) > output.ft
+	-./$(NAME_STD) > output.std
+	-diff output.ft output.std
 
 .PHONY: all re clean fclean test
 
