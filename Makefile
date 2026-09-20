@@ -2,7 +2,7 @@
 CCPP = g++
 
 # Flags
-CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -U_GLIBCXX_ASSERTIONS
+CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -fsanitize=address
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj

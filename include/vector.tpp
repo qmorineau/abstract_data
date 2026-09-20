@@ -37,7 +37,10 @@ namespace ft
 	template <class T, class Allocator>
 	ft::vector<T, Allocator>::~vector()
 	{
-		// to do
+		for (size_type i = 0; i < _size; i++)
+			_allocator.destroy(_data + i);
+		if (_capacity)
+			_allocator.deallocate(_data, _capacity);
 	}
 
 	// =====================
@@ -81,56 +84,56 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::begin()
 	{
-		return iterator(_data);
+		return iterator(_data); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::begin() const
 	{
-		// to do
+		return const_iterator(_data); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::end()
 	{
-		// to do
+		return iterator(_data + _size); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::end() const
 	{
-		// to do
+		return const_iterator(_data + _size); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rbegin()
 	{
-		// to do
+		return reverse_iterator(_data + (_size - 1)); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rbegin() const
 	{
-		// to do
+		return const_reverse_iterator(_data + (_size - 1)); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rend()
 	{
-		// to do
+		return reverse_iterator(_data + (_size - 1)); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rend() const
 	{
-		// to do
+		return const_reverse_iterator(_data + (_size - 1)); // to test
 	}
 
 	// ====================
@@ -250,7 +253,20 @@ namespace ft
 	ft::vector<T, Allocator>::push_back(const T& x)
 	{
 		if (_capacity <= _size)
-		_data = _allocator.allocate(_size + 1);
+		{
+			if (_capacity == 0)
+				_capacity = 1;
+			else
+				_capacity *= 2;
+			T* tmp = _allocator.allocate(_capacity);
+			for (size_type i = 0; i < _size; i++)
+				_allocator.construct(tmp + i, *(_data + i));
+			for (size_type i = 0; i < _size; i++)
+				_allocator.destroy(_data + i);
+			if (_size)
+				_allocator.deallocate(_data, _size);
+			_data = tmp;
+		}
 		_allocator.construct(_data + _size, x);
 		_size++;
 	}
@@ -259,7 +275,11 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::pop_back()
 	{
-		// to do
+		if (_size)
+		{
+			_size--;
+			_allocator.destroy(_data + _size);
+		}
 	}
 
 	template <class T, class Allocator>

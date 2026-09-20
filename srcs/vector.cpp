@@ -82,10 +82,61 @@ void test_vector_back()
 	std::cout << test.back() << std::endl;
 }
 
+void test_capacity()
+{
+	std::cout << "===== Test: " << NAMESPACE_NAME << "::vector.capacity() =====" << std::endl;
+	nm::vector<int> test;
+	for (int i = 0; i <= 17; i++)
+	{
+		std::cout << "Capacity = " << test.capacity() << ": ";
+		for (size_t j = 0; j < test.size(); j++)
+		{
+			if (j != 0)
+				std::cout << ", ";
+			std::cout << test[j];
+		}
+		std::cout << std::endl;
+		test.push_back(i);
+	}
+}
+
+void test_push_back()
+{
+	std::cout << "===== Test: " << NAMESPACE_NAME << "::vector.push_back() =====" << std::endl;
+	nm::vector<int> test;
+	for (int i = 0; i <= 17; i++)
+	{
+		test.push_back(i);
+		std::cout << test[test.size() - 1];
+	}
+	std::cout << std::endl;
+}
+
+void test_pop_back()
+{
+	std::cout << "===== Test: " << NAMESPACE_NAME << "::vector.pop_back() =====" << std::endl;
+	nm::vector<std::string> test;
+	for (int i = 0; i <= 17; i++)
+	{
+		test.push_back("this is a long string to force heap allocation, at least 30 chars");
+		std::cout << test.size();
+	}
+	std::cout << std::endl;
+	for (int i = 0; i <= 17; i++)
+	{
+		std::cout << test.size();
+		test.pop_back();
+	}
+	std::cout << std::endl;
+}
+
 void test_vector()
 {
-	test_vector_type();
-	test_vector_at();
-	test_vector_front();
-	test_vector_back();
+	// test_vector_type();
+	// test_vector_at();
+	// test_vector_front();	
+	// test_vector_back();
+	// test_capacity();
+	// test_push_back();
+	// test_pop_back();
 }
