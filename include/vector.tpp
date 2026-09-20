@@ -126,14 +126,14 @@ namespace ft
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rend()
 	{
-		return reverse_iterator(_data + (_size - 1)); // to test
+		return reverse_iterator(_data - 1); // to test
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rend() const
 	{
-		return const_reverse_iterator(_data + (_size - 1)); // to test
+		return const_reverse_iterator(_data - 1); // to test
 	}
 
 	// ====================
@@ -151,7 +151,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::size_type
 	ft::vector<T, Allocator>::max_size() const
 	{
-		return _size; // to do
+		return _allocator.max_size();
 	}
 
 	template <class T, class Allocator>
@@ -181,15 +181,15 @@ namespace ft
 	{
 		if (n > _capacity)
 		{
-			_capacity = n;
 			T* tmp = _allocator.allocate(n);
 			for (size_type i = 0; i < _size; i++)
 				_allocator.construct(tmp + i, *(_data + i));
 			for (size_type i = 0; i < _size; i++)
 				_allocator.destroy(_data + i);
-			if (_size)
-				_allocator.deallocate(_data, _size);
+			if (_capacity)
+				_allocator.deallocate(_data, _capacity);
 			_data = tmp;
+			_capacity = n;
 		}
 	}
 
@@ -265,17 +265,19 @@ namespace ft
 	{
 		if (_capacity <= _size)
 		{
+			size_type new_size;
 			if (_capacity == 0)
-				_capacity = 1;
+				new_size = 1;
 			else
-				_capacity *= 2;
-			T* tmp = _allocator.allocate(_capacity);
+				new_size = _capacity * 2;
+			T* tmp = _allocator.allocate(new_size);
 			for (size_type i = 0; i < _size; i++)
 				_allocator.construct(tmp + i, *(_data + i));
 			for (size_type i = 0; i < _size; i++)
 				_allocator.destroy(_data + i);
-			if (_size)
-				_allocator.deallocate(_data, _size);
+			if (_capacity)
+				_allocator.deallocate(_data, _capacity);
+			_capacity = new_size;
 			_data = tmp;
 		}
 		_allocator.construct(_data + _size, x);

@@ -2,95 +2,193 @@
 
 namespace ft
 {
-	template<class T>
-	ft::vector_iterator<T>&
-	ft::vector_iterator<T>::operator+=(difference_type n)
+	// ========================
+	//      Vector Iterator
+	// ========================
+
+	// ====== Construct / Destruct ======
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>::vector_iterator(void)
+		: _ptr(0)
+	{}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>::vector_iterator(T* p)
+		: _ptr(p)
+	{}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator& other)
+		: _ptr(other._ptr)
+	{}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator<T, T*, T&>& other)
+		: _ptr(other.base())
+	{}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>::~vector_iterator()
+	{}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>&
+	vector_iterator<T, Pointer, Reference>::operator=(const vector_iterator& other)
+	{
+		if (this != &other)
+			_ptr = other._ptr;
+		return *this;
+	}
+
+	// ====== base() ======
+	template <class T, class Pointer, class Reference>
+	T*
+	vector_iterator<T, Pointer, Reference>::base(void) const
+	{
+		return _ptr;
+	}
+
+	// ====== Input Iterator ======
+	template <class T, class Pointer, class Reference>
+	Reference
+	vector_iterator<T, Pointer, Reference>::operator*() const
+	{
+		return *_ptr;
+	}
+	
+	template <class T, class Pointer, class Reference>
+	Pointer
+	vector_iterator<T, Pointer, Reference>::operator->() const
+	{
+		return _ptr;
+	}
+
+	// ====== Bidirectional Iterator ======
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>&
+	vector_iterator<T, Pointer, Reference>::operator++(void)
+	{
+		++_ptr;
+		return *this;
+	}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>
+	vector_iterator<T, Pointer, Reference>::operator++(int)
+	{
+		vector_iterator tmp = *this;
+		++_ptr;
+		return tmp;
+	}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>&
+	vector_iterator<T, Pointer, Reference>::operator--(void)
+	{
+		--_ptr;
+		return *this;
+	}
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>
+	vector_iterator<T, Pointer, Reference>::operator--(int)
+	{
+		vector_iterator tmp = *this;
+		--_ptr;
+		return tmp;
+	}
+
+	// ====== Random Access Arithmetic ======
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>&
+	vector_iterator<T, Pointer, Reference>::operator+=(difference_type n)
 	{
 		_ptr += n;
-		return *this; // to do
+		return *this;
 	}
-	template<class T>
-	ft::vector_iterator<T>
-	ft::vector_iterator<T>::operator+(difference_type n)
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>
+	vector_iterator<T, Pointer, Reference>::operator+(difference_type n) const
 	{
-		return *this; // to do
+		return vector_iterator(_ptr + n);
 	}
-	template<class T>
-	ft::vector_iterator<T>&
-	ft::vector_iterator<T>::operator-=(difference_type n)
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>&
+	vector_iterator<T, Pointer, Reference>::operator-=(difference_type n)
 	{
-		return *this; // to do
+		_ptr -= n;
+		return *this;
 	}
-	template<class T>
-	ft::vector_iterator<T>
-	ft::vector_iterator<T>::operator-(difference_type n) const
+
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>
+	vector_iterator<T, Pointer, Reference>::operator-(difference_type n) const
 	{
-		return *this; // to do
+		return vector_iterator(_ptr - n);
 	}
-	template<class T>
-	typename ft::vector_iterator<T>::difference_type
-	ft::vector_iterator<T>::operator-(const ft::vector_iterator<T>&)
+
+	template <class T, class Pointer, class Reference>
+	typename vector_iterator<T, Pointer, Reference>::difference_type
+	vector_iterator<T, Pointer, Reference>::operator-(const vector_iterator& other)
 	{
-		// to do
+		return _ptr - other._ptr;
 	}
-	template<class T>
-	typename ft::vector_iterator<T>::reference
-	ft::vector_iterator<T>::operator[](difference_type n) const
+
+	template <class T, class Pointer, class Reference>
+	typename vector_iterator<T, Pointer, Reference>::reference
+	vector_iterator<T, Pointer, Reference>::operator[](difference_type n) const
 	{
-		return *_ptr; // to do
+		return *(_ptr + n);
 	}
-	template<class T>
+
+	template <class T, class Pointer, class Reference>
 	bool
-	ft::vector_iterator<T>::operator<(const ft::vector_iterator<T>&) const
+	vector_iterator<T, Pointer, Reference>::operator<(const vector_iterator& other) const
 	{
-		return false; // to do
+		return _ptr < other._ptr;
 	}
-	template<class T>
+
+	template <class T, class Pointer, class Reference>
 	bool
-	ft::vector_iterator<T>::operator>(const ft::vector_iterator<T>&) const
+	ft::vector_iterator<T, Pointer, Reference>::operator>(const vector_iterator&) const
 	{
-		return false; // to do
+		return _ptr > other._ptr;
 	}
-	template<class T>
+
+	template <class T, class Pointer, class Reference>
 	bool
-	ft::vector_iterator<T>::operator<=(const ft::vector_iterator<T>&) const
+	vector_iterator<T, Pointer, Reference>::operator<=(const vector_iterator&) const
 	{
-		return false; // to do
+		return _ptr <= other._ptr;
 	}
-	template<class T>
+
+	template <class T, class Pointer, class Reference>
 	bool
-	ft::vector_iterator<T>::operator>=(const ft::vector_iterator<T>&) const
+	vector_iterator<T, Pointer, Reference>::operator>=(const vector_iterator&) const
 	{
-		return false; // to do
+		return _ptr >= other._ptr;
 	}
-	template<class T>
-	ft::vector_iterator<T>
-	ft::vector_iterator<T>::operator--(int)
+
+	// ====== Non-Members ======
+	template <class T, class Pointer, class Reference>
+	vector_iterator<T, Pointer, Reference>
+	operator+(typename vector_iterator<T, Pointer, Reference>::difference_type n, const vector_iterator<T, Pointer, Reference>& it)
 	{
-		return *this; // to do
+		return it + n;
 	}
-	template<class T>
-	ft::vector_iterator<T>&
-	ft::vector_iterator<T>::operator--(void)
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator==(const vector_iterator<T, Pointer1, Reference1>& a,
+		const vector_iterator<T, Pointer2, Reference2>& b)
 	{
-		return *this; // to do
+		return a.base() == b.base();
 	}
-	template<class T>
-	ft::vector_iterator<T>&
-	ft::vector_iterator<T>::operator++(void)
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator!=(const vector_iterator<T, Pointer1, Reference1>& a,
+		const vector_iterator<T, Pointer2, Reference2>& b)
 	{
-		return *this; // to do
-	}
-	template<class T>
-	ft::vector_iterator<T>
-	ft::vector_iterator<T>::operator++(int)
-	{
-		return *this; // to do
-	}
-	template<class T>
-	typename ft::vector_iterator<T>::reference
-	ft::vector_iterator<T>::operator*(void) const
-	{
-		return *_ptr; // to do
+		return a.base() != b.base();
 	}
 }

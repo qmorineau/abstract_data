@@ -15,13 +15,6 @@
 
 const char* allocatedStr = "this is a long string to force heap allocation, at least 30 chars";
 
-template <typename T>
-static void test_type(std::string name)
-{
-	nm::vector<T> test;
-	std::cout << "Testing \"" << name << "\": " << &test << std::endl;
-}
-
 template <class T>
 static void print_vector(nm::vector<T>& v, size_t start, size_t end)
 {
@@ -32,6 +25,13 @@ static void print_vector(nm::vector<T>& v, size_t start, size_t end)
 		std::cout << v[i];
 	}
 	std::cout << std::endl;
+}
+
+template <typename T>
+static void test_type(std::string name)
+{
+	nm::vector<T> test;
+	std::cout << "Testing \"" << name << "\": " << &test << std::endl;
 }
 
 static void test_vector_type()
@@ -145,6 +145,7 @@ static void test_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
 	nm::vector<std::string> test;
+	test.reserve(0);
 	test.push_back(std::string(allocatedStr));
 	test.reserve(6);
 	print_vector(test, 0, test.size());
@@ -170,8 +171,46 @@ static void test_empty()
 	std::cout << "empty = " << test.empty() << std::endl;
 }
 
+template <typename T>
+static void test_type_max_size(std::string name)
+{
+	nm::vector<T> v;
+	std::cout << "vector<" << name << ">.max_size() = " << v.max_size() << std::endl;
+}
+
+static void test_max_size()
+{
+	test_type_max_size<int>("int");
+	test_type_max_size<std::string>("std::string");
+	test_type_max_size<std::vector<int> >("std::vector<int>");
+	test_type_max_size<double>("double");
+	test_type_max_size<char>("char");
+}
+
+// static void test_it_begin()
+// {
+// 	nm::vector<int> test;
+// 	for (int i = 0; i < 15; i++)
+// 		test.push_back(i);
+// 	for (auto it = test.begin(); it != test.end(); it++)
+// 		std::cout << *it;
+// 	std::endl;
+// }
+
+static void test_it()
+{
+	std::cout << "TEST ITERATORS" << std::endl;
+	std::vector<int> test;
+	test.push_back(1);
+	test.push_back(2);
+	std::vector<int>::iterator it = test.begin();
+	std::cerr << &it << std::endl;
+}
+
 void test_vector()
 {
+	test_it();
+	return;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
@@ -184,4 +223,6 @@ void test_vector()
 	test_pop_back();
 	test_reserve();
 	test_empty();
+	test_max_size();
+	// test_it_begin();
 }
