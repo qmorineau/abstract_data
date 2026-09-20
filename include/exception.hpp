@@ -13,14 +13,12 @@ namespace ft
 			exception& operator=(const exception& other) throw()
 			{
 				if (this != &other)
-				{
 					_str = other._str;
-				}
 				return *this;
 			};
 			virtual ~exception() throw() {};
 			virtual const char* what() const throw() {return _str.c_str();};
-		private:
+		protected:
 			std::string	_str;
 	};
 }

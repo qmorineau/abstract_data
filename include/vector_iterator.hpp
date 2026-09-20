@@ -11,6 +11,7 @@ namespace ft
 		public:
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference reference;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::difference_type difference_type;
+			vector_iterator(T* p) : _ptr(p) {};
 			/* 
 				i, a, b object of type It or const It
 				r, an lvalue of type It

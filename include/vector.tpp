@@ -7,9 +7,12 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const Allocator& alloc)
+	ft::vector<T, Allocator>::vector(const Allocator& alloc) 
 	{
-		// to do
+		_data = 0;
+		_size = 0;
+		_allocator = alloc;
+		_capacity = 0;
 	}
 
 	template <class T, class Allocator>
@@ -67,7 +70,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::allocator_type
 	ft::vector<T, Allocator>::get_allocator() const
 	{
-		// to do
+		return _allocator;
 	}
 
 	// =====================
@@ -78,7 +81,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::begin()
 	{
-		// to do
+		return iterator(_data);
 	}
 
 	template <class T, class Allocator>
@@ -159,7 +162,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::size_type
 	ft::vector<T, Allocator>::capacity() const
 	{
-		return _size;	// to do
+		return _capacity;
 	}
 
 	template <class T, class Allocator>
@@ -173,7 +176,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::reserve(size_type n)
 	{
-		// to do
+		_data = _allocator.allocate(n); // to do
 	}
 
 	// ======================
@@ -184,55 +187,58 @@ namespace ft
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::operator[](size_type n)
 	{
-		// to do
+		return *(_data + n);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::operator[](size_type n) const
 	{
-		// to do
+		return *(_data + n);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::at(size_type n) const
 	{
-	
+		range_check(n);
+		return *(_data + n);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::at(size_type n)
 	{
-		// to do
+		range_check(n);
+		return *(_data + n);
 	}
+
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::front()
 	{
-		// to do
+		return *_data;
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::front() const
 	{
-		// to do
+		return *_data;
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::back()
 	{
-		// to do
+		return *(_data + _size - 1);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::back() const
 	{
-		// to do
+		return *(_data + _size - 1);
 	}
 
 	// =====================
@@ -243,7 +249,10 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::push_back(const T& x)
 	{
-		
+		if (_capacity <= _size)
+		_data = _allocator.allocate(_size + 1);
+		_allocator.construct(_data + _size, x);
+		_size++;
 	}
 
 	template <class T, class Allocator>
@@ -257,7 +266,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::insert(iterator position, const T& x)
 	{
-		
+		// to do
 	}
 
 	template <class T, class Allocator>
@@ -302,6 +311,22 @@ namespace ft
 	ft::vector<T, Allocator>::clear()
 	{
 		// to do
+	}
+
+	// =====================
+	//	  Private-Members
+	// =====================
+
+	template <class T, class Allocator>
+	void
+	ft::vector<T, Allocator>::range_check(size_type n)
+	{
+		if (n >= this->size())
+		{
+			std::string error("ft::vector::range_check: n (which is " + ft::to_string(n)
+				+ ") >= this->size() (which is " + ft::to_string(this->size()) + ")");
+			throw ft::runtime_error(error);
+		}
 	}
 
 	// =====================

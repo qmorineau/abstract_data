@@ -2,7 +2,7 @@
 CCPP = g++
 
 # Flags
-CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98
+CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -U_GLIBCXX_ASSERTIONS
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj
@@ -49,11 +49,12 @@ clean:
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(NAME_STD)
 	@echo "Clear binary file"
 
 test: all
-	./$(NAME)
-	./$(NAME_STD)
+	-./$(NAME)
+	-./$(NAME_STD)
 
 .PHONY: all re clean fclean test
 

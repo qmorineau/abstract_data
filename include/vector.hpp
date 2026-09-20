@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "stdexcept.hpp"
 #include "cstddef.hpp"
 #include "vector_iterator.hpp"
 
@@ -77,8 +78,12 @@ namespace ft
 			void swap(vector<T,Allocator>&);
 			void clear();
 		private:
-			T*			_data;
-			size_type	_size;
+			T*				_data;
+			size_type		_size;
+			allocator_type	_allocator;
+			size_type		_capacity;
+
+			void range_check(size_type n);
 	};
 	// operator
 	template <class T, class Allocator>
