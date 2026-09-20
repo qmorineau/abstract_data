@@ -84,56 +84,56 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::begin()
 	{
-		return iterator(_data); // to test
+		return iterator(_data);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::begin() const
 	{
-		return const_iterator(_data); // to test
+		return const_iterator(_data);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::end()
 	{
-		return iterator(_data + _size); // to test
+		return iterator(_data + _size);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::end() const
 	{
-		return const_iterator(_data + _size); // to test
+		return const_iterator(_data + _size);
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rbegin()
 	{
-		return reverse_iterator(_data + (_size - 1)); // to test
+		return reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rbegin() const
 	{
-		return const_reverse_iterator(_data + (_size - 1)); // to test
+		return const_reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rend()
 	{
-		return reverse_iterator(_data - 1); // to test
+		return reverse_iterator(begin());
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rend() const
 	{
-		return const_reverse_iterator(_data - 1); // to test
+		return const_reverse_iterator(*begin());
 	}
 
 	// ====================

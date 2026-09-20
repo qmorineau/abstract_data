@@ -1,4 +1,10 @@
-exceptions
-iterator
-SFINAE
 tests
+vector
+deque
+list
+map
+multimap
+set
+queue
+priority queue
+stack

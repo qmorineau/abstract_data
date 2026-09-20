@@ -17,13 +17,10 @@ namespace ft
 		: _ptr(p)
 	{}
 
-	template <class T, class Pointer, class Reference>
-	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator& other)
-		: _ptr(other._ptr)
-	{}
 
 	template <class T, class Pointer, class Reference>
-	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator<T, T*, T&>& other)
+	template <class T2, class Pointer2, class Reference2>
+	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other)
 		: _ptr(other.base())
 	{}
 

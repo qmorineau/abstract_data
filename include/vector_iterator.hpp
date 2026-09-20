@@ -1,3 +1,4 @@
+
 	#ifndef VECTOR_ITERATOR_HPP
 #define VECTOR_ITERATOR_HPP
 
@@ -18,8 +19,8 @@ namespace ft
 			// construct / destruct / copy
 			vector_iterator(void);
 			vector_iterator(T* p);
-			vector_iterator(const vector_iterator& other);
-			vector_iterator(const vector_iterator<T, T*, T&>& other);
+			template <class T2, class Pointer2, class Reference2>
+			vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other);
 			~vector_iterator();
 			vector_iterator& operator=(const vector_iterator& other);
 

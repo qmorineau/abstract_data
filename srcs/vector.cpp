@@ -161,7 +161,7 @@ static void test_empty()
 	std::cout << "===== Test: vector.empty() =====" << std::endl;
 	nm::vector<std::string> test;
 	std::cout << "empty = " << test.empty() << std::endl;
-	test.push_back(std::string(allocatedStr));
+	test.push_back(std::string(allocatedStr));	
 	std::cout << "empty = " << test.empty() << std::endl;
 	test.push_back(std::string(allocatedStr));
 	std::cout << "empty = " << test.empty() << std::endl;
@@ -197,14 +197,78 @@ static void test_max_size()
 // 	std::endl;
 // }
 
+template <class Iterator>
+static void test_increment(Iterator start, Iterator end)
+{
+	std::cout << "==== Iteratator Pre-Increment =====" << std::endl;
+	for (Iterator it = start; it != end; )
+	{
+		Iterator tmp = ++it;
+		if (!(it == end))
+			std::cout << "tmp" << *it;
+		std::cout << "|";
+		if (tmp != end)
+			std::cout << "it" << *tmp;
+		std::cout << "|";
+	}
+	std::cout << std::endl;
+	std::cout << "==== Iteratator Post-Increment =====" << std::endl;
+	for (Iterator it = start; it != end; )
+	{
+		Iterator tmp = it++;
+		if (it != end)
+			std::cout << "tmp" << *it;
+		std::cout << "|";
+		if (!(tmp == end))
+			std::cout << "it" << *tmp;
+		std::cout << "|";
+	}
+	std::cout << std::endl;
+}
+
+template <class Iterator>
+static void test_decrement(Iterator start, Iterator end)
+{
+	std::cout << "==== Iteratator Post-Decrement =====" << std::endl;
+	for (Iterator it = start; it != end; )
+	{
+		Iterator tmp = --it;
+		if (it != start)
+			std::cout << "tmp" << *it;
+		std::cout << "|";
+		if (!(tmp == start))
+			std::cout << "it" << *tmp;
+		std::cout << "|";
+	}
+	std::cout << std::endl;
+	std::cout << "==== Iteratator Post-Decrement =====" << std::endl;
+	for (Iterator it = start; it != end; )
+	{
+		Iterator tmp = it--;
+		if (!(it == start))
+			std::cout << "tmp" << *it;
+		std::cout << "|";
+		if (tmp != start)
+			std::cout << "it" << *tmp;
+		std::cout << "|";
+	}
+	std::cout << std::endl;
+}
+
 static void test_it()
 {
-	std::cout << "TEST ITERATORS" << std::endl;
-	std::vector<int> test;
-	test.push_back(1);
-	test.push_back(2);
-	std::vector<int>::iterator it = test.begin();
-	std::cerr << &it << std::endl;
+	nm::vector<int> test;
+	for (int i = 0; i < 10; i++)
+		test.push_back(i);
+	test_increment<nm::vector<int>::iterator>(test.begin(), test.end());
+	test_increment<nm::vector<int>::const_iterator>(test.begin(), test.end());
+	test_increment<nm::vector<int>::reverse_iterator>(test.rbegin(), test.rend());
+	test_increment<nm::vector<int>::const_reverse_iterator>(test.rbegin(), test.rend());
+
+	test_decrement<nm::vector<int>::iterator>(test.end(), test.begin());
+	test_decrement<nm::vector<int>::const_iterator>(test.end(), test.begin());
+	test_decrement<nm::vector<int>::reverse_iterator>(test.rend(), test.rbegin());
+	test_decrement<nm::vector<int>::const_reverse_iterator>(test.rend(), test.rbegin());
 }
 
 void test_vector()
