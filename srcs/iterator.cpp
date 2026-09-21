@@ -104,6 +104,8 @@ static void test_random_access_operator(Iterator begin, Iterator end, T max_diff
 	{
 		Iterator tmp = begin;
 		std::cout << *(tmp + i)  << "|";
+		tmp = begin;
+		std::cout << *(i + tmp)  << "|";
 	}
 	std::cout << std::endl;
 
@@ -115,11 +117,19 @@ static void test_random_access_operator(Iterator begin, Iterator end, T max_diff
 	}
 	std::cout << std::endl;
 
-	std::cout << "==== Iterator operator- =====" << std::endl;
+	std::cout << "==== Iterator operator it - n =====" << std::endl;
 	for (T i = 1; i < max_diff; i++)
 	{
 		Iterator tmp = end;
 		std::cout << *(tmp - i)  << "|";
+	}
+	std::cout << std::endl;
+
+	std::cout << "==== Iterator operator it - it =====" << std::endl;
+	for (T i = 1; i < max_diff; i++)
+	{
+		Iterator tmp = begin;
+		std::cout << (tmp + i) - end  << "|";
 	}
 	std::cout << std::endl;
 }
@@ -160,6 +170,18 @@ static void test_container(bool is_random_access, std::string name)
 		test_random_access_operator<typename Container::const_reverse_iterator, typename Container::difference_type>(test.rbegin(), test.rend(), test.size());
 	}
 }
+template <template <typename, typename> class Container>
+static void test_pointer()
+{
+	std::cout << "==== Testing Iterator->size() on <std::string> =====" << std::endl;
+	Container<std::string,std::allocator<std::string> > test;
+	test.push_back("Hello");
+	test.push_back("World !");
+	typename Container<std::string,std::allocator<std::string> >::iterator it = test.begin();
+	std::cout << it->size() << "|";
+	++it;
+	std::cout << it->size() << std::endl;
+}
 
 void test_iterators()
 {
@@ -170,5 +192,6 @@ void test_iterators()
 	<< "Testing Vector Iterator" << std::endl
 	<< "=======================================" << std::endl;
 	test_container<nm::vector<int>, int>(true, "vector<int>");
+	test_pointer<nm::vector>();
 	// test_container<nm::vector<std::string>, std::string>(true, "vector<std::string>");
 }
