@@ -29,11 +29,9 @@ namespace ft
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 			// construct / copy / destroy
 			explicit vector(const Allocator& = Allocator());
-			explicit vector(size_type n, const T& value = T(),
-				const Allocator& = Allocator());
+			explicit vector(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last,
-				const Allocator& = Allocator());
+			vector(InputIterator first, InputIterator last, const Allocator& = Allocator());
 			vector(const vector<T,Allocator>& x);
 			~vector();
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);

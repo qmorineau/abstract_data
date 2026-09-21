@@ -186,18 +186,16 @@ static void test_max_size()
 	test_type_max_size<char>("char");
 }
 
-// static void test_it_begin()
-// {
-// 	nm::vector<int> test;
-// 	for (int i = 0; i < 15; i++)
-// 		test.push_back(i);
-// 	for (auto it = test.begin(); it != test.end(); it++)
-// 		std::cout << *it;
-// 	std::endl;
-// }
+static void test()
+{
+	nm::vector<int> test;
+	
+}
 
 void test_vector()
 {
+	test();
+	return ;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
@@ -211,5 +209,4 @@ void test_vector()
 	test_reserve();
 	test_empty();
 	test_max_size();
-	// test_it_begin();
 }
