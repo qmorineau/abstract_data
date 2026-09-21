@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "string.hpp"
 #include "stdexcept.hpp"
 #include "cstddef.hpp"
 #include "vector_iterator.hpp"

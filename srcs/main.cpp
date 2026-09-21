@@ -8,6 +8,7 @@
 
 void test_exception();
 void test_vector();
+void test_iterators();
 
 int main()
 {
@@ -15,6 +16,7 @@ int main()
 	<< "Testing " << NAMESPACE_NAME << "::containers" << std::endl
 	<< "=======================================" << std::endl;
 	// test_exception();
-	test_vector();
+	// test_vector();
+	test_iterators();
 	return (0);
 }
