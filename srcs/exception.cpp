@@ -22,12 +22,14 @@ static void testing(const E& exception, std::string name)
 	}
 	catch(const nm::exception& e)
 	{
-		std::cerr << e.what() << '\n';
-	}	
+		std::cout << e.what() << '\n';
+	}
 }
 
 void test_exception()
 {
 	testing(nm::exception(), std::string(NAMESPACE_NAME).append("::exception"));
-	testing(nm::runtime_error("runtime error testing"), std::string(NAMESPACE_NAME).append("::runtime_error"));
+	testing(nm::logic_error("logic_error testing"), std::string(NAMESPACE_NAME).append("::logic_error"));
+	testing(nm::runtime_error("runtime_error testing"), std::string(NAMESPACE_NAME).append("::runtime_error"));
+	testing(nm::length_error("length_error testing"), std::string(NAMESPACE_NAME).append("::runtime_error"));
 }

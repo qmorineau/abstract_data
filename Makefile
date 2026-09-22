@@ -53,6 +53,7 @@ fclean: clean
 	@echo "Clear binary file"
 
 test: all
+	clear
 	-./$(NAME) > output.ft
 	-./$(NAME_STD) > output.std
 	-diff output.ft output.std

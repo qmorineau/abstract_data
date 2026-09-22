@@ -15,8 +15,8 @@ int main()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::containers" << std::endl
 	<< "=======================================" << std::endl;
-	// test_exception();
-	test_vector();
+	test_exception();
+	// test_vector();
 	// test_iterators();
 	return (0);
 }

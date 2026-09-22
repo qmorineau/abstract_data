@@ -168,6 +168,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::resize(size_type sz, T c)
 	{
+		(void) sz; (void) c;
 		// to do
 	}
 

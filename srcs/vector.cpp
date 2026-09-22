@@ -192,7 +192,8 @@ static void test()
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i * 10);
 	std::cout << "capacity = " << test.capacity() << std::endl;
-	test.assign(5, 67);
+	// test.assign(17, 67);
+	test.resize(18);
 	std::cout << "capacity = " << test.capacity() << std::endl;
 	for (size_t i = 0; i < test.size(); ++i)
 		std::cout << test[i] << "|";
