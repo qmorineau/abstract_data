@@ -55,9 +55,9 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	template <class InputIterator, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type>
+	template <class InputIterator>
 	void
-	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last)
+	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		(void) first; (void) last;
 		// to do
