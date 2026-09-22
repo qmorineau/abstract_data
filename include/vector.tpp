@@ -54,19 +54,32 @@ namespace ft
 		// to do
 	}
 
+	#include <iostream>
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last)
 	{
+		std::cout << "wrong one" << std::endl;
+		(void) first; (void) last;
 		// to do
 	}
-
 	template <class T, class Allocator>
 	void
 	ft::vector<T, Allocator>::assign(size_type n, const T& u)
 	{
+		std::cout << "CC" << std::endl;
+		for (size_type i = 0; i < _capacity; ++i)
+		{
+			if (i > _size && i > n)
+				break;
+			if (i < _size)
+				_allocator.destroy(_data + i);
+			_allocator.construct(_data + i, u);
+		}
+		_size = n;
 		// to do
+		// test with n > _size && n > _capacity
 	}
 
 	template <class T, class Allocator>

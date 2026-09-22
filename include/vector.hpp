@@ -6,6 +6,7 @@
 #include "string.hpp"
 #include "stdexcept.hpp"
 #include "cstddef.hpp"
+#include "type_traits.hpp"
 #include "vector_iterator.hpp"
 
 namespace ft
