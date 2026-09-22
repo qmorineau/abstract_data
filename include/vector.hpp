@@ -36,7 +36,7 @@ namespace ft
 			vector(const vector<T,Allocator>& x);
 			~vector();
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
-			template <class InputIterator>
+			template <class InputIterator, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type>
 			void assign(InputIterator first, InputIterator last);
 			void assign(size_type n, const T& u);
 			allocator_type get_allocator() const;

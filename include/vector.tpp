@@ -54,13 +54,11 @@ namespace ft
 		// to do
 	}
 
-	#include <iostream>
 	template <class T, class Allocator>
-	template <class InputIterator>
+	template <class InputIterator, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type>
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last)
 	{
-		std::cout << "wrong one" << std::endl;
 		(void) first; (void) last;
 		// to do
 	}
@@ -68,7 +66,6 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::assign(size_type n, const T& u)
 	{
-		std::cout << "CC" << std::endl;
 		for (size_type i = 0; i < _capacity; ++i)
 		{
 			if (i > _size && i > n)

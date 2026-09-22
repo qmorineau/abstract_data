@@ -8,17 +8,36 @@ namespace ft
 	struct enable_if {};
 
 	template<class T>
-	struct enable_if<true, T> { typedef T type; };
+	struct enable_if<true, T>
+	{
+		typedef T type;
+	};
 
-	// is_integer
-	// template<class T>
-	// struct is_integral : std::bool_constant<
-	// requires (T t, T* p, void (*f)(T)) // T* parameter excludes reference types
-	// {
-	//     reinterpret_cast<T>(t); // Exclude class types
-	//     f(0); // Exclude enumeration types
-	//     p + t; // Exclude everything not yet excluded but integral types
-	// }> {};
+	// is_integral
+	template <class T>
+	struct is_integral					{static const bool value = false;};
+	template<>
+	struct is_integral<bool>			{static const bool value = true;};
+	template<>
+	struct is_integral<char>			{static const bool value = true;};
+	template<>
+	struct is_integral<signed char>		{static const bool value = true;};
+	template<>
+	struct is_integral<unsigned char>	{static const bool value = true;};
+	template<>
+	struct is_integral<wchar_t>			{static const bool value = true;};
+	template<>
+	struct is_integral<short>			{static const bool value = true;};
+	template<>
+	struct is_integral<unsigned short>	{static const bool value = true;};
+	template<>
+	struct is_integral<int>				{static const bool value = true;};
+	template<>
+	struct is_integral<unsigned int>	{static const bool value = true;};
+	template<>
+	struct is_integral<long>			{static const bool value = true;};
+	template<>
+	struct is_integral<unsigned long>	{static const bool value = true;};
 }
 
 #endif
