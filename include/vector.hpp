@@ -3,9 +3,9 @@
 
 #include <memory>
 
+#include "stdexcept.hpp"
 #include "string.hpp"
 #include "algorithm.hpp"
-#include "stdexcept.hpp"
 #include "cstddef.hpp"
 #include "type_traits.hpp"
 #include "vector_iterator.hpp"
@@ -66,6 +66,8 @@ namespace ft
 			const_reference front() const;
 			reference back();
 			const_reference back() const;
+			T* data();
+			const T* data() const;
 			// modifiers
 			void push_back(const T& x);
 			void pop_back();

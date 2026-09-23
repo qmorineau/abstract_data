@@ -1,0 +1,215 @@
+
+#ifndef TEST_HPP
+#define TEST_HPP
+
+#include <iostream>
+#include <string>
+#include <cassert>
+
+#include <exception>
+#include <stdexcept>
+#include <vector>
+
+#include "vector.hpp"
+#include "stdexcept.hpp"
+
+
+#ifdef STD
+	namespace nm = std;
+	# define NAMESPACE_NAME "std"
+#else
+	namespace nm = ft;
+	# define NAMESPACE_NAME "ft"
+#endif
+
+// test types
+enum TestType
+{
+	TYPE_INT
+	// stdstring
+	// class that throw except after x copy
+	// foo class
+};
+
+// modifiers
+enum CommonModifier
+{
+	MOD_CONSTRUCTOR,
+	MOD_DESTRUCTOR,
+	MOD_COPY_CONSTRUCTOR,
+	MOD_COPY_OPERATOR,
+	MOD_ASSIGN,
+	MOD_GET_ALLOCATOR
+};
+enum ElementAccessModifier
+{
+};
+enum IteratorModifier
+{
+	MOD_BEGIN,
+	MOD_RBEGIN,
+	MOD_END,
+	MOD_REND
+};
+enum CapacityModifier
+{
+};
+enum ModifiersFuncModifier
+{
+};
+enum NonMemberModifier
+{
+};
+
+// container traits (func)
+struct container_traits_default
+{
+	enum
+	{
+		// common
+		has_copy_constructor = 0,
+		has_copy_operator = 0,
+		has_assign = 0,
+		has_get_allocator = 0,
+		// element access
+		has_at = 0,
+		has_operator_square_bracket = 0,
+		has_front = 0,
+		has_back = 0,
+		has_data = 0,
+		// iterators
+		has_begin = 0,
+		has_rbegin = 0,
+		has_end = 0,
+		has_rend = 0,
+		// capacity
+		has_empty = 0,
+		has_size = 0,
+		has_max_size = 0,
+		has_reserve = 0,
+		has_capacity = 0,
+		// modifiers
+		has_clear = 0,
+		has_insert = 0,
+		has_erase = 0,
+		has_push_back = 0,
+		has_pop_back = 0,
+		has_resize = 0,
+		has_swap = 0,
+		// non member
+		has_is_equal_operator = 0,
+		has_is_different_operator = 0,
+		has_is_lesser_operator = 0,
+		has_is_greater_operator = 0,
+		has_is_lesser_equal_operator = 0,
+		has_is_greater_equal_operator = 0,
+		has_swap_specialization = 0
+	};
+};
+
+template <typename Container>
+struct container_traits : container_traits_default
+{
+};
+
+template <typename T, typename Alloc>
+struct container_traits<nm::vector<T, Alloc> > : container_traits_default
+{
+	enum
+	{
+		// common
+		has_copy_constructor = 1,
+		has_copy_operator = 1,
+		has_assign = 1,
+		has_get_allocator = 1,
+		// element access
+		has_at = 1,
+		has_operator_square_bracket = 1,
+		has_front = 1,
+		has_back = 1,
+		has_data = 1,
+		// iterators
+		has_begin = 1,
+		has_rbegin = 1,
+		has_end = 1,
+		has_rend = 1,
+		// capacity
+		has_empty = 1,
+		has_size = 1,
+		has_max_size = 1,
+		has_reserve = 1,
+		has_capacity = 1,
+		// modifiers
+		has_clear = 1,
+		has_insert = 1,
+		has_erase = 1,
+		has_push_back = 1,
+		has_pop_back = 1,
+		has_resize = 1,
+		has_swap = 1,
+		// non member
+		has_is_equal_operator = 1,
+		has_is_different_operator = 1,
+		has_is_lesser_operator = 1,
+		has_is_greater_operator = 1,
+		has_is_lesser_equal_operator = 1,
+		has_is_greater_equal_operator = 1,
+		has_swap_specialization = 1
+	};
+};
+
+// define traits for each container
+// template <typename Key, typename T, typename Compare, typename Alloc>
+// struct container_traits<nm::map<Key, Compare, Alloc>
+// {
+// 	enum
+// 	{
+// 		has_begin = 1,
+// 		has_rbegin = 1,
+// 		has_end = 1,
+// 		has_rend = 1,
+// 		has_push_back = 1
+// 		// [...]
+// 	};
+// };
+
+void test_exceptions();
+void test_iterators();
+
+// Container Type
+template <template <typename, typename> class Container>
+void test_sequence_container();
+
+template <template <typename, typename, typename, typename> class Container>
+void test_associative_container();
+
+template <template <typename, typename> class Container>
+void test_container_adaptor();
+// Category of functions to test
+template <typename Container>
+void test_common_func();
+template <typename Container>
+void test_element_access_func();
+template <typename Container>
+void test_iterators_func();
+template <typename Container>
+void test_capacity_func();
+template <typename Container>
+void test_modifiers_func();
+template <typename Container>
+void test_non_member_func();
+
+void test_vector();
+
+#include "2_test_common_func.tpp"
+#include "2_test_capacity_func.tpp"
+#include "2_test_element_access_func.tpp"
+#include "2_test_iterators_func.tpp"
+#include "2_test_modifiers_func.tpp"
+#include "2_test_non_member_func.tpp"
+
+#include "1_test_sequence_container.tpp"
+#include "1_test_associative_container.tpp"
+#include "1_test_container_adaptator.tpp"
+
+#endif

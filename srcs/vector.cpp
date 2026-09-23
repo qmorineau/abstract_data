@@ -17,13 +17,14 @@ const char* allocatedStr = "this is a long string to force heap allocation, at l
 template <class T>
 static void print_vector(nm::vector<T>& v, size_t start, size_t end)
 {
+	std::cout << "print: ";
 	for (size_t i = start; i < end; i++)
 	{
 		if (i != start)
 			std::cout << " / ";
 		std::cout << v[i];
 	}
-	std::cout << std::endl;
+	std::cout << std::endl << "capacity = " << v.capacity() << ", size = " << v.size() << std::endl;
 }
 
 template <typename T>
@@ -153,6 +154,52 @@ static void test_reserve()
 	std::cout << "capacity = " << test.capacity() << std::endl;
 	test.reserve(1);
 	std::cout << "capacity = " << test.capacity() << std::endl;
+	try
+	{
+		test.reserve(test.max_size());
+	}
+	catch(const std::bad_alloc& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+	catch(const nm::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+}
+
+template <class Container, typename T>
+static void test_resize_unit(Container& c, T arg)
+{
+	std::cout << "=== resize() ===" << std::endl;
+	try
+	{
+		std::cout << c.size() << "|" << c.capacity() << "|";
+		print_vector(c, 0, c.size());
+		c.resize(arg);
+		std::cout << c.size() << "|" << c.capacity() << "|";
+		print_vector(c, 0, c.size());
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+}
+
+static void test_resize()
+{
+	std::cout << "===== Test: vector.resize() =====" << std::endl;
+	nm::vector<std::string> emptyVector;
+	nm::vector<int>	vector;
+	// vector.resize(10, 67);
+	for (int i = 0; i < 10; ++i)
+		vector.push_back(i);
+	test_resize_unit(emptyVector, 0);
+	test_resize_unit(emptyVector, 150);
+	test_resize_unit(vector, 0);
+	test_resize_unit(vector, 5);
+	test_resize_unit(vector, 10);
+	test_resize_unit(vector, 25);
 }
 
 static void test_empty()
@@ -186,27 +233,73 @@ static void test_max_size()
 	test_type_max_size<char>("char");
 }
 
-static void test()
+void test()
 {
 	nm::vector<int> test;
+	try
+	{
+		test.reserve(test.max_size());
+	}
+	catch(const nm::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+	
+	// for (int i = 0; i < 10; ++i)
+	// 	test.push_back(i * 10);
+	// std::cout << "capacity = " << test.capacity() << std::endl;
+	// // test.assign(17, 67);
+	// test.resize(18);
+	// std::cout << "capacity = " << test.capacity() << std::endl;
+	// for (size_t i = 0; i < test.size(); ++i)
+	// 	std::cout << test[i] << "|";
+	// std::cout << std::endl << "size = " << test.size() << std::endl;
+}
+
+static void test_vector_assign()
+{
+	std::cout << "===== Test: vector.assign(n, value) =====" << std::endl;
+	nm::vector<int> test;
+	test.assign(10, 67);
+	print_vector(test, 0, test.size());
+	test.assign(5, 19);
+	print_vector(test, 0, test.size());
+	test.assign(15, 42);
+	print_vector(test, 0, test.size());
+}
+
+static void test_vector_assign_it()
+{
+	nm::vector<int> test;
+	nm::vector<int> toust;
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i * 10);
-	std::cout << "capacity = " << test.capacity() << std::endl;
-	// test.assign(17, 67);
-	test.resize(18);
-	std::cout << "capacity = " << test.capacity() << std::endl;
-	for (size_t i = 0; i < test.size(); ++i)
-		std::cout << test[i] << "|";
-	std::cout << std::endl << "size = " << test.size() << std::endl;
+	print_vector(test, 0, test.size());
+	nm::vector<int> test2;
+	test2.assign(test.begin() + 1, test.end() - 1);
+	print_vector(test2, 0, test2.size());
+	try
+	{
+		test2.assign(toust.begin(), test.begin());
+		print_vector(test2, 0, test2.size());
+	}
+	catch(const nm::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
 }
 
 void test_vector()
 {
-	test();
-	return ;
+	std::vector<int> test;
+	test.push_back(1);
+	std::cout << test.data() << std::endl;
+	return; 
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
+	test_vector_assign();
+	test_vector_assign_it();
 	test_vector_type();
 	test_vector_at();
 	test_vector_front();	
@@ -214,6 +307,7 @@ void test_vector()
 	test_capacity();
 	test_push_back();
 	test_pop_back();
+	test_resize();
 	test_reserve();
 	test_empty();
 	test_max_size();

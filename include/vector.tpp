@@ -59,13 +59,20 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
-		(void) first; (void) last;
-		// to do
+		if (static_cast<size_type>(last - first) > max_size())
+			throw ft::length_error("cannot create ft::vector larger than max_size()");
+		reserve(last - first);
+		size_type i;
+		for (i = 0; first != last; ++first, ++i)
+			_allocator.construct(_data + i, *first);
+		_size = i;
 	}
 	template <class T, class Allocator>
 	void
 	ft::vector<T, Allocator>::assign(size_type n, const T& u)
 	{
+		if (n > _capacity)
+			reserve(n);
 		for (size_type i = 0; i < _capacity; ++i)
 		{
 			if (i > _size && i > n)
@@ -75,8 +82,6 @@ namespace ft
 			_allocator.construct(_data + i, u);
 		}
 		_size = n;
-		// to do
-		// test with n > _size && n > _capacity
 	}
 
 	template <class T, class Allocator>
@@ -168,8 +173,19 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::resize(size_type sz, T c)
 	{
-		(void) sz; (void) c;
-		// to do
+		if (sz > _capacity)
+			reserve(sz);
+		if (sz > _size)
+		{
+			for (size_type i = _size; i < sz; ++i)
+				_allocator.construct(_data + i, c);
+		}
+		else
+		{
+			for (size_type i = sz; i < _size; ++i)
+				_allocator.destroy(_data + i);
+		}
+		_size = sz;
 	}
 
 	template <class T, class Allocator>
@@ -190,6 +206,8 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::reserve(size_type n)
 	{
+		if (n > max_size())
+			throw ft::length_error("vector::reserve");
 		if (n > _capacity)
 		{
 			T* tmp = _allocator.allocate(n);
@@ -364,9 +382,9 @@ namespace ft
 	{
 		if (n >= this->size())
 		{
-			std::string error("ft::vector::range_check: n (which is " + ft::to_string(n)
+			std::string msg("vector::range_check: n (which is " + ft::to_string(n)
 				+ ") >= this->size() (which is " + ft::to_string(this->size()) + ")");
-			throw ft::runtime_error(error);
+			throw ft::runtime_error(msg);
 		}
 	}
 

@@ -8,18 +8,11 @@ namespace ft
 	class exception
 	{
 		public:
-			exception() throw() : _str("ft::exception") {};
-			exception(const exception& other) throw() : _str(other._str) {};
-			exception& operator=(const exception& other) throw()
-			{
-				if (this != &other)
-					_str = other._str;
-				return *this;
-			};
+			exception() throw() {};
+			exception(const exception&) throw() {};
+			exception& operator=(const exception&) throw() {return *this;};
 			virtual ~exception() throw() {};
-			virtual const char* what() const throw() {return _str.c_str();};
-		protected:
-			std::string	_str;
+			virtual const char* what() const throw() {return "ft::exception";};
 	};
 }
 

@@ -7,46 +7,45 @@
 
 namespace ft
 {
-	class logic_error : public ft::exception
+	namespace detail
+	{
+		class msg_exception : public ft::exception
+		{
+			public:
+				explicit msg_exception(const std::string& msg) : _msg(msg) {};
+				msg_exception(const msg_exception& other) : ft::exception(other), _msg(other._msg) {};
+				msg_exception& operator=(const msg_exception& other)
+				{
+					if (this != &other)
+					{
+						ft::exception::operator=(other);
+						_msg = other._msg;
+					}
+					return *this;
+				}
+				virtual const char* what() const throw() {return _msg.c_str();};
+				virtual ~msg_exception() throw() {};
+			protected:
+				std::string _msg;
+		};
+	}
+
+	class logic_error : public ft::detail::msg_exception
 	{
 		public:
-			explicit logic_error(const std::string& what_arg) : ft::exception() {_str = std::string(" what():  " + what_arg);};
-			logic_error(const char* what_arg) : ft::exception() {_str = what_arg;};
-			logic_error(const logic_error& other) throw() : ft::exception(other) {};
-			logic_error& operator=(const logic_error& other) throw()
-			{
-				if (this != &other)
-					_str = other._str;
-				return *this;
-			}
+			explicit logic_error(const std::string& what_arg) : ft::detail::msg_exception(what_arg) {};
 	};
 
-	class runtime_error : public ft::exception
+	class runtime_error : public ft::detail::msg_exception
 	{
 		public:
-			runtime_error(const std::string& what_arg) : ft::exception() {_str = what_arg;};
-			runtime_error(const char* what_arg) : ft::exception() {_str = what_arg;};
-			runtime_error(const runtime_error& other) throw() : ft::exception(other) {};
-			runtime_error& operator=(const runtime_error& other) throw()
-			{
-				if (this != &other)
-					_str = other._str;
-				return *this;
-			}
+			explicit runtime_error(const std::string& what_arg) : ft::detail::msg_exception(what_arg) {};
 	};
 
 	class length_error : public ft::logic_error
 	{
 		public:
-			length_error(const std::string& what_arg) : ft::logic_error(what_arg) {};
-			length_error(const char* what_arg) : ft::logic_error(what_arg) {};
-			length_error(const length_error& other) throw() : ft::logic_error(other) {};
-			length_error& operator=(const length_error& other) throw()
-			{
-				if (this != &other)
-					_str = other._str;
-				return *this;
-			}
+			explicit length_error(const std::string& what_arg) : ft::logic_error(what_arg) {};
 	};
 }
 
