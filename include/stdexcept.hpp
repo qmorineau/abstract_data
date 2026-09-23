@@ -35,12 +35,12 @@ namespace ft
 			}
 	};
 
-	class length_error : public ft::exception
+	class length_error : public ft::logic_error
 	{
 		public:
-			length_error(const std::string& what_arg) : ft::exception() {_str = what_arg;};
-			length_error(const char* what_arg) : ft::exception() {_str = what_arg;};
-			length_error(const length_error& other) throw() : ft::exception(other) {};
+			length_error(const std::string& what_arg) : ft::logic_error(what_arg) {};
+			length_error(const char* what_arg) : ft::logic_error(what_arg) {};
+			length_error(const length_error& other) throw() : ft::logic_error(other) {};
 			length_error& operator=(const length_error& other) throw()
 			{
 				if (this != &other)

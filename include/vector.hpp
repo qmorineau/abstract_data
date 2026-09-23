@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "string.hpp"
+#include "algorithm.hpp"
 #include "stdexcept.hpp"
 #include "cstddef.hpp"
 #include "type_traits.hpp"
