@@ -48,26 +48,6 @@ static void test_vector_type()
 	test_type<const char*>("const char*");
 }
 
-static void test_vector_at()
-{
-	std::cout << "===== Test: vector.at() =====" << std::endl;
-	nm::vector<int> test;
-	test.push_back(1);
-	try
-	{
-		int& i = test.at(0);
-		const int& j = test.at(0);
-		std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-		i++;
-		std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-		std::cout << test.at(1) << std::endl;
-	}
-	catch(const nm::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-}
-
 static void test_vector_front()
 {
 	std::cout << "===== Test: vector.front() =====" << std::endl;
@@ -301,7 +281,6 @@ void test_vector()
 	test_vector_assign();
 	test_vector_assign_it();
 	test_vector_type();
-	test_vector_at();
 	test_vector_front();	
 	test_vector_back();
 	test_capacity();

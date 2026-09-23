@@ -284,6 +284,20 @@ namespace ft
 		return *(_data + _size - 1);
 	}
 
+	template <class T, class Allocator>
+	T*
+	ft::vector<T, Allocator>::data()
+	{
+		return _data;
+	}
+	
+	template <class T, class Allocator>
+	const T*
+	ft::vector<T, Allocator>::data() const
+	{
+		return _data;
+	}
+
 	// =====================
 	//	     Modifiers
 	// =====================
@@ -384,7 +398,7 @@ namespace ft
 		{
 			std::string msg("vector::range_check: n (which is " + ft::to_string(n)
 				+ ") >= this->size() (which is " + ft::to_string(this->size()) + ")");
-			throw ft::runtime_error(msg);
+			throw ft::out_of_range(msg);
 		}
 	}
 

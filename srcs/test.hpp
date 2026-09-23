@@ -3,6 +3,7 @@
 #define TEST_HPP
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <cassert>
 
@@ -43,6 +44,11 @@ enum CommonModifier
 };
 enum ElementAccessModifier
 {
+	MOD_AT,
+	MOD_OPERATOR_SQUARE_BRACKET,
+	MOD_FRONT,
+	MOD_BACK,
+	MOD_DATA
 };
 enum IteratorModifier
 {
@@ -200,6 +206,12 @@ template <typename Container>
 void test_non_member_func();
 
 void test_vector();
+
+// Helper to fill container
+template <typename Container>
+void fill_n(Container& c, std::size_t n);
+
+#include "value_generator.tpp"
 
 #include "2_test_common_func.tpp"
 #include "2_test_capacity_func.tpp"

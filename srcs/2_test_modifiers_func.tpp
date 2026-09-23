@@ -9,3 +9,9 @@
 	resize
 	swap
 */
+
+template <typename Container>
+void test_modifiers_func()
+{
+	std::cout << "=|=|= Modifier Func =|=|=" << std::endl;
+}

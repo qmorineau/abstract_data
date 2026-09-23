@@ -11,25 +11,25 @@
 template <typename Container>
 static void test_begin()
 {
-
+	// to do
 }
 
 template <typename Container>
 static void test_rbegin()
 {
-
+	// to do
 }
 
 template <typename Container>
 static void test_end()
 {
-
+	// to do
 }
 
 template <typename Container>
 static void test_rend()
 {
-
+	// to do
 }
 
 template <typename Container>
@@ -62,6 +62,7 @@ static void test_modifier(IteratorModifier modifier)
 template <typename Container>
 void test_iterators_func()
 {
+	std::cout << "=|=|= Iterators Func =|=|=" << std::endl;
 	test_modifier<Container>(MOD_BEGIN);
 	test_modifier<Container>(MOD_RBEGIN);
 	test_modifier<Container>(MOD_END);

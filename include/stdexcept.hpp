@@ -47,6 +47,12 @@ namespace ft
 		public:
 			explicit length_error(const std::string& what_arg) : ft::logic_error(what_arg) {};
 	};
+
+	class out_of_range : public ft::logic_error
+	{
+		public:
+			explicit out_of_range(const std::string& what_arg) : ft::logic_error(what_arg) {};
+	};
 }
 
 #endif

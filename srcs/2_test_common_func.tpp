@@ -12,37 +12,37 @@
 template <typename Container>
 static void test_constructors()
 {
-
+	// todo
 }
 
 template <typename Container>
 static void test_destructors()
 {
-
+	// todo
 }
 
 template <typename Container>
 static void test_copy_constructor()
 {
-
+	// todo
 }
 
 template <typename Container>
 static void test_copy_operator()
 {
-
+	// todo
 }
 
 template <typename Container>
 static void test_assign()
 {
-
+	// todo
 }
 
 template <typename Container>
 static void test_get_allocator()
 {
-
+	// todo
 }
 
 template <typename Container>
@@ -75,7 +75,7 @@ static void test_modifier(CommonModifier modifier)
 				test_get_allocator<Container>();
 			break;
 		default:
-			std::cerr << "CommonModifierModifier not mananged" << std::endl;
+			std::cerr << "CommonModifier not mananged" << std::endl;
 			break;
 	}
 }
@@ -83,6 +83,7 @@ static void test_modifier(CommonModifier modifier)
 template <typename Container>
 void test_common_func()
 {
+	std::cout << "=|=|= Common Func =|=|=" << std::endl;
 	test_modifier<Container>(MOD_BEGIN);
 	test_modifier<Container>(MOD_RBEGIN);
 	test_modifier<Container>(MOD_END);
