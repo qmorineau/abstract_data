@@ -13,7 +13,12 @@ static void test_begin()
 {
 	std::cout << "===== Test: begin() =====" << std::endl;
 	Timer t("begin()");
-	// to do
+	typedef typename Container::iterator iterator;
+	typedef typename Container::const_iterator const_iterator;
+	Container c;
+	iterator it = c.begin();
+	const_iterator cit = c.begin();
+	(void) it; (void) cit;
 }
 
 template <typename Container>
@@ -21,7 +26,12 @@ static void test_rbegin()
 {
 	std::cout << "===== Test: rbegin() =====" << std::endl;
 	Timer t("rbegin()");
-	// to do
+	typedef typename Container::reverse_iterator reverse_iterator;
+	typedef typename Container::const_reverse_iterator const_reverse_iterator;
+	Container c;
+	reverse_iterator it = c.rbegin();
+	const_reverse_iterator cit = c.rbegin();
+	(void) it; (void) cit;
 }
 
 template <typename Container>
@@ -29,7 +39,12 @@ static void test_end()
 {
 	std::cout << "===== Test: end() =====" << std::endl;
 	Timer t("end()");
-	// to do
+	typedef typename Container::iterator iterator;
+	typedef typename Container::const_iterator const_iterator;
+	Container c;
+	iterator it = c.end();
+	const_iterator cit = c.end();
+	(void) it; (void) cit;
 }
 
 template <typename Container>
@@ -37,7 +52,12 @@ static void test_rend()
 {
 	std::cout << "===== Test: rend() =====" << std::endl;
 	Timer t("rend()");
-	// to do
+	typedef typename Container::reverse_iterator reverse_iterator;
+	typedef typename Container::const_reverse_iterator const_reverse_iterator;
+	Container c;
+	reverse_iterator it = c.rend();
+	const_reverse_iterator cit = c.rend();
+	(void) it; (void) cit;
 }
 
 template <typename Container>

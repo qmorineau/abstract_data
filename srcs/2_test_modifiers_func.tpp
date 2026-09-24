@@ -21,7 +21,7 @@ static void test_clear()
 template <typename Container>
 static void test_insert()
 {
-	std::cout << "===== Test: clear() =====" << std::endl;
+	std::cout << "===== Test: insert() =====" << std::endl;
 	Timer t("insert()");
 	// to do
 }
@@ -39,7 +39,13 @@ static void test_push_back()
 {
 	std::cout << "===== Test: push_back() =====" << std::endl;
 	Timer t("push_back()");
-	// to do
+	Container c;
+	for (std::size_t i = 0; i < 150; ++i)
+	{
+		c.push_back(generate_value<Container>(i));
+		std::cout << *c.rbegin() << "|";
+	}
+	std::cout << std::endl;
 }
 
 template <typename Container>
@@ -47,7 +53,16 @@ static void test_pop_back()
 {
 	std::cout << "===== Test: pop_back() =====" << std::endl;
 	Timer t("pop_back()");
-	// to do
+	typedef typename Container::size_type size_type;
+	size_type size = 150;
+	Container c;
+	fill_n(c, size);
+	for (size_type i = 0; i < size - 1; ++i)
+	{
+		c.pop_back();
+		std::cout << *c.rbegin() << "|";
+	}
+	std::cout << std::endl;
 }
 
 template <typename Container>

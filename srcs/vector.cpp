@@ -60,39 +60,6 @@ static void test_capacity()
 	}
 }
 
-static void test_push_back()
-{
-	std::cout << "===== Test: vector.push_back() =====" << std::endl;
-	nm::vector<int> test;
-	for (int i = 0; i <= 17; i++)
-	{
-		test.push_back(i);
-		print_vector(test, 0, test.size());
-	}
-}
-
-static void test_pop_back()
-{
-	std::cout << "===== Test: vector.pop_back() =====" << std::endl;
-	nm::vector<std::string> test;
-	for (int i = 0; i <= 17; i++)
-	{
-		test.push_back(std::string(allocatedStr));
-		if (i != 0)
-			std::cout << " / ";
-		std::cout << "s=" << test.size();
-	}
-	std::cout << std::endl;
-	for (int i = 0; i <= 17; i++)
-	{
-		if (i != 0)
-			std::cout << " / ";
-		std::cout << "s=" << test.size();
-		test.pop_back();
-	}
-	std::cout << std::endl;
-}
-
 static void test_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
@@ -254,8 +221,6 @@ void test_vector()
 	test_vector_assign_it();
 	test_vector_type();
 	test_capacity();
-	test_push_back();
-	test_pop_back();
 	test_resize();
 	test_reserve();
 	test_empty();

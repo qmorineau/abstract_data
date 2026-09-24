@@ -100,6 +100,13 @@ enum ModifiersFuncModifier
 };
 enum NonMemberModifier
 {
+	MOD_IS_EQUAL,
+	MOD_IS_DIFFERENT,
+	MOD_IS_LESSER_EQUAL,
+	MOD_IS_LESSER,
+	MOD_IS_GREATER_EQUAL,
+	MOD_IS_GREATER,
+	MOD_SWAP_SPECIALIZATION
 };
 
 // container traits (func)
@@ -140,10 +147,10 @@ struct container_traits_default
 		// non member
 		has_is_equal_operator = 0,
 		has_is_different_operator = 0,
-		has_is_lesser_operator = 0,
-		has_is_greater_operator = 0,
 		has_is_lesser_equal_operator = 0,
+		has_is_lesser_operator = 0,
 		has_is_greater_equal_operator = 0,
+		has_is_greater_operator = 0,
 		has_swap_specialization = 0
 	};
 };
@@ -245,6 +252,9 @@ void test_vector();
 // Helper to fill container
 template <typename Container>
 void fill_n(Container& c, std::size_t n);
+
+template <typename Container>
+typename Container::value_type generate_value(std::size_t n);
 
 #include "value_generator.tpp"
 
