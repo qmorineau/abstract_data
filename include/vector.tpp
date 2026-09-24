@@ -31,6 +31,7 @@ namespace ft
 	template <class T, class Allocator>
 	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x)
 	{
+		(void) x;
 		// to do
 	}
 
@@ -51,7 +52,11 @@ namespace ft
 	vector<T,Allocator>&
 	ft::vector<T, Allocator>::operator=(const vector<T,Allocator>& x)
 	{
-		// to do
+		if (this != &x)
+		{
+			// todo
+		}
+		return *this;
 	}
 
 	template <class T, class Allocator>

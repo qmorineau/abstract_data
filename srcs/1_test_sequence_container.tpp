@@ -15,10 +15,20 @@ template <template <typename, typename> class Container>
 static void test_sequence_container_type()
 {
 	// Int
-	std::cout << "||||| Type = int |||||" << std::endl;
+	std::cout << "=======================================" << std::endl
+	<< "=======================================" << std::endl
+	<< "Testing int" << std::endl
+	<< "=======================================" << std::endl 
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "=== int ===" << std::endl;
 	test_sequence_container_type_typed<Container, int>();
 	// String
-	std::cout << "||||| Type = std::string |||||" << std::endl;
+	std::cout << "=======================================" << std::endl
+	<< "=======================================" << std::endl
+	<< "Testing std::string" << std::endl
+	<< "=======================================" << std::endl 
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "=== std::string ===" << std::endl;
 	test_sequence_container_type_typed<Container, std::string>();
 	// Throwing class
 	// test_sequence_container_type_typed<Container, ThrowingClass>();
@@ -29,16 +39,19 @@ static void test_sequence_container_type()
 template <template <typename, typename> class Container>
 void test_sequence_container()
 {
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
-	std::cout << "||||| Testing vector  |||||" << std::endl;
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Testing vector" << std::endl
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "===== Vector =====" << std::endl;
 	test_sequence_container_type<nm::vector>();
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
-	std::cout << "|||||  Testing deque  |||||" << std::endl;
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Testing deque" << std::endl
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "===== Deque =====" << std::endl;
 	// test_sequence_container_type<nm::deque>();
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
-	std::cout << "|||||  Testing list   |||||" << std::endl;
-	std::cout << "|=|=|=|=|=|=|=|=|=|=|=|=|=|" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Testing list" << std::endl
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "===== List =====" << std::endl;
 	// test_sequence_container_type<nm::list>();
 }

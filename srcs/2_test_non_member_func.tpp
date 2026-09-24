@@ -13,5 +13,7 @@
 template <typename Container>
 void test_non_member_func()
 {
-	std::cout << "=|=|= Non Member Func =|=|=" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Non Member Func" << std::endl
+	<< "=======================================" << std::endl;
 }

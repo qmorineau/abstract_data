@@ -1,10 +1,12 @@
 #include "test.hpp"
 
+struct timeval Timer::_start;
+
 int main()
 {
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::containers" << std::endl
-	<< "=======================================" << std::endl;
+	<< "=======================================" << std::endl << std::endl;
 	// test_exceptions();
 	// test_iterators();
 

@@ -13,6 +13,7 @@ template <typename Container>
 static void test_at()
 {
 	std::cout << "===== Test: at() =====" << std::endl;
+	Timer t("at()");
 	Container c;
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
@@ -43,6 +44,7 @@ template <typename Container>
 static void test_operator_square_bracket()
 {
 	std::cout << "===== Test: operator[] =====" << std::endl;
+	Timer t("operator[]");
 	Container c;
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
@@ -61,6 +63,7 @@ template <typename Container>
 static void test_front()
 {
 	std::cout << "===== Test: front() =====" << std::endl;
+	Timer t("front()");
 	Container c;
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
@@ -75,6 +78,7 @@ template <typename Container>
 static void test_back()
 {
 	std::cout << "===== Test: back() =====" << std::endl;
+	Timer t("back()");
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
 	for (size_type size = 1; size < 15; ++size)
@@ -92,6 +96,7 @@ template <typename Container>
 static void test_data()
 {
 	std::cout << "===== Test: data() =====" << std::endl;
+	Timer t("data()");
 	typedef typename Container::size_type size_type;
 	typedef typename Container::pointer pointer;
 	size_type size = 3;
@@ -137,7 +142,9 @@ static void test_modifier(ElementAccessModifier modifier)
 template <typename Container>
 void test_element_access_func()
 {
-	std::cout << "=|=|= Element Access Func =|=|=" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Element Access Func" << std::endl
+	<< "=======================================" << std::endl;
 	test_modifier<Container>(MOD_AT);
 	test_modifier<Container>(MOD_OPERATOR_SQUARE_BRACKET);
 	test_modifier<Container>(MOD_FRONT);

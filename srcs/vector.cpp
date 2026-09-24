@@ -48,34 +48,6 @@ static void test_vector_type()
 	test_type<const char*>("const char*");
 }
 
-static void test_vector_front()
-{
-	std::cout << "===== Test: vector.front() =====" << std::endl;
-	nm::vector<int> test;
-	test.push_back(19);
-	test.push_back(42);
-	int& i = test.front();
-	const int& j = test.front();
-	std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-	i++;
-	std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-	std::cout << test.front() << std::endl;
-}
-
-static void test_vector_back()
-{
-	std::cout << "===== Test: vector.back() =====" << std::endl;
-	nm::vector<int> test;
-	test.push_back(19);
-	test.push_back(42);
-	int& i = test.back();
-	const int& j = test.back();
-	std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-	i++;
-	std::cout << "&=" << i << ", " << "const& = " << j << std::endl;
-	std::cout << test.back() << std::endl;
-}
-
 static void test_capacity()
 {
 	std::cout << "===== Test: vector.capacity() =====" << std::endl;
@@ -281,8 +253,6 @@ void test_vector()
 	test_vector_assign();
 	test_vector_assign_it();
 	test_vector_type();
-	test_vector_front();	
-	test_vector_back();
 	test_capacity();
 	test_push_back();
 	test_pop_back();

@@ -2,7 +2,7 @@
 CCPP = g++
 
 # Flags
-CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic #-fsanitize=address
+CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj
@@ -54,8 +54,8 @@ fclean: clean
 
 test: all
 	clear
-	-./$(NAME) > output.ft
-	-./$(NAME_STD) > output.std
+	-./$(NAME) > output.ft 2> output.ft.time
+	-./$(NAME_STD) > output.std 2> output.std.time
 	-diff output.ft output.std
 
 .PHONY: all re clean fclean test

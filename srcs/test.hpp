@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+#include <sys/time.h>
 
 #include <exception>
 #include <stdexcept>
@@ -22,6 +23,28 @@
 	namespace nm = ft;
 	# define NAMESPACE_NAME "ft"
 #endif
+
+class Timer
+{
+	public:
+		Timer(const std::string& label) : _label(label)
+		{
+			gettimeofday(&_start, NULL);
+		}
+		~Timer()
+		{
+			struct timeval end;
+			gettimeofday(&end, NULL);
+
+			long seconds = end.tv_sec - _start.tv_sec;
+			long useconds = end.tv_usec - _start.tv_usec;
+			long elasped = seconds * 1000000 + useconds;
+			std::cerr << _label << ": " << elasped << " useconds"<< std::endl;
+		}
+	private:
+		std::string _label;
+		static struct timeval _start;
+};
 
 // test types
 enum TestType
@@ -59,9 +82,21 @@ enum IteratorModifier
 };
 enum CapacityModifier
 {
+	MOD_EMPTY,
+	MOD_SIZE,
+	MOD_MAX_SIZE,
+	MOD_RESERVE,
+	MOD_CAPACITY
 };
 enum ModifiersFuncModifier
 {
+	MOD_CLEAR,
+	MOD_INSERT,
+	MOD_ERASE,
+	MOD_PUSH_BACK,
+	MOD_POP_BACK,
+	MOD_RESIZE,
+	MOD_SWAP
 };
 enum NonMemberModifier
 {

@@ -11,24 +11,32 @@
 template <typename Container>
 static void test_begin()
 {
+	std::cout << "===== Test: begin() =====" << std::endl;
+	Timer t("begin()");
 	// to do
 }
 
 template <typename Container>
 static void test_rbegin()
 {
+	std::cout << "===== Test: rbegin() =====" << std::endl;
+	Timer t("rbegin()");
 	// to do
 }
 
 template <typename Container>
 static void test_end()
 {
+	std::cout << "===== Test: end() =====" << std::endl;
+	Timer t("end()");
 	// to do
 }
 
 template <typename Container>
 static void test_rend()
 {
+	std::cout << "===== Test: rend() =====" << std::endl;
+	Timer t("rend()");
 	// to do
 }
 
@@ -54,7 +62,7 @@ static void test_modifier(IteratorModifier modifier)
 				test_rend<Container>();
 			break;
 		default:
-			std::cerr << "IteratorModifier not mananged" << std::endl;
+			std::cerr << "IteratorModifier not managed" << std::endl;
 			break;
 	}
 }
@@ -62,7 +70,9 @@ static void test_modifier(IteratorModifier modifier)
 template <typename Container>
 void test_iterators_func()
 {
-	std::cout << "=|=|= Iterators Func =|=|=" << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "===== Iterators Func" << std::endl
+	<< "=======================================" << std::endl;
 	test_modifier<Container>(MOD_BEGIN);
 	test_modifier<Container>(MOD_RBEGIN);
 	test_modifier<Container>(MOD_END);
