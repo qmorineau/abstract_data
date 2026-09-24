@@ -21,7 +21,7 @@ static void test_size()
 {
 	std::cout << "===== Test: size() =====" << std::endl;
 	Timer t("size()");
-	// todo
+	
 }
 
 template <typename Container>
@@ -29,7 +29,8 @@ static void test_max_size()
 {
 	std::cout << "===== Test: max_size() =====" << std::endl;
 	Timer t("max_size()");
-	// todo
+	Container c;
+	std::cout << c.max_size() << std::endl;
 }
 
 template <typename Container>

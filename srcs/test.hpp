@@ -46,6 +46,29 @@ class Timer
 		static struct timeval _start;
 };
 
+class Foo
+{
+	struct Bar
+	{
+		int i;
+		int* j;
+		size_t k;
+		long h;
+		std::string str;
+	};
+	public:
+		Foo();
+		Foo(int i);
+		Foo(const Foo&);
+		Foo& operator=(const Foo&);
+		~Foo();
+		int		data() const;
+	private:
+		Bar*	_allocated_ptr;
+		int		_n;
+};
+std::ostream& operator<<(std::ostream& out_stream, const Foo& f);
+
 // test types
 enum TestType
 {

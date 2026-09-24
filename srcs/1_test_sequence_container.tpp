@@ -30,10 +30,15 @@ static void test_sequence_container_type()
 	<< "=======================================" << std::endl << std::endl;
 	std::cerr << std::endl << "=== std::string ===" << std::endl;
 	test_sequence_container_type_typed<Container, std::string>();
+	std::cout << "=======================================" << std::endl
+	<< "=======================================" << std::endl
+	<< "Testing Foo" << std::endl
+	<< "=======================================" << std::endl 
+	<< "=======================================" << std::endl << std::endl;
+	std::cerr << std::endl << "=== Foo ===" << std::endl;
+	test_sequence_container_type_typed<Container, Foo>();
 	// Throwing class
 	// test_sequence_container_type_typed<Container, ThrowingClass>();
-	// Foo
-	// test_sequence_container_type_typed<Container, Foo>();
 }
 
 template <template <typename, typename> class Container>
