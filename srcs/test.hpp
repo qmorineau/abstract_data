@@ -279,17 +279,17 @@ void fill_n(Container& c, std::size_t n);
 template <typename Container>
 typename Container::value_type generate_value(std::size_t n);
 
-#include "value_generator.tpp"
+#include "generic_test/value_generator.tpp"
 
-#include "2_test_common_func.tpp"
-#include "2_test_capacity_func.tpp"
-#include "2_test_element_access_func.tpp"
-#include "2_test_iterators_func.tpp"
-#include "2_test_modifiers_func.tpp"
-#include "2_test_non_member_func.tpp"
+#include "generic_test/2_test_common_func.tpp"
+#include "generic_test/2_test_capacity_func.tpp"
+#include "generic_test/2_test_element_access_func.tpp"
+#include "generic_test/2_test_iterators_func.tpp"
+#include "generic_test/2_test_modifiers_func.tpp"
+#include "generic_test/2_test_non_member_func.tpp"
 
-#include "1_test_sequence_container.tpp"
-#include "1_test_associative_container.tpp"
-#include "1_test_container_adaptator.tpp"
+#include "generic_test/1_test_sequence_container.tpp"
+#include "generic_test/1_test_associative_container.tpp"
+#include "generic_test/1_test_container_adaptator.tpp"
 
 #endif
