@@ -1,16 +1,4 @@
-#include <vector>
-#include <iostream>
-
-#include "string.hpp"
-#include "vector.hpp"
-
-#ifdef STD
-	namespace nm = std;
-	# define NAMESPACE_NAME "std"
-#else
-	namespace nm = ft;
-	# define NAMESPACE_NAME "ft"
-#endif
+#include "test.hpp"
 
 const char* allocatedStr = "this is a long string to force heap allocation, at least 30 chars";
 

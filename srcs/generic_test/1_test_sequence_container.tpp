@@ -1,4 +1,4 @@
-#include "../test.hpp"
+#include "test.hpp"
 
 template <template <typename, typename> class Container, typename T>
 static void test_sequence_container_type_typed()

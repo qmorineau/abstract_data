@@ -33,12 +33,12 @@ namespace ft
 			explicit vector(const Allocator& = Allocator());
 			explicit vector(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& = Allocator());
+			vector(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			vector(const vector<T,Allocator>& x);
 			~vector();
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last,  typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& u);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -74,8 +74,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert(iterator position,
-			InputIterator first, InputIterator last);
+			void insert(iterator position, InputIterator first, InputIterator last);
 			iterator erase(iterator position);
 			iterator erase(iterator first, iterator last);
 			void swap(vector<T,Allocator>&);

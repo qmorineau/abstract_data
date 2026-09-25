@@ -1,15 +1,4 @@
-#include <vector>
-#include <iostream>
-
-#include "vector.hpp"
-
-#ifdef STD
-	namespace nm = std;
-	# define NAMESPACE_NAME "std"
-#else
-	namespace nm = ft;
-	# define NAMESPACE_NAME "ft"
-#endif
+#include "test.hpp"
 
 template <class Iterator>
 static void test_increment(Iterator start, Iterator end)

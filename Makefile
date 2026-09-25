@@ -12,6 +12,7 @@ INC_DIR = include
 
 # Include Paths
 INCLUDES = -I $(INC_DIR) \
+			-I $(SRC_DIR) \
 			
 
 SRC = $(shell find $(SRC_DIR) -name "*.cpp")

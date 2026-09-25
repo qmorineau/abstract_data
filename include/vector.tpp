@@ -7,32 +7,27 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const Allocator& alloc) 
+	ft::vector<T, Allocator>::vector(const Allocator& alloc) : _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
-		_data = 0;
-		_size = 0;
-		_allocator = alloc;
-		_capacity = 0;
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
+	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc) : _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
-		// to do
+		assign(n, value);
 	}
 
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc)
+	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*) : _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
-		// to do
+		assign(first, last);
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x)
+	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x) : _data(0), _size(0), _allocator(x._allocator), _capacity(0)
 	{
-		(void) x;
-		// to do
+		assign(x.begin(), x.end());
 	}
 
 	template <class T, class Allocator>
@@ -54,7 +49,15 @@ namespace ft
 	{
 		if (this != &x)
 		{
-			// todo
+			clear();
+			if (_capacity != x._capacity)
+			{
+				T* tmp = _allocator.allocate(x._capacity);
+				_allocator.deallocate(_data, _capacity);
+				_data = tmp;
+				_capacity = x._capacity;
+			}
+			assign(x.begin(), x.end());
 		}
 		return *this;
 	}
@@ -345,6 +348,26 @@ namespace ft
 	ft::vector<T, Allocator>::insert(iterator position, const T& x)
 	{
 		// to do
+		T* tmp;
+		if (_capacity <= _size)
+		{
+			size_type new_size;
+			if (_capacity == 0)
+				new_size = 1;
+			else
+				new_size = _capacity * 2;
+			tmp = _allocator.allocate(new_size);
+			iterator it = begin();
+			size_type i = 0;
+			for (; it != position; ++it, ++i)
+				_allocator(tmp + i, *(_data + i));
+			_allocator(tmp + i, *(_data + i));
+			++i;
+			for (; it != end(); ++it, ++i)
+				_allocator(tmp + i, *(_data + i));
+		}
+		// for (; it != position; ++it) {}
+		
 	}
 
 	template <class T, class Allocator>
@@ -388,7 +411,9 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::clear()
 	{
-		// to do
+		for (size_type i = 0; i < _size; i++)
+			_allocator.destroy(_data + i);
+		_size = 0;
 	}
 
 	// =====================

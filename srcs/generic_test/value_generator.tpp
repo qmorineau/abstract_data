@@ -1,4 +1,4 @@
-#include "../test.hpp"
+#include "test.hpp"
 
 template <typename T>
 struct value_generator
