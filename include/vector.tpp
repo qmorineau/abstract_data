@@ -220,9 +220,10 @@ namespace ft
 		{
 			T* tmp = _allocator.allocate(n);
 			for (size_type i = 0; i < _size; i++)
+			{
 				_allocator.construct(tmp + i, *(_data + i));
-			for (size_type i = 0; i < _size; i++)
 				_allocator.destroy(_data + i);
+			}
 			if (_capacity)
 				_allocator.deallocate(_data, _capacity);
 			_data = tmp;
@@ -321,15 +322,7 @@ namespace ft
 				new_size = 1;
 			else
 				new_size = _capacity * 2;
-			T* tmp = _allocator.allocate(new_size);
-			for (size_type i = 0; i < _size; i++)
-				_allocator.construct(tmp + i, *(_data + i));
-			for (size_type i = 0; i < _size; i++)
-				_allocator.destroy(_data + i);
-			if (_capacity)
-				_allocator.deallocate(_data, _capacity);
-			_capacity = new_size;
-			_data = tmp;
+			reserve(new_size);
 		}
 		_allocator.construct(_data + _size, x);
 		_size++;
@@ -347,43 +340,50 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::insert(iterator position, const T& x)
 	{
-		// to do
-		T* tmp;
-		if (_capacity <= _size)
-		{
-			size_type new_size;
-			if (_capacity == 0)
-				new_size = 1;
-			else
-				new_size = _capacity * 2;
-			tmp = _allocator.allocate(new_size);
-			iterator it = begin();
-			size_type i = 0;
-			for (; it != position; ++it, ++i)
-				_allocator(tmp + i, *(_data + i));
-			_allocator(tmp + i, *(_data + i));
-			++i;
-			for (; it != end(); ++it, ++i)
-				_allocator(tmp + i, *(_data + i));
-		}
-		// for (; it != position; ++it) {}
-		
+		size_type pos = static_cast<size_type>(position - begin());
+		insert(position, 1, x);
+		return begin() + pos;
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::vector<T, Allocator>::insert(iterator position, size_type n, const T& x)
 	{
-		// to do
+		vector tmp(position, end());
+		size_type pos = static_cast<size_type>(position - begin());
+		if (_capacity < _size + n)
+		{
+			if (_capacity * 2 < _size + n)
+				reserve(_size + n);
+			else
+				reserve(_capacity * 2);
+		}
+		for (size_type i = 0; i < n; ++i)
+			_allocator.construct(_data + pos + i, x);
+		if (!tmp.empty())
+			insert(iterator(begin() + pos + n), tmp.begin(), tmp.end()--);
+		_size += n;
 	}
 
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::vector<T, Allocator>::insert(iterator position,
-		InputIterator first, InputIterator last)
+	ft::vector<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
-		// to do
+		size_type n = last - first;
+		vector tmp(position, end());
+		size_type pos = static_cast<size_type>(position - begin());
+		if (_capacity < _size + n)
+		{
+			if (_capacity * 2 < _size + n)
+				reserve(_size + n);
+			else
+				reserve(_capacity * 2);
+		}
+		for (; first != last; ++first)
+			_allocator.construct(_data + pos++, *first);
+		for (iterator it = tmp.begin(); it != tmp.end(); ++it)
+			_allocator.construct(_data + pos++, *it);
 	}
 
 	template <class T, class Allocator>

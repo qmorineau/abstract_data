@@ -244,19 +244,20 @@ struct container_traits<nm::vector<T, Alloc> > : container_traits_default
 // 	};
 // };
 
+// Specific Test
 void test_exceptions();
 void test_iterators();
+void test_vector();
 
 // Container Type
 template <template <typename, typename> class Container>
 void test_sequence_container();
-
 template <template <typename, typename, typename, typename> class Container>
 void test_associative_container();
-
 template <template <typename, typename> class Container>
 void test_container_adaptor();
-// Category of functions to test
+
+// Category of generic test
 template <typename Container>
 void test_common_func();
 template <typename Container>
@@ -270,12 +271,9 @@ void test_modifiers_func();
 template <typename Container>
 void test_non_member_func();
 
-void test_vector();
-
 // Helper to fill container
 template <typename Container>
 void fill_n(Container& c, std::size_t n);
-
 template <typename Container>
 typename Container::value_type generate_value(std::size_t n);
 

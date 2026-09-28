@@ -28,12 +28,15 @@ int main()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
+	std::cout << "=======================================" << std::endl 
+	<< "Generic Test" << std::endl
+	<< "=======================================" << std::endl << std::endl;
 	// test_exceptions();
 	// test_iterators();
 
 	// test_sequence_container<nm::list>();
 	// test_sequence_container<nm::deque>();
-	test_sequence_container<nm::vector>();
+	// test_sequence_container<nm::vector>();
 
 	// test_associative_container<nm::map>();
 	// test_associative_container<nm::set>();
@@ -43,5 +46,9 @@ int main()
 	// test_container_adaptor<nm::stack>();
 	// test_container_adaptor<nm::queue>();
 	// test_container_adaptor<nm::priority_queue>();
+	std::cout << "=======================================" << std::endl 
+	<< "Specific Test" << std::endl
+	<< "=======================================" << std::endl << std::endl;
+	test_vector();
 	return (0);
 }

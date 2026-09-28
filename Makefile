@@ -59,6 +59,10 @@ test: all
 	-./$(NAME_STD) > output.std 2> output.std.time
 	-diff output.ft output.std
 
+ft: all
+	clear
+	./$(NAME)
+
 .PHONY: all re clean fclean test
 
 -include $(DEP)

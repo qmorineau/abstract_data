@@ -196,12 +196,37 @@ static void test_vector_assign_it()
 	}
 }
 
+static void test_insert()
+{
+	nm::vector<int> test;
+	test.insert(test.begin(), 10);
+	print_vector(test, 0, test.size());
+	test.insert(test.end(), 2, 67);
+	print_vector(test, 0, test.size());
+	nm::vector<int>::iterator it = test.begin();
+	++it;
+	test.insert(it, 19);
+	print_vector(test, 0, test.size());
+	it = test.begin();
+	++it;
+	++it;
+	test.insert(it, 42);
+	print_vector(test, 0, test.size());
+}
+
 void test_vector()
 {
-	std::vector<int> test;
-	test.push_back(1);
-	std::cout << test.data() << std::endl;
-	return; 
+	try
+	{
+		/* code */
+		test_insert();
+	}
+	catch(const nm::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+	}
+	
+	return;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
