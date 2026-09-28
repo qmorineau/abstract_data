@@ -214,12 +214,25 @@ static void test_insert()
 	print_vector(test, 0, test.size());
 }
 
+static void test_erase()
+{
+	nm::vector<int> test;
+	for (int i = 0; i < 15; ++i)
+		test.push_back(i);
+	print_vector(test, 0, test.size());
+	test.erase(test.end());
+	print_vector(test, 0, test.size());
+	nm::vector<int> test2(test);
+	print_vector(test2, 0, test2.size());
+	test2.erase(test2.begin(), test2.end());
+	print_vector(test2, 0, test2.size());
+}
+
 void test_vector()
 {
 	try
 	{
-		/* code */
-		test_insert();
+		test_erase();
 	}
 	catch(const nm::exception& e)
 	{
@@ -230,6 +243,7 @@ void test_vector()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
+	test_insert();
 	test_vector_assign();
 	test_vector_assign_it();
 	test_vector_type();

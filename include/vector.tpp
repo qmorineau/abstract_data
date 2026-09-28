@@ -221,7 +221,7 @@ namespace ft
 			T* tmp = _allocator.allocate(n);
 			for (size_type i = 0; i < _size; i++)
 			{
-				_allocator.construct(tmp + i, *(_data + i));
+				_allocator.construct(tmp + i, _data[i]);
 				_allocator.destroy(_data + i);
 			}
 			if (_capacity)
@@ -390,14 +390,35 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::erase(iterator position)
 	{
-		// to do
+		size_type pos = position - begin();
+		_allocator.destroy(_data + pos);
+		for (; pos + 1 < _size; ++pos)
+		{
+			_allocator.construct(_data + pos, _data[pos + 1]);
+			_allocator.destroy(_data + pos + 1);
+		}
+		_size--;
+		return position;
+		// check return
 	}
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::erase(iterator first, iterator last)
 	{
-		// to do
+		size_type erase_begin = first - begin();
+		size_type erase_end = last - begin();
+		size_type diff = erase_end - erase_begin;
+		for (size_type tmp = erase_begin; tmp <= erase_end; ++tmp)
+			_allocator.destroy(_data + tmp);
+		for (; erase_end < _size; ++erase_end, ++erase_begin)
+		{
+			_allocator.destroy(_data + erase_end);
+			_allocator.construct(_data + erase_begin, _data[erase_end]);
+		}
+		_size -= diff;
+		return end();
+		// check return
 	}
 
 	template <class T, class Allocator>
@@ -426,8 +447,10 @@ namespace ft
 	{
 		if (n >= this->size())
 		{
-			std::string msg("vector::range_check: n (which is " + ft::to_string(n)
-				+ ") >= this->size() (which is " + ft::to_string(this->size()) + ")");
+			std::string msg("vector::range_check: n (which is "
+				+ ft::to_string(n)
+				+ ") >= this->size() (which is "
+				+ ft::to_string(this->size()) + ")");
 			throw ft::out_of_range(msg);
 		}
 	}
