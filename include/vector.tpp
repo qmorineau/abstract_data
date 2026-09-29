@@ -423,9 +423,15 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::swap(vector<T,Allocator>&)
+	ft::vector<T, Allocator>::swap(vector<T,Allocator>&other)
 	{
-		// to do
+		if (this != &other)
+		{
+			ft::swap(_data, other._data);
+			ft::swap(_size, other._size);
+			ft::swap(_allocator, other._allocator);
+			ft::swap(_capacity, other._capacity);
+		}
 	}
 
 	template <class T, class Allocator>
@@ -509,6 +515,6 @@ namespace ft
 	void
 	swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
 	{
-	
+		x.swap(y);
 	}
 }
