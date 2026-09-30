@@ -1,27 +1,27 @@
 #include "test.hpp"
 
 const char* allocatedStr = "this is a long string to force heap allocation, at least 30 chars";
-
+//print
 template <class T>
-static void print_vector(ns::vector<T>& v, size_t start, size_t end)
+static void print_vector(ns::vector<T>& v)
 {
-	std::cout << "print: ";
-	for (size_t i = start; i < end; i++)
+	std::cout << "print_vector: ";
+	for (typename ns::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
 	{
-		if (i != start)
+		if (it != v.begin())
 			std::cout << " / ";
-		std::cout << v[i];
+		std::cout << *it;
 	}
 	std::cout << std::endl << "capacity = " << v.capacity() << ", size = " << v.size() << std::endl;
 }
-
+//type
 template <typename T>
 static void test_type(std::string name)
 {
+	std::cout << "type tested: \"" << name << "\"" << std::endl;
 	ns::vector<T> test;
-	std::cout << "Testing \"" << name << "\": " << &test << std::endl;
+	(void) test;
 }
-
 static void test_vector_type()
 {
 	std::cout << "===== Test: vector template type =====" << std::endl;
@@ -35,27 +35,126 @@ static void test_vector_type()
 	test_type<char>("char");
 	test_type<const char*>("const char*");
 }
-
-static void test_capacity()
+//assign
+static void test_vector_assign_it()
+{
+	std::cout << "===== Test: vector.assign(it first, it last) =====" << std::endl;
+	ns::vector<int> test;
+	ns::vector<int> toust;
+	for (int i = 0; i < 10; ++i)
+		test.push_back(i * 10);
+	print_vector(test);
+	ns::vector<int> test2;
+	test2.assign(test.begin() + 1, test.end() - 1);
+	print_vector(test2);
+	test2.assign(toust.begin(), test.begin());
+	print_vector(test2);
+}
+static void test_vector_assign_n_value()
+{
+	std::cout << "===== Test: vector.assign(n, value) =====" << std::endl;
+	ns::vector<int> test;
+	test.assign(10, 67);
+	print_vector(test);
+	test.assign(5, 19);
+	print_vector(test);
+	test.assign(15, 42);
+	print_vector(test);
+}
+static void test_vector_assign()
+{
+	test_vector_assign_n_value();
+	test_vector_assign_it();
+}
+//resize
+template <class Container, typename T>
+static void test_resize_unit(Container& c, T arg)
+{
+	std::cout << "=== resize() ===" << std::endl;
+	try
+	{
+		print_vector(c);
+		c.resize(arg);
+		print_vector(c);
+	}
+	catch(const std::exception& e)
+	{
+		std::cout << e.what() << '\n';
+	}
+}
+static void test_vector_resize()
+{
+	std::cout << "===== Test: vector.resize() =====" << std::endl;
+	ns::vector<std::string> emptyVector;
+	ns::vector<int>	vector;
+	// vector.resize(10, 67);
+	for (int i = 0; i < 10; ++i)
+		vector.push_back(i);
+	test_resize_unit(emptyVector, 0);
+	test_resize_unit(emptyVector, 150);
+	test_resize_unit(vector, 0);
+	test_resize_unit(vector, 5);
+	test_resize_unit(vector, 10);
+	test_resize_unit(vector, 25);
+}
+//max size
+template <typename T>
+static void test_type_max_size(std::string name)
+{
+	ns::vector<T> v;
+	std::cout << "*: could be different, implement dependant => " << "vector<" << name << ">.max_size() = " << v.max_size() << std::endl;
+}
+static void test_vector_max_size()
+{
+	std::cout << "===== Test: vector.max_size()* =====" << std::endl;
+	test_type_max_size<int>("int");
+	test_type_max_size<float>("float");
+	test_type_max_size<std::string>("std::string");
+	test_type_max_size<Foo>("Foo");
+	test_type_max_size<double>("double");
+	test_type_max_size<size_t>("size_t");
+	test_type_max_size<short>("short");
+	test_type_max_size<unsigned long>("unsigned long");
+	test_type_max_size<long>("long");
+	test_type_max_size<unsigned int>("unsigned int");
+}
+//capacity
+static void test_vector_capacity()
 {
 	std::cout << "===== Test: vector.capacity() =====" << std::endl;
 	ns::vector<int> test;
-	for (int i = 0; i <= 17; i++)
+	for (int i = 0; i <= 1026; i++)
 	{
-		std::cout << "Capacity = " << test.capacity() << ": ";
-		print_vector(test, 0, test.size());
+		std::cout << test.capacity() << " " << test.size() << " | ";
 		test.push_back(i);
 	}
 }
+//data
+static void test_vector_data()
+{
+	std::cout << "===== Test: vector.data() =====" << std::endl;
+	ns::vector<int> test;
+	std::cout << test.data() << "|";
+	test.push_back(42);
+	std::cout << (test.data() != 0) << "|";
+	test.pop_back();
+	std::cout << test.data() << std::endl;
+}
+//pop_back
+static void test_vector_pop_back()
+{
 
-static void test_reserve()
+}
+
+
+static void test_vector_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
 	ns::vector<std::string> test;
 	test.reserve(0);
 	test.push_back(std::string(allocatedStr));
 	test.reserve(6);
-	print_vector(test, 0, test.size());
+	print_vector(test);
 	for (size_t i = 1; i <= 6 ; i++)
 		test.push_back(std::string(allocatedStr));
 	std::cout << "capacity = " << test.capacity() << std::endl;
@@ -75,41 +174,9 @@ static void test_reserve()
 	}
 }
 
-template <class Container, typename T>
-static void test_resize_unit(Container& c, T arg)
-{
-	std::cout << "=== resize() ===" << std::endl;
-	try
-	{
-		std::cout << c.size() << "|" << c.capacity() << "|";
-		print_vector(c, 0, c.size());
-		c.resize(arg);
-		std::cout << c.size() << "|" << c.capacity() << "|";
-		print_vector(c, 0, c.size());
-	}
-	catch(const std::exception& e)
-	{
-		std::cout << e.what() << '\n';
-	}
-}
 
-static void test_resize()
-{
-	std::cout << "===== Test: vector.resize() =====" << std::endl;
-	ns::vector<std::string> emptyVector;
-	ns::vector<int>	vector;
-	// vector.resize(10, 67);
-	for (int i = 0; i < 10; ++i)
-		vector.push_back(i);
-	test_resize_unit(emptyVector, 0);
-	test_resize_unit(emptyVector, 150);
-	test_resize_unit(vector, 0);
-	test_resize_unit(vector, 5);
-	test_resize_unit(vector, 10);
-	test_resize_unit(vector, 25);
-}
 
-static void test_empty()
+static void test_vector_empty()
 {
 	std::cout << "===== Test: vector.empty() =====" << std::endl;
 	ns::vector<std::string> test;
@@ -124,105 +191,65 @@ static void test_empty()
 	std::cout << "empty = " << test.empty() << std::endl;
 }
 
-template <typename T>
-static void test_type_max_size(std::string name)
+static void test_insert_value()
 {
-	ns::vector<T> v;
-	std::cout << "vector<" << name << ">.max_size() = " << v.max_size() << std::endl;
+	std::cout << "===== Test: vector.insert(it pos, value) =====" << std::endl;
 }
-
-void test()
+static void test_insert_n_value()
 {
+	std::cout << "===== Test: vector.insert(it pos, n, value) =====" << std::endl;
+}
+static void test_insert_it()
+{
+	std::cout << "===== Test: vector.insert(it pos, it first, it last) =====" << std::endl;
 	ns::vector<int> test;
-	try
-	{
-		test.reserve(test.max_size());
-	}
-	catch(const ns::exception& e)
-	{
-		std::cout << e.what() << '\n';
-	}
-	
-	// for (int i = 0; i < 10; ++i)
-	// 	test.push_back(i * 10);
-	// std::cout << "capacity = " << test.capacity() << std::endl;
-	// // test.assign(17, 67);
-	// test.resize(18);
-	// std::cout << "capacity = " << test.capacity() << std::endl;
-	// for (size_t i = 0; i < test.size(); ++i)
-	// 	std::cout << test[i] << "|";
-	// std::cout << std::endl << "size = " << test.size() << std::endl;
+	print_vector(test);
+	// ns::vector<int> test;
+	// test.insert(test.begin(), 10);
+	// print_vector(test);
+	// test.insert(test.end(), 2, 67);
+	// print_vector(test);
+	// ns::vector<int>::iterator it = test.begin();
+	// ++it;
+	// test.insert(it, 19);
+	// print_vector(test);
+	// it = test.begin();
+	// ++it;
+	// ++it;
+	// test.insert(it, 42);
+	// print_vector(test);
 }
-
-static void test_vector_assign()
+static void test_vector_insert()
 {
-	std::cout << "===== Test: vector.assign(n, value) =====" << std::endl;
-	ns::vector<int> test;
-	test.assign(10, 67);
-	print_vector(test, 0, test.size());
-	test.assign(5, 19);
-	print_vector(test, 0, test.size());
-	test.assign(15, 42);
-	print_vector(test, 0, test.size());
+	test_insert_value();
+	test_insert_n_value();
+	test_insert_it();
 }
-
-static void test_vector_assign_it()
+// erase
+static void test_erase_pos()
 {
-	ns::vector<int> test;
-	ns::vector<int> toust;
-	for (int i = 0; i < 10; ++i)
-		test.push_back(i * 10);
-	print_vector(test, 0, test.size());
-	ns::vector<int> test2;
-	test2.assign(test.begin() + 1, test.end() - 1);
-	print_vector(test2, 0, test2.size());
-	try
-	{
-		test2.assign(toust.begin(), test.begin());
-		print_vector(test2, 0, test2.size());
-	}
-	catch(const ns::exception& e)
-	{
-		std::cout << e.what() << '\n';
-	}
 }
-
-static void test_insert()
+static void test_erase_it()
 {
-	ns::vector<int> test;
-	test.insert(test.begin(), 10);
-	print_vector(test, 0, test.size());
-	test.insert(test.end(), 2, 67);
-	print_vector(test, 0, test.size());
-	ns::vector<int>::iterator it = test.begin();
-	++it;
-	test.insert(it, 19);
-	print_vector(test, 0, test.size());
-	it = test.begin();
-	++it;
-	++it;
-	test.insert(it, 42);
-	print_vector(test, 0, test.size());
+	// ns::vector<int> test;
+	// for (int i = 0; i < 15; ++i)
+	// 	test.push_back(i);
+	// print_vector(test);
+	// test.erase(test.end());
+	// print_vector(test);
+	// ns::vector<int> test2(test);
+	// print_vector(test2);
+	// test2.erase(test2.begin(), test2.end());
+	// print_vector(test2);
 }
-
-static void test_erase()
+static void test_vector_erase()
 {
-	ns::vector<int> test;
-	for (int i = 0; i < 15; ++i)
-		test.push_back(i);
-	print_vector(test, 0, test.size());
-	test.erase(test.end());
-	print_vector(test, 0, test.size());
-	ns::vector<int> test2(test);
-	print_vector(test2, 0, test2.size());
-	test2.erase(test2.begin(), test2.end());
-	print_vector(test2, 0, test2.size());
+	test_erase_pos();
+	test_erase_it();
 }
-
-template <typename T>
-void test_vector_type()
+//clear
+static void test_vector_clear()
 {
-
 }
 
 void test_vector()
@@ -230,18 +257,16 @@ void test_vector()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
-	// test_assign();
-	test_vector_assign_it();
-	test_vector_assign();
 	test_vector_type();
-	test_resize();
-	test_capacity();
-	test_empty();
-	test_reserve();
-	// test_data();
-	// test_push_back();
-	// test_pop_back();
-	test_insert();
-	test_erase();
-	// test_clear();
+	test_vector_assign();
+	test_vector_resize();
+	test_vector_max_size();
+	test_vector_capacity();
+	test_vector_empty();
+	test_vector_reserve();
+	test_vector_data();
+	test_vector_pop_back();
+	test_vector_insert();
+	test_vector_erase();
+	test_vector_clear();
 }
