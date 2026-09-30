@@ -30,7 +30,7 @@ static void test_at()
 		std::cout << std::endl;
 		c.at(-1);
 	}
-	catch(const nm::out_of_range& e)
+	catch(const ns::out_of_range& e)
 	{
 		std::cout << e.what() << '\n';
 	}

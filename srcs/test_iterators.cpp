@@ -180,7 +180,7 @@ void test_iterators()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing Vector Iterator" << std::endl
 	<< "=======================================" << std::endl;
-	test_container<nm::vector<int>, int>(true, "vector<int>");
-	test_pointer<nm::vector>();
-	// test_container<nm::vector<std::string>, std::string>(true, "vector<std::string>");
+	test_container<ns::vector<int>, int>(true, "vector<int>");
+	test_pointer<ns::vector>();
+	// test_container<ns::vector<std::string>, std::string>(true, "vector<std::string>");
 }

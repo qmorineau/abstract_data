@@ -469,42 +469,50 @@ namespace ft
 	bool
 	operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
-		return false; // to do
-	}
-
-	template <class T, class Allocator>
-	bool
-	operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
-	{
-		return false; // to do
+		typedef typename vector<T,Allocator>::iterator iterator;
+		iterator itx = x.begin();
+		iterator ity = y.begin();
+		for (; itx != x.end() && ity != y.end(); ++itx, ++ity)
+		{
+			if (!(itx == ity))
+				return false;
+		}
+		return true;
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
-		return false; // to do
+		return !(x == y);
+	}
+
+	template <class T, class Allocator>
+	bool
+	operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	{
+		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
-		return false; // to do
+		return (y < x);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
-		return false; // to do
+		return !(x < y);
 	}
 	
 	template <class T, class Allocator>
 	bool
 	operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
-		return false; // to do
+		return !(y < x);
 	}
 	
 	// ======================

@@ -48,15 +48,15 @@ void test_sequence_container()
 	<< "===== Testing vector" << std::endl
 	<< "=======================================" << std::endl << std::endl;
 	std::cerr << std::endl << "===== Vector =====" << std::endl;
-	test_sequence_container_type<nm::vector>();
+	test_sequence_container_type<ns::vector>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing deque" << std::endl
 	<< "=======================================" << std::endl << std::endl;
 	std::cerr << std::endl << "===== Deque =====" << std::endl;
-	// test_sequence_container_type<nm::deque>();
+	// test_sequence_container_type<ns::deque>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing list" << std::endl
 	<< "=======================================" << std::endl << std::endl;
 	std::cerr << std::endl << "===== List =====" << std::endl;
-	// test_sequence_container_type<nm::list>();
+	// test_sequence_container_type<ns::list>();
 }

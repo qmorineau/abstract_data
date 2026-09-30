@@ -8,6 +8,7 @@
 #include <cassert>
 #include <sys/time.h>
 
+#include <algorithm>
 #include <exception>
 #include <stdexcept>
 #include <vector>
@@ -15,12 +16,11 @@
 #include "vector.hpp"
 #include "stdexcept.hpp"
 
-
 #ifdef STD
-	namespace nm = std;
+	namespace ns = std;
 	# define NAMESPACE_NAME "std"
 #else
-	namespace nm = ft;
+	namespace ns = ft;
 	# define NAMESPACE_NAME "ft"
 #endif
 
@@ -184,7 +184,7 @@ struct container_traits : container_traits_default
 };
 
 template <typename T, typename Alloc>
-struct container_traits<nm::vector<T, Alloc> > : container_traits_default
+struct container_traits<ns::vector<T, Alloc> > : container_traits_default
 {
 	enum
 	{

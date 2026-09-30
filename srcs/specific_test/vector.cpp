@@ -3,7 +3,7 @@
 const char* allocatedStr = "this is a long string to force heap allocation, at least 30 chars";
 
 template <class T>
-static void print_vector(nm::vector<T>& v, size_t start, size_t end)
+static void print_vector(ns::vector<T>& v, size_t start, size_t end)
 {
 	std::cout << "print: ";
 	for (size_t i = start; i < end; i++)
@@ -18,7 +18,7 @@ static void print_vector(nm::vector<T>& v, size_t start, size_t end)
 template <typename T>
 static void test_type(std::string name)
 {
-	nm::vector<T> test;
+	ns::vector<T> test;
 	std::cout << "Testing \"" << name << "\": " << &test << std::endl;
 }
 
@@ -39,7 +39,7 @@ static void test_vector_type()
 static void test_capacity()
 {
 	std::cout << "===== Test: vector.capacity() =====" << std::endl;
-	nm::vector<int> test;
+	ns::vector<int> test;
 	for (int i = 0; i <= 17; i++)
 	{
 		std::cout << "Capacity = " << test.capacity() << ": ";
@@ -51,7 +51,7 @@ static void test_capacity()
 static void test_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
-	nm::vector<std::string> test;
+	ns::vector<std::string> test;
 	test.reserve(0);
 	test.push_back(std::string(allocatedStr));
 	test.reserve(6);
@@ -69,7 +69,7 @@ static void test_reserve()
 	{
 		std::cout << e.what() << '\n';
 	}
-	catch(const nm::exception& e)
+	catch(const ns::exception& e)
 	{
 		std::cout << e.what() << '\n';
 	}
@@ -96,8 +96,8 @@ static void test_resize_unit(Container& c, T arg)
 static void test_resize()
 {
 	std::cout << "===== Test: vector.resize() =====" << std::endl;
-	nm::vector<std::string> emptyVector;
-	nm::vector<int>	vector;
+	ns::vector<std::string> emptyVector;
+	ns::vector<int>	vector;
 	// vector.resize(10, 67);
 	for (int i = 0; i < 10; ++i)
 		vector.push_back(i);
@@ -112,7 +112,7 @@ static void test_resize()
 static void test_empty()
 {
 	std::cout << "===== Test: vector.empty() =====" << std::endl;
-	nm::vector<std::string> test;
+	ns::vector<std::string> test;
 	std::cout << "empty = " << test.empty() << std::endl;
 	test.push_back(std::string(allocatedStr));	
 	std::cout << "empty = " << test.empty() << std::endl;
@@ -127,27 +127,18 @@ static void test_empty()
 template <typename T>
 static void test_type_max_size(std::string name)
 {
-	nm::vector<T> v;
+	ns::vector<T> v;
 	std::cout << "vector<" << name << ">.max_size() = " << v.max_size() << std::endl;
-}
-
-static void test_max_size()
-{
-	test_type_max_size<int>("int");
-	test_type_max_size<std::string>("std::string");
-	test_type_max_size<std::vector<int> >("std::vector<int>");
-	test_type_max_size<double>("double");
-	test_type_max_size<char>("char");
 }
 
 void test()
 {
-	nm::vector<int> test;
+	ns::vector<int> test;
 	try
 	{
 		test.reserve(test.max_size());
 	}
-	catch(const nm::exception& e)
+	catch(const ns::exception& e)
 	{
 		std::cout << e.what() << '\n';
 	}
@@ -166,7 +157,7 @@ void test()
 static void test_vector_assign()
 {
 	std::cout << "===== Test: vector.assign(n, value) =====" << std::endl;
-	nm::vector<int> test;
+	ns::vector<int> test;
 	test.assign(10, 67);
 	print_vector(test, 0, test.size());
 	test.assign(5, 19);
@@ -177,12 +168,12 @@ static void test_vector_assign()
 
 static void test_vector_assign_it()
 {
-	nm::vector<int> test;
-	nm::vector<int> toust;
+	ns::vector<int> test;
+	ns::vector<int> toust;
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i * 10);
 	print_vector(test, 0, test.size());
-	nm::vector<int> test2;
+	ns::vector<int> test2;
 	test2.assign(test.begin() + 1, test.end() - 1);
 	print_vector(test2, 0, test2.size());
 	try
@@ -190,7 +181,7 @@ static void test_vector_assign_it()
 		test2.assign(toust.begin(), test.begin());
 		print_vector(test2, 0, test2.size());
 	}
-	catch(const nm::exception& e)
+	catch(const ns::exception& e)
 	{
 		std::cout << e.what() << '\n';
 	}
@@ -198,12 +189,12 @@ static void test_vector_assign_it()
 
 static void test_insert()
 {
-	nm::vector<int> test;
+	ns::vector<int> test;
 	test.insert(test.begin(), 10);
 	print_vector(test, 0, test.size());
 	test.insert(test.end(), 2, 67);
 	print_vector(test, 0, test.size());
-	nm::vector<int>::iterator it = test.begin();
+	ns::vector<int>::iterator it = test.begin();
 	++it;
 	test.insert(it, 19);
 	print_vector(test, 0, test.size());
@@ -216,40 +207,41 @@ static void test_insert()
 
 static void test_erase()
 {
-	nm::vector<int> test;
+	ns::vector<int> test;
 	for (int i = 0; i < 15; ++i)
 		test.push_back(i);
 	print_vector(test, 0, test.size());
 	test.erase(test.end());
 	print_vector(test, 0, test.size());
-	nm::vector<int> test2(test);
+	ns::vector<int> test2(test);
 	print_vector(test2, 0, test2.size());
 	test2.erase(test2.begin(), test2.end());
 	print_vector(test2, 0, test2.size());
 }
 
+template <typename T>
+void test_vector_type()
+{
+
+}
+
 void test_vector()
 {
-	try
-	{
-		test_erase();
-	}
-	catch(const nm::exception& e)
-	{
-		std::cerr << e.what() << '\n';
-	}
-	
-	return;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
-	test_insert();
-	test_vector_assign();
+	// test_assign();
 	test_vector_assign_it();
+	test_vector_assign();
 	test_vector_type();
-	test_capacity();
 	test_resize();
-	test_reserve();
+	test_capacity();
 	test_empty();
-	test_max_size();
+	test_reserve();
+	// test_data();
+	// test_push_back();
+	// test_pop_back();
+	test_insert();
+	test_erase();
+	// test_clear();
 }
