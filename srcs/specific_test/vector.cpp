@@ -275,18 +275,16 @@ static void test_erase_it()
 	ns::vector<int> test;
 	for (int i = 0; i < 120; ++i)
 		test.push_back(i);
+	typedef typename ns::vector<int>::iterator iterator;
+	iterator begin = test.begin();
+	for (int i = 0; i < 25; ++i)
+		++begin;
+	iterator end = test.end();
+	for (int i = 0; i < 36; ++i)
+		--end;
 	print_vector(test);
-	
-	// ns::vector<int> test;
-	// for (int i = 0; i < 15; ++i)
-	// 	test.push_back(i);
-	// print_vector(test);
-	// test.erase(test.end());
-	// print_vector(test);
-	// ns::vector<int> test2(test);
-	// print_vector(test2);
-	// test2.erase(test2.begin(), test2.end());
-	// print_vector(test2);
+	test.erase(begin, end);
+	print_vector(test);
 }
 static void test_vector_erase()
 {
@@ -296,6 +294,8 @@ static void test_vector_erase()
 //clear
 static void test_vector_clear()
 {
+	std::cout << "===== Test: vector.clear() =====" << std::endl;
+	Timer t("clear()");
 }
 
 void test_vector()
