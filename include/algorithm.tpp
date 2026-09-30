@@ -1,4 +1,5 @@
-#include "algorithm.hpp"
+#ifndef ALGORITHM_TPP
+#define ALGORITHM_TPP
 
 namespace ft
 {
@@ -36,3 +37,5 @@ namespace ft
 		b = tmp;
 	}
 }
+
+#endif

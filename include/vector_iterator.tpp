@@ -1,4 +1,5 @@
-#include "vector_iterator.hpp"
+#ifndef VECTOR_ITERATOR_TPP
+#define VECTOR_ITERATOR_TPP
 
 namespace ft
 {
@@ -189,3 +190,5 @@ namespace ft
 		return x.base() != y.base();
 	}
 }
+
+#endif

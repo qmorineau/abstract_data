@@ -1,4 +1,5 @@
-#include "iterator.hpp"
+#ifndef ITERATOR_TPP
+#define ITERATOR_TPP
 
 namespace ft
 {
@@ -178,3 +179,5 @@ namespace ft
 		return x + n;
 	}
 }
+
+#endif

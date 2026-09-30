@@ -1,4 +1,5 @@
-#include "vector.hpp"
+#ifndef VECTOR_TPP
+#define VECTOR_TPP
 
 namespace ft
 {
@@ -322,7 +323,8 @@ namespace ft
 				new_size = 1;
 			else
 				new_size = _capacity * 2;
-			reserve(new_size);
+			reserve(new_size);VECTOR_TPP
+VECTOR_TPP
 		}
 		_allocator.construct(_data + _size, x);
 		_size++;
@@ -526,3 +528,5 @@ namespace ft
 		x.swap(y);
 	}
 }
+
+#endif

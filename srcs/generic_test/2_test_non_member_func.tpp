@@ -15,7 +15,6 @@ static void test_is_equal()
 {
 	std::cout << "===== Test: operator== =====" << std::endl;
 	Timer t("operator==");
-	// to do
 }
 
 template <typename Container>
