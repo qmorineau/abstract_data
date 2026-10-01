@@ -2,6 +2,7 @@
 #define DEQUE_ITERATOR_HPP
 
 #include "iterator.hpp"
+#include "vector.hpp"
 
 namespace ft
 {
@@ -50,7 +51,12 @@ namespace ft
 			// getter
 			T* base(void) const;
 		private:
-			T*	_ptr;
+			const ft::size_t	_element_per_chunk;
+			ft::size_t			_block_size;
+			ft::vector<T*>		_map;
+			ft::size_t			_map_begin_idx;
+			ft::size_t			_first;
+
 	};
 	// non-members
 	template <class T, class Pointer, class Reference>
@@ -58,12 +64,10 @@ namespace ft
 	operator+(typename deque_iterator<T, Pointer, Reference>::difference_type n, const deque_iterator<T, Pointer, Reference>& it);
 	
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool
-	operator==(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
+	bool operator==(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
 	
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool
-	operator!=(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
+	bool operator!=(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
 }
 
 #include "deque_iterator.tpp"

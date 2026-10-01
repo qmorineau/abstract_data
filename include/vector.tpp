@@ -108,7 +108,7 @@ namespace ft
 
 	// =====================
 	//	     Iterators
-	// =====================	
+	// =====================
 
 	template <class T, class Allocator>
 	typename ft::vector<T, Allocator>::iterator
@@ -567,14 +567,14 @@ namespace ft
 
 	template <class T, class Allocator>
 	bool
-	operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	operator<(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
 	template <class T, class Allocator>
 	bool
-	operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y)
+	operator>(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
 		return (y < x);
 	}

@@ -76,9 +76,24 @@ namespace ft
 		private:
 
 	};
+	// operator
+	template <class T, class Allocator>
+	bool operator==(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator< (const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator> (const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator>=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	template <class T, class Allocator>
+	bool operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y);
+	// specialized algorithms:
+	template <class T, class Allocator>
+	void swap(deque<T,Allocator>& x, deque<T,Allocator>& y);
 }
 
-#include "queue.tpp"
-#include "priority_queue.tpp"
+#include "deque.tpp"
 
 #endif
