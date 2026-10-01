@@ -6,6 +6,7 @@
 #include "cstddef.hpp"
 #include "type_traits.hpp"
 #include "list_iterator.hpp"
+#include "list_node.hpp"
 
 namespace ft
 {
@@ -85,6 +86,8 @@ namespace ft
 			template <class Compare> void sort(Compare comp);
 			void reverse();
 		private:
+			Node<T>*	_head;
+			Node<T>*	_tail;
 	};
 	// non-members
 	template <class T, class Allocator>

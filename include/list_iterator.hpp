@@ -2,6 +2,7 @@
 #define LIST_ITERATOR_HPP
 
 #include "iterator.hpp"
+#include "list_node.hpp"
 
 namespace ft
 {
@@ -17,7 +18,7 @@ namespace ft
 
 			// construct / destruct / copy
 			list_iterator(void);
-			list_iterator(T* p);
+			list_iterator(Node<T>* p);
 			template <class T2, class Pointer2, class Reference2>
 			list_iterator(const list_iterator<T2, Pointer2, Reference2>& other);
 			~list_iterator();
@@ -35,29 +36,10 @@ namespace ft
 			list_iterator& operator--(void);
 			list_iterator operator--(int);
 
-			// random_access_iterator
-			list_iterator& operator+=(difference_type n);
-			list_iterator operator+(difference_type n) const;
-			list_iterator& operator-=(difference_type n);
-			list_iterator operator-(difference_type n) const;
-			difference_type operator-(const list_iterator&) const;
-			reference operator[](difference_type n) const;
-			bool operator<(const list_iterator&) const;
-			bool operator>(const list_iterator&) const;
-			bool operator<=(const list_iterator&) const;
-			bool operator>=(const list_iterator&) const;
-
 			// getter
-			T* base(void) const;
+			Node<T>* base(void) const;
 		private:
-			struct Node
-			{
-				T		data;
-				Node	*next;
-				Node	*prev;
-			};
-			Node*	_head;
-			Node*	_tail;
+			Node<T>* _current;
 	};
 	// non-members
 	template <class T, class Pointer, class Reference>
