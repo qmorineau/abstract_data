@@ -158,7 +158,7 @@ static void test_vector_pop_back()
 	ns::vector<int> test;
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i);
-	for (int i = 0; i < 12; ++i)
+	for (int i = 0; !test.empty(); ++i)
 	{
 		test.pop_back();
 		print_vector(test);
@@ -204,13 +204,19 @@ static void test_insert_value()
 	std::cout << "===== Test: vector.insert(it pos, value) =====" << std::endl;
 	Timer t("insert(it pos, value)");
 	ns::vector<int> test;
-	test.insert(test.end(), 67);
+	typedef typename ns::vector<int>::iterator iterator;
+	iterator it;
+	it = test.insert(test.end(), 67);
+	std::cout << "it:" << *it << "|";
 	print_vector(test);
-	test.insert(test.begin(), 42);
+	it =  test.insert(test.begin(), 42);
+	std::cout << "it:" << *it << "|";
 	print_vector(test);
-	test.insert(--test.end(), 19);
+	it = test.insert(--test.end(), 19);
+	std::cout << "it:" << *it << "|";
 	print_vector(test);
-	test.insert(++test.begin(), 1024);
+	it = test.insert(++test.begin(), 1024);
+	std::cout << "it:" << *it << "|";
 	print_vector(test);
 }
 static void test_insert_n_value()

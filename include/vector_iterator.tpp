@@ -18,7 +18,6 @@ namespace ft
 		: _ptr(p)
 	{}
 
-
 	template <class T, class Pointer, class Reference>
 	template <class T2, class Pointer2, class Reference2>
 	vector_iterator<T, Pointer, Reference>::vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other)

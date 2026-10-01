@@ -189,12 +189,7 @@ namespace ft
 	ft::vector<T, Allocator>::resize(size_type sz, T c)
 	{
 		if (sz > _capacity)
-		{
-			if (_capacity * 2 < sz)
-				reserve(sz);
-			else
-				reserve(_capacity * 2);
-		}
+			reserve(sz);
 		if (sz > _size)
 		{
 			while (_size < sz)
