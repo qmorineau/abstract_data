@@ -8,3 +8,12 @@ set
 queue
 priority queue
 stack
+
+vector
+erase(first, last) : la boucle tmp <= erase_end détruit un élément de trop, et tu détruis ensuite erase_end une seconde fois dans la boucle de décalage. Il faut tmp < erase_end. Le retour devrait être begin() + erase_begin_initial, pas end().
+operator== : tu utilises iterator sur des const vector& (il faut const_iterator). Tu compares les itérateurs (itx == ity) au lieu des valeurs (*itx == *ity). Et tu ne vérifies pas que les tailles sont égales ([1,2] serait égal à [1,2,3]). Commence par if (x.size() != y.size()) return false;, ou utilise ft::equal.
+rend() const : const_reverse_iterator(*begin()) doit être const_reverse_iterator(begin()).
+assign(n, u) : la condition i > _size && i > n est bancale (off-by-one). Plus simple : clear(), reserve(n), puis construire n éléments.
+operator= : tu fais _allocator.deallocate(_data, _capacity) même quand _capacity == 0. Tu alloues aussi x._capacity alors que assign appelle déjà reserve, donc tout ce bloc est inutile et peut aussi fuiter.
+push_back : il y a un VECTOR_TPP parasite après reserve(new_size);, qui ne compilera pas (c'est peut-être juste un souci de copier-coller).
+assign par range : le std::cout de debug est à retirer. Et last - first ne marche pas pour de vrais input iterators, mais c'est acceptable si tu ne supportes que les forward iterators et plus.

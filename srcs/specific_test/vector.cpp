@@ -181,18 +181,6 @@ static void test_vector_reserve()
 	}
 	test.reserve(1);
 	std::cout << "capacity = " << test.capacity() << std::endl;
-	try
-	{
-		test.reserve(test.max_size());
-	}
-	catch(const std::bad_alloc& e)
-	{
-		std::cout << e.what() << '\n';
-	}
-	catch(const ns::exception& e)
-	{
-		std::cout << e.what() << '\n';
-	}
 }
 //empty
 static void test_vector_empty()
@@ -222,7 +210,7 @@ static void test_insert_value()
 	print_vector(test);
 	test.insert(--test.end(), 19);
 	print_vector(test);
-	test.insert(--test.begin(), 1024);
+	test.insert(++test.begin(), 1024);
 	print_vector(test);
 }
 static void test_insert_n_value()
@@ -232,8 +220,10 @@ static void test_insert_n_value()
 	ns::vector<int> test;
 	test.insert(test.end(), 2, 67);
 	print_vector(test);
+	std::cout << "10 42" << std::endl;
 	test.insert(test.begin(), 10, 42);
 	print_vector(test);
+	std::cout << "7 19" << std::endl;
 	test.insert(test.end(), 7, 19);
 	print_vector(test);
 	test.insert(test.begin(), 5, 1024);
@@ -297,6 +287,70 @@ static void test_vector_clear()
 	std::cout << "===== Test: vector.clear() =====" << std::endl;
 	Timer t("clear()");
 }
+//comparator
+static void test_vector_equal()
+{
+	std::cout << "===== Test: vector operator== =====" << std::endl;
+	Timer t("operator==");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a == b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a == b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a == b) << "|";
+	a.pop_back();
+	std::cout << (a == b) << "|";
+	b.pop_back();
+	std::cout << (a == b) << "|";
+	b.pop_back();
+	std::cout << (a == b) << "|";
+	b.pop_back();
+	std::cout << (a == b) << "|";
+	a.pop_back();
+	std::cout << (a == b) << "|";
+	a.pop_back();
+	std::cout << (a == b) << std::endl;
+}
+static void test_vector_different()
+{
+	std::cout << "===== Test: vector operator!= =====" << std::endl;
+	Timer t("operator!=");
+}
+static void test_vector_lesser()
+{
+	std::cout << "===== Test: vector operator< =====" << std::endl;
+	Timer t("operator<");
+}
+static void test_vector_lesser_equal()
+{
+	std::cout << "===== Test: vector operator<= =====" << std::endl;
+	Timer t("operator<=");
+}
+static void test_vector_greater()
+{
+	std::cout << "===== Test: vector operator> =====" << std::endl;
+	Timer t("operator>");
+}
+static void test_vector_greater_equal()
+{
+	std::cout << "===== Test: vector operator>= =====" << std::endl;
+	Timer t("operator>=");
+}
+static void test_vector_comparator()
+{
+	test_vector_equal();
+	test_vector_different();
+	test_vector_lesser();
+	test_vector_lesser_equal();
+	test_vector_greater();
+	test_vector_greater_equal();
+}
 
 void test_vector()
 {
@@ -316,4 +370,7 @@ void test_vector()
 	test_vector_insert();
 	test_vector_erase();
 	test_vector_clear();
+	test_vector_comparator();
 }
+
+// check return value of insert etc...
