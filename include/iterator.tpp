@@ -178,6 +178,14 @@ namespace ft
 	{
 		return x + n;
 	}
+
+	// ====== Helper ======
+	template <class InputIt>
+	typename iterator_traits<InputIt>::difference_type 
+    distance(InputIt first, InputIt last)
+	{
+		return detail::do_distance(first, last, typename iterator_traits<InputIt>::iterator_category());
+	}
 }
 
 #endif

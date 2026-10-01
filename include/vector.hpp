@@ -85,7 +85,12 @@ namespace ft
 			allocator_type	_allocator;
 			size_type		_capacity;
 
-			void range_check(size_type n);
+			void range_check(size_type n) const;
+			template <class InputIt>
+			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
+			template <class ForwardIt>
+			void insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag);
+			void destroy_all();
 	};
 	// operator
 	template <class T, class Allocator>

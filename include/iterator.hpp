@@ -137,6 +137,32 @@ namespace ft
 	template <class Iterator>
 	reverse_iterator<Iterator>
 	operator+(typename reverse_iterator<Iterator>::difference_type n, const reverse_iterator<Iterator>& x);
+
+	template <class InputIt>
+	typename iterator_traits<InputIt>::difference_type 
+    distance(InputIt first, InputIt last);
+	namespace detail
+	{
+		template <class It>
+		typename iterator_traits<It>::difference_type
+		do_distance(It first, It last, input_iterator_tag)
+		{
+			typename iterator_traits<It>::difference_type result = 0;
+			while (first != last)
+			{
+				++first;
+				++result;
+			}
+			return result;
+		}
+
+		template <class It>
+		typename iterator_traits<It>::difference_type
+		do_distance(It first, It last, random_access_iterator_tag)
+		{
+			return last - first;
+		}
+	}
 }
 
 #include "iterator.tpp"
