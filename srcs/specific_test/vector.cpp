@@ -292,6 +292,19 @@ static void test_vector_clear()
 {
 	std::cout << "===== Test: vector.clear() =====" << std::endl;
 	Timer t("clear()");
+	ns::vector<int> test;
+	print_vector(test);
+	test.reserve(1);
+	print_vector(test);
+	test.assign(15, 67);
+	print_vector(test);
+	test.clear();
+	print_vector(test);
+	for (int i = 0; i < 1200; ++i)
+		test.push_back(i);
+	print_vector(test);
+	test.clear();
+	print_vector(test);
 }
 //comparator
 static void test_vector_equal()
@@ -327,26 +340,146 @@ static void test_vector_different()
 {
 	std::cout << "===== Test: vector operator!= =====" << std::endl;
 	Timer t("operator!=");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a != b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a != b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a != b) << "|";
+	a.pop_back();
+	std::cout << (a != b) << "|";
+	b.pop_back();
+	std::cout << (a != b) << "|";
+	b.pop_back();
+	std::cout << (a != b) << "|";
+	b.pop_back();
+	std::cout << (a != b) << "|";
+	a.pop_back();
+	std::cout << (a != b) << "|";
+	a.pop_back();
+	std::cout << (a != b) << std::endl;
 }
 static void test_vector_lesser()
 {
 	std::cout << "===== Test: vector operator< =====" << std::endl;
 	Timer t("operator<");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a < b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a < b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a < b) << "|";
+	a.pop_back();
+	std::cout << (a < b) << "|";
+	b.pop_back();
+	std::cout << (a < b) << "|";
+	b.pop_back();
+	std::cout << (a < b) << "|";
+	b.pop_back();
+	std::cout << (a < b) << "|";
+	a.pop_back();
+	std::cout << (a < b) << "|";
+	a.pop_back();
+	std::cout << (a < b) << std::endl;
 }
 static void test_vector_lesser_equal()
 {
 	std::cout << "===== Test: vector operator<= =====" << std::endl;
 	Timer t("operator<=");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a <= b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a <= b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a <= b) << "|";
+	a.pop_back();
+	std::cout << (a <= b) << "|";
+	b.pop_back();
+	std::cout << (a <= b) << "|";
+	b.pop_back();
+	std::cout << (a <= b) << "|";
+	b.pop_back();
+	std::cout << (a <= b) << "|";
+	a.pop_back();
+	std::cout << (a <= b) << "|";
+	a.pop_back();
+	std::cout << (a <= b) << std::endl;
 }
 static void test_vector_greater()
 {
 	std::cout << "===== Test: vector operator> =====" << std::endl;
 	Timer t("operator>");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a > b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a > b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a > b) << "|";
+	a.pop_back();
+	std::cout << (a > b) << "|";
+	b.pop_back();
+	std::cout << (a > b) << "|";
+	b.pop_back();
+	std::cout << (a > b) << "|";
+	b.pop_back();
+	std::cout << (a > b) << "|";
+	a.pop_back();
+	std::cout << (a > b) << "|";
+	a.pop_back();
+	std::cout << (a > b) << std::endl;
 }
 static void test_vector_greater_equal()
 {
 	std::cout << "===== Test: vector operator>= =====" << std::endl;
 	Timer t("operator>=");
+	ns::vector<int>	a;
+	ns::vector<int> b;
+	std::cout << (a >= b) << "|";
+	a.reserve(15);
+	b.reserve(35);
+	std::cout << (a >= b) << "|";
+	for (int i = 0; i < 10; ++i)
+	{
+		a.push_back(i);
+		b.push_back(i);
+	}
+	std::cout << (a >= b) << "|";
+	a.pop_back();
+	std::cout << (a >= b) << "|";
+	b.pop_back();
+	std::cout << (a >= b) << "|";
+	b.pop_back();
+	std::cout << (a >= b) << "|";
+	b.pop_back();
+	std::cout << (a >= b) << "|";
+	a.pop_back();
+	std::cout << (a >= b) << "|";
+	a.pop_back();
+	std::cout << (a >= b) << std::endl;
 }
 static void test_vector_comparator()
 {

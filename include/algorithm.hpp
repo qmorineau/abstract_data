@@ -13,4 +13,6 @@ namespace ft
 	void swap( T& a, T& b );
 }
 
+#include "algorithm.tpp"
+
 #endif
