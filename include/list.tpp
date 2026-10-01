@@ -9,12 +9,14 @@ namespace ft
 
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::list(const Allocator& alloc)
+		: _allocator(alloc), _size(0), _head(0), _tail(0)
 	{
-		// todo
+		
 	}
 
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::list(size_type n, const T& value, const Allocator& alloc)
+		: _allocator(alloc), _size(0), _head(0), _tail(0)
 	{
 		// todo
 	}
@@ -22,6 +24,7 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	ft::list<T, Allocator>::list(InputIterator first, InputIterator last, const Allocator& alloc)
+		: _allocator(alloc), _size(0), _head(0), _tail(0)
 	{
 		// todo
 	}
@@ -68,7 +71,7 @@ namespace ft
 	typename ft::list<T, Allocator>::allocator_type
 	ft::list<T, Allocator>::get_allocator() const
 	{
-		// todo
+		return _allocator;
 	}
 
 	// =====================
@@ -79,56 +82,56 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::begin()
 	{
-		// todo
+		return iterator(_head);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::begin() const
 	{
-		// todo
+		return const_iterator(_head);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::end()
 	{
-		// todo
+		return iterator(_tail);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::end() const
 	{
-		// todo
+		return const_iterator(_tail);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::reverse_iterator
 	ft::list<T, Allocator>::rbegin()
 	{
-		// todo
+		return reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_reverse_iterator
 	ft::list<T, Allocator>::rbegin() const
 	{
-		// todo
+		return const_reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::reverse_iterator
 	ft::list<T, Allocator>::rend()
 	{
-		// todo
+		return reverse_iterator(begin());
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_reverse_iterator
 	ft::list<T, Allocator>::rend() const
 	{
-		// todo
+		return const_reverse_iterator(begin());
 	}
 
 	// ====================
@@ -139,28 +142,28 @@ namespace ft
 	bool
 	ft::list<T, Allocator>::empty() const
 	{
-		return false;// todo
+		return _size == 0;
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::size_type
 	ft::list<T, Allocator>::size() const
 	{
-		return 0;// todo
+		return _size;
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::size_type
 	ft::list<T, Allocator>::max_size() const
 	{
-		return 0;// todo
+		return _allocator.max_size() / sizeof(ft::Node<T>);
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::resize(size_type sz, T c)
 	{
-		// todo
+		// tod
 	}
 
 	// ======================
@@ -171,21 +174,21 @@ namespace ft
 	typename ft::list<T, Allocator>::reference
 	ft::list<T, Allocator>::front()
 	{
-		// todo
+		return *begin();
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_reference
 	ft::list<T, Allocator>::front() const
 	{
-		// todo
+		return *begin();
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::reference
 	ft::list<T, Allocator>::back()
 	{
-		// todo
+		return *end();
 	}
 
 	template <class T, class Allocator>

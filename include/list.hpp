@@ -10,7 +10,7 @@
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<T> >
+	template <class T, class Allocator = std::allocator<Node<T> > >
 	class list
 	{
 		public:
@@ -86,6 +86,8 @@ namespace ft
 			template <class Compare> void sort(Compare comp);
 			void reverse();
 		private:
+			Allocator	_allocator;
+			size_type	_size;
 			Node<T>*	_head;
 			Node<T>*	_tail;
 	};

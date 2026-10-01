@@ -8,12 +8,13 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const Allocator& alloc) : _data(0), _size(0), _allocator(alloc), _capacity(0)
-	{
-	}
+	ft::vector<T, Allocator>::vector(const Allocator& alloc)
+		: _data(0), _size(0), _allocator(alloc), _capacity(0)
+	{}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc) : _data(0), _size(0), _allocator(alloc), _capacity(0)
+	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
+		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
 		try
 		{
@@ -28,7 +29,8 @@ namespace ft
 
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*) : _data(0), _size(0), _allocator(alloc), _capacity(0)
+	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
 		try
 		{
@@ -42,7 +44,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x) : _data(0), _size(0), _allocator(x._allocator), _capacity(0)
+	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x)
+		: _data(0), _size(0), _allocator(x._allocator), _capacity(0)
 	{
 		try
 		{
