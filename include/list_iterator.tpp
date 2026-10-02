@@ -52,7 +52,7 @@ namespace ft
 	typename list_iterator<T, Pointer, Reference>::reference
 	list_iterator<T, Pointer, Reference>::operator*(void) const
 	{
-		return _current->data;
+		return _current->value;
 	}
 
 	template <class T, class Pointer, class Reference>

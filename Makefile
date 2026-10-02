@@ -24,6 +24,14 @@ DEP = $(ALL_OBJS:.o=.d)
 NAME = abstract_data
 NAME_STD = abstract_data_std
 
+F_STD_OUT = output.std
+F_FT_OUT = output.ft
+F_STD_TIME = output.std.time
+F_FT_TIME = output.ft.time
+AWK_FILE = compare.awk
+
+SEUIL ?= 20
+
 all: $(NAME) $(NAME_STD)
 
 $(NAME): $(OBJ_FT)
@@ -55,9 +63,10 @@ fclean: clean
 
 test: all
 	clear
-	-./$(NAME) > output.ft 2> output.ft.time
-	-./$(NAME_STD) > output.std 2> output.std.time
-	-diff output.ft output.std
+	-./$(NAME) > $(F_FT_OUT) 2> $(F_FT_TIME)
+	-./$(NAME_STD) > $(F_STD_OUT) 2> $(F_STD_TIME)
+	-diff $(F_FT_OUT) $(F_STD_OUT)
+	-awk -v seuil=$(SEUIL) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 ft: all
 	clear

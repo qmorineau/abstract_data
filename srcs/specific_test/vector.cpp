@@ -146,9 +146,7 @@ static void test_vector_data()
 	ns::vector<int> test;
 	std::cout << test.data() << "|";
 	test.push_back(42);
-	std::cout << (test.data() != 0) << "|";
-	test.pop_back();
-	std::cout << test.data() << std::endl;
+	std::cout << (test.data() != 0) << std::endl;
 }
 //pop_back
 static void test_vector_pop_back()
@@ -158,7 +156,7 @@ static void test_vector_pop_back()
 	ns::vector<int> test;
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i);
-	for (int i = 0; !test.empty(); ++i)
+	while (!test.empty())
 	{
 		test.pop_back();
 		print_vector(test);

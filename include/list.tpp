@@ -9,24 +9,34 @@ namespace ft
 
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::list(const Allocator& alloc)
-		: _allocator(alloc), _size(0), _head(0), _tail(0)
+		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
-		
+		init_sentinel();
 	}
 
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::list(size_type n, const T& value, const Allocator& alloc)
-		: _allocator(alloc), _size(0), _head(0), _tail(0)
+		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
-		// todo
+		init_sentinel();
 	}
 	
 	template <class T, class Allocator>
 	template <class InputIterator>
 	ft::list<T, Allocator>::list(InputIterator first, InputIterator last, const Allocator& alloc)
-		: _allocator(alloc), _size(0), _head(0), _tail(0)
+		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
-		// todo
+		init_sentinel();
+		// _head = _allocator.allocate(1);
+		// _tail = _head;
+		// // todo
+		// while (first != last)
+		// {
+		// 	Node* tmp = _allocator.allocate();
+		// 	_allocator.construct(tmp->data, *first);
+		// 	++first;
+		// 	// insert end
+		// }
 	}
 
 	template <class T, class Allocator>
@@ -38,7 +48,8 @@ namespace ft
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::~list()
 	{
-		// todo
+		clear();
+		_node_alloc.deallocate(_sentinel, 1);
 	}
 
 	// =====================
@@ -57,7 +68,8 @@ namespace ft
 	void
 	ft::list<T, Allocator>::assign(InputIterator first, InputIterator last)
 	{
-		// todo
+		clear();
+		insert(begin(), first, last);
 	}
 
 	template <class T, class Allocator>
@@ -71,7 +83,7 @@ namespace ft
 	typename ft::list<T, Allocator>::allocator_type
 	ft::list<T, Allocator>::get_allocator() const
 	{
-		return _allocator;
+		return allocator_type(_node_alloc);
 	}
 
 	// =====================
@@ -82,28 +94,28 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::begin()
 	{
-		return iterator(_head);
+		return iterator(_sentinel->next);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::begin() const
 	{
-		return const_iterator(_head);
+		return const_iterator(_sentinel->next);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::end()
 	{
-		return iterator(_tail);
+		return iterator(_sentinel);
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::end() const
 	{
-		return const_iterator(_tail);
+		return const_iterator(_sentinel);
 	}
 
 	template <class T, class Allocator>
@@ -156,7 +168,7 @@ namespace ft
 	typename ft::list<T, Allocator>::size_type
 	ft::list<T, Allocator>::max_size() const
 	{
-		return _allocator.max_size() / sizeof(ft::Node<T>);
+		return _node_alloc.max_size();
 	}
 
 	template <class T, class Allocator>
@@ -188,14 +200,14 @@ namespace ft
 	typename ft::list<T, Allocator>::reference
 	ft::list<T, Allocator>::back()
 	{
-		return *end();
+		return *(--end());
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::const_reference
 	ft::list<T, Allocator>::back() const
 	{
-		// todo
+		return *(--end());
 	}
 
 	// =====================
@@ -206,21 +218,28 @@ namespace ft
 	void
 	ft::list<T, Allocator>::push_front(const T& x)
 	{
-		// todo
+		insert(begin(), x);
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::pop_front()
 	{
-		// todo
+		Node<T>* to_pop = begin().base();
+		Node<T>* prev = to_pop->prev;
+		Node<T>* next = to_pop->next;
+		_allocator.destroy(to_pop->value);
+		_node_alloc.deallocate(to_pop, 1);
+		prev->next = next;
+		next->prev = prev;
+		--_size;
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::push_back(const T& x)
 	{
-		// todo
+		insert(end(), x);
 	}
 
 	template <class T, class Allocator>
@@ -234,14 +253,25 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::insert(iterator position, const T& x)
 	{
-		// todo
+		T value = x;
+		Node<T>* prev = position.base()->prev;
+		Node<T>* next = position.base();
+		Node<T>* new_node = _node_alloc.allocate(1);
+		_allocator.construct(&new_node->value, value);
+		new_node->prev = prev;
+		new_node->next = next;
+		next->prev = new_node;
+		prev->next = new_node;
+		++_size;
+		return iterator(new_node);
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::insert(iterator position, size_type n, const T& x)
 	{
-		// todo
+		for (size_type i = 0; i < n; ++i)
+			insert(position, x);
 	}
 
 	template <class T, class Allocator>
@@ -268,21 +298,32 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::list<T, Allocator>::swap(list<T,Allocator>&)
+	ft::list<T, Allocator>::swap(list<T,Allocator>& other)
 	{
-		// todo
+		ft::swap(_allocator, other._allocator);
+		ft::swap(_node_all, other._node_all);
+		ft::swap(_size, other._size);
+		ft::swap(_sentinel, other._sentinel);
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::clear()
 	{
-		// todo
+		iterator it = begin();
+		while (it != end())
+		{
+			Node<T>* to_destroy = (it++).base();
+			_allocator.destroy(&to_destroy->value);
+			_node_alloc.deallocate(to_destroy, 1);
+		}
+		_sentinel->prev = _sentinel;
+		_sentinel->next = _sentinel;
 	}
 
 	// =====================
 	//	  List Operation
-	// =====================	
+	// =====================
 
 	template <class T, class Allocator>
 	void
@@ -372,6 +413,14 @@ namespace ft
 	//	  Private-Members
 	// =====================
 
+	template <class T, class Allocator>
+	void ft::list<T, Allocator>::init_sentinel()
+	{
+		_sentinel = _node_alloc.allocate(1);
+		_sentinel->prev = _sentinel;
+		_sentinel->next = _sentinel;
+	}
+
 	// =====================
 	//	    Non-Members
 	// =====================
@@ -426,7 +475,7 @@ namespace ft
 	void
 	swap(list<T,Allocator>& x, list<T,Allocator>& y)
 	{
-		// todo
+		x.swap(y);
 	}
 }
 

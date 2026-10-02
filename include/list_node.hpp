@@ -6,7 +6,7 @@ namespace ft
 	template<typename T>
 	struct Node
 	{
-		T		data;
+		T		value;
 		Node	*next;
 		Node	*prev;
 	};

@@ -3,6 +3,7 @@
 
 #include <memory>
 
+#include "algorithm.hpp"
 #include "cstddef.hpp"
 #include "type_traits.hpp"
 #include "list_iterator.hpp"
@@ -10,23 +11,24 @@
 
 namespace ft
 {
-	template <class T, class Allocator = std::allocator<Node<T> > >
+	template <class T, class Allocator = std::allocator<T> >
 	class list
 	{
 		public:
 			// types:
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
-			typedef T										value_type;
-			typedef ft::size_t								size_type;
-			typedef ft::ptrdiff_t							difference_type;
-			typedef Allocator								allocator_type;
-			typedef list_iterator<T>						iterator;
-			typedef list_iterator<T, const T*, const T&>	const_iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef typename Allocator::reference							reference;
+			typedef typename Allocator::const_reference						const_reference;
+			typedef typename Allocator::pointer								pointer;
+			typedef typename Allocator::const_pointer						const_pointer;
+			typedef typename Allocator::template rebind<Node<T> >::other	node_allocator;
+			typedef T														value_type;
+			typedef ft::size_t												size_type;
+			typedef ft::ptrdiff_t											difference_type;
+			typedef Allocator												allocator_type;
+			typedef list_iterator<T>										iterator;
+			typedef list_iterator<T, const T*, const T&>					const_iterator;
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			// construct/copy/destroy:
 			explicit list(const Allocator& = Allocator());
 			explicit list(size_type n, const T& value = T(), const Allocator& = Allocator());
@@ -76,7 +78,8 @@ namespace ft
 			void splice(iterator position, list<T,Allocator>& x, iterator i);
 			void splice(iterator position, list<T,Allocator>& x, iterator first, iterator last);
 			void remove(const T& value);
-			template <class Predicate> void remove_if(Predicate pred);
+			template <class Predicate>
+			void remove_if(Predicate pred);
 			void unique();
 			template <class BinaryPredicate>
 			void unique(BinaryPredicate binary_pred);
@@ -86,10 +89,12 @@ namespace ft
 			template <class Compare> void sort(Compare comp);
 			void reverse();
 		private:
-			Allocator	_allocator;
-			size_type	_size;
-			Node<T>*	_head;
-			Node<T>*	_tail;
+			Allocator		_allocator;
+			node_allocator	_node_alloc;
+			size_type		_size;
+			Node<T>*		_sentinel;
+
+			void init_sentinel();
 	};
 	// non-members
 	template <class T, class Allocator>
