@@ -301,7 +301,7 @@ namespace ft
 	ft::list<T, Allocator>::swap(list<T,Allocator>& other)
 	{
 		ft::swap(_allocator, other._allocator);
-		ft::swap(_node_all, other._node_all);
+		ft::swap(_node_alloc, other._node_alloc);
 		ft::swap(_size, other._size);
 		ft::swap(_sentinel, other._sentinel);
 	}

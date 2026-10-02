@@ -39,7 +39,6 @@ static void test_vector_type()
 static void test_vector_assign_it()
 {
 	std::cout << "===== Test: vector.assign(it first, it last) =====" << std::endl;
-	Timer t("assign_it(it first, it last)");
 	ns::vector<int> test;
 	ns::vector<int> toust;
 	for (int i = 0; i < 10; ++i)
@@ -52,7 +51,6 @@ static void test_vector_assign_it()
 static void test_vector_assign_n_value()
 {
 	std::cout << "===== Test: vector.assign(n, value) =====" << std::endl;
-	Timer t("assign_it(n, value)");
 	ns::vector<int> test;
 	test.assign(10, 67);
 	print_vector(test);
@@ -71,7 +69,6 @@ template <class Container, typename T>
 static void test_resize_unit(Container& c, T arg)
 {
 	std::cout << "=== resize() ===" << std::endl;
-	Timer t("resize()");
 	try
 	{
 		print_vector(c);
@@ -113,7 +110,6 @@ static void test_type_max_size(std::string name)
 static void test_vector_max_size()
 {
 	std::cout << "===== Test: vector.max_size()* =====" << std::endl;
-	Timer t("max_size()");
 	test_type_max_size<int>("int");
 	test_type_max_size<float>("float");
 	test_type_max_size<std::string>("std::string");
@@ -129,7 +125,6 @@ static void test_vector_max_size()
 static void test_vector_capacity()
 {
 	std::cout << "===== Test: vector.capacity() =====" << std::endl;
-	Timer t("capacity()");
 	ns::vector<int> test;
 	for (int i = 0; i <= 1026; i++)
 	{
@@ -142,7 +137,6 @@ static void test_vector_capacity()
 static void test_vector_data()
 {
 	std::cout << "===== Test: vector.data() =====" << std::endl;
-	Timer t("data()");
 	ns::vector<int> test;
 	std::cout << test.data() << "|";
 	test.push_back(42);
@@ -152,7 +146,6 @@ static void test_vector_data()
 static void test_vector_pop_back()
 {
 	std::cout << "===== Test: vector.pop_back() =====" << std::endl;
-	Timer t("pop_back()");
 	ns::vector<int> test;
 	for (int i = 0; i < 10; ++i)
 		test.push_back(i);
@@ -166,7 +159,6 @@ static void test_vector_pop_back()
 static void test_vector_reserve()
 {
 	std::cout << "===== Test: vector.reserve() =====" << std::endl;
-	Timer t("reserve()");
 	ns::vector<std::string> test;
 	test.reserve(0);
 	test.push_back(std::string(allocatedStr));
@@ -184,7 +176,6 @@ static void test_vector_reserve()
 static void test_vector_empty()
 {
 	std::cout << "===== Test: vector.empty() =====" << std::endl;
-	Timer t("empty()");
 	ns::vector<std::string> test;
 	std::cout << test.empty() << "|";
 	test.push_back(std::string(allocatedStr));	
@@ -200,7 +191,6 @@ static void test_vector_empty()
 static void test_insert_value()
 {
 	std::cout << "===== Test: vector.insert(it pos, value) =====" << std::endl;
-	Timer t("insert(it pos, value)");
 	ns::vector<int> test;
 	typedef typename ns::vector<int>::iterator iterator;
 	iterator it;
@@ -220,7 +210,6 @@ static void test_insert_value()
 static void test_insert_n_value()
 {
 	std::cout << "===== Test: vector.insert(it pos, n, value) =====" << std::endl;
-	Timer t("insert(it pos, n, value)");
 	ns::vector<int> test;
 	test.insert(test.end(), 2, 67);
 	print_vector(test);
@@ -236,7 +225,6 @@ static void test_insert_n_value()
 static void test_insert_it()
 {
 	std::cout << "===== Test: vector.insert(it pos, it first, it last) =====" << std::endl;
-	Timer t("insert(it pos, it first, it last)");
 	ns::vector<int> test;
 	for (int i = 0; i < 1024; ++i)
 		test.push_back(i);
@@ -252,7 +240,6 @@ static void test_vector_insert()
 static void test_erase_pos()
 {
 	std::cout << "===== Test: vector.erase(it pos) =====" << std::endl;
-	Timer t("erase(it pos)");
 	ns::vector<int> test;
 	for (int i = 0; i < 120; ++i)
 		test.push_back(i);
@@ -265,7 +252,6 @@ static void test_erase_pos()
 static void test_erase_it()
 {
 	std::cout << "===== Test: vector.erase(it first, it last) =====" << std::endl;
-	Timer t("erase(it first, it last)");
 	ns::vector<int> test;
 	for (int i = 0; i < 120; ++i)
 		test.push_back(i);
@@ -289,7 +275,6 @@ static void test_vector_erase()
 static void test_vector_clear()
 {
 	std::cout << "===== Test: vector.clear() =====" << std::endl;
-	Timer t("clear()");
 	ns::vector<int> test;
 	print_vector(test);
 	test.reserve(1);
@@ -308,7 +293,6 @@ static void test_vector_clear()
 static void test_vector_equal()
 {
 	std::cout << "===== Test: vector operator== =====" << std::endl;
-	Timer t("operator==");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a == b) << "|";
@@ -337,7 +321,6 @@ static void test_vector_equal()
 static void test_vector_different()
 {
 	std::cout << "===== Test: vector operator!= =====" << std::endl;
-	Timer t("operator!=");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a != b) << "|";
@@ -366,7 +349,6 @@ static void test_vector_different()
 static void test_vector_lesser()
 {
 	std::cout << "===== Test: vector operator< =====" << std::endl;
-	Timer t("operator<");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a < b) << "|";
@@ -395,7 +377,6 @@ static void test_vector_lesser()
 static void test_vector_lesser_equal()
 {
 	std::cout << "===== Test: vector operator<= =====" << std::endl;
-	Timer t("operator<=");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a <= b) << "|";
@@ -424,7 +405,6 @@ static void test_vector_lesser_equal()
 static void test_vector_greater()
 {
 	std::cout << "===== Test: vector operator> =====" << std::endl;
-	Timer t("operator>");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a > b) << "|";
@@ -453,7 +433,6 @@ static void test_vector_greater()
 static void test_vector_greater_equal()
 {
 	std::cout << "===== Test: vector operator>= =====" << std::endl;
-	Timer t("operator>=");
 	ns::vector<int>	a;
 	ns::vector<int> b;
 	std::cout << (a >= b) << "|";
@@ -494,7 +473,6 @@ void test_vector()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
 	<< "=======================================" << std::endl;
-	Timer t("vector");
 	test_vector_type();
 	test_vector_assign();
 	test_vector_resize();

@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_ELEMENT_FUNC_ACCESS_TPP
+#define TEST_ELEMENT_FUNC_ACCESS_TPP
 
 /*
 	Functions managed:
@@ -13,12 +14,11 @@ template <typename Container>
 static void test_at()
 {
 	std::cout << "===== Test: at() =====" << std::endl;
-	Timer t("at()");
-	Container c;
+	
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
 	size_type size = 10;
-	fill_n<Container>(c, size);
+	Container c = fill_n<Container>(size);
 	try
 	{
 		for (size_type i = 0; i < size; ++i)
@@ -44,12 +44,10 @@ template <typename Container>
 static void test_operator_square_bracket()
 {
 	std::cout << "===== Test: operator[] =====" << std::endl;
-	Timer t("operator[]");
-	Container c;
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
 	size_type size = 10;
-	fill_n<Container>(c, size);
+	Container c = fill_n<Container>(size);
 	for (size_type i = 0; i < size; ++i)
 	{
 		value_type v = c[i];
@@ -63,12 +61,10 @@ template <typename Container>
 static void test_front()
 {
 	std::cout << "===== Test: front() =====" << std::endl;
-	Timer t("front()");
-	Container c;
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
 	size_type size = 3;
-	fill_n<Container>(c, size);
+	Container c = fill_n<Container>(size);
 	value_type v = c.front();
 	const value_type cv = c.front();
 	std::cout << "v&:"<< v << "| const v&:" << cv << std::endl;
@@ -78,13 +74,11 @@ template <typename Container>
 static void test_back()
 {
 	std::cout << "===== Test: back() =====" << std::endl;
-	Timer t("back()");
 	typedef typename Container::size_type size_type;
 	typedef typename Container::value_type value_type;
 	for (size_type size = 1; size < 15; ++size)
 	{
-		Container c;
-		fill_n<Container>(c, size);
+		Container c = fill_n<Container>(size);
 		value_type v = c.back();
 		const value_type cv = c.back();
 		std::cout << "v&:"<< v << "| const v&:" << cv << "||";
@@ -96,12 +90,10 @@ template <typename Container>
 static void test_data()
 {
 	std::cout << "===== Test: data() =====" << std::endl;
-	Timer t("data()");
 	typedef typename Container::size_type size_type;
 	typedef typename Container::pointer pointer;
 	size_type size = 3;
-	Container c;
-	fill_n<Container>(c, size);
+	Container c = fill_n<Container>(size);
 	pointer p = c.data();
 	const pointer cp = c.data();
 	assert(p == &c.front());
@@ -151,3 +143,5 @@ void test_element_access_func()
 	test_modifier<Container>(MOD_BACK);
 	test_modifier<Container>(MOD_DATA);
 }
+
+#endif

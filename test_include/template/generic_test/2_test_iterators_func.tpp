@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_ITERATOR_FUNC_TPP
+#define TEST_ITERATOR_FUNC_TPP
 
 /*
 	Functions managed:
@@ -12,7 +13,6 @@ template <typename Container>
 static void test_begin()
 {
 	std::cout << "===== Test: begin() =====" << std::endl;
-	Timer t("begin()");
 	typedef typename Container::iterator iterator;
 	typedef typename Container::const_iterator const_iterator;
 	Container c;
@@ -25,7 +25,6 @@ template <typename Container>
 static void test_rbegin()
 {
 	std::cout << "===== Test: rbegin() =====" << std::endl;
-	Timer t("rbegin()");
 	typedef typename Container::reverse_iterator reverse_iterator;
 	typedef typename Container::const_reverse_iterator const_reverse_iterator;
 	Container c;
@@ -38,7 +37,6 @@ template <typename Container>
 static void test_end()
 {
 	std::cout << "===== Test: end() =====" << std::endl;
-	Timer t("end()");
 	typedef typename Container::iterator iterator;
 	typedef typename Container::const_iterator const_iterator;
 	Container c;
@@ -51,7 +49,6 @@ template <typename Container>
 static void test_rend()
 {
 	std::cout << "===== Test: rend() =====" << std::endl;
-	Timer t("rend()");
 	typedef typename Container::reverse_iterator reverse_iterator;
 	typedef typename Container::const_reverse_iterator const_reverse_iterator;
 	Container c;
@@ -98,3 +95,5 @@ void test_iterators_func()
 	test_modifier<Container>(MOD_END);
 	test_modifier<Container>(MOD_REND);
 }
+
+#endif

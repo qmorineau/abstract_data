@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_MODIFIERS_FUNC_TPP
+#define TEST_MODIFIERS_FUNC_TPP
 
 /*
 	clear
@@ -14,7 +15,6 @@ template <typename Container>
 static void test_clear()
 {
 	std::cout << "===== Test: clear() =====" << std::endl;
-	Timer t("clear()");
 	// to do
 }
 
@@ -22,7 +22,6 @@ template <typename Container>
 static void test_insert()
 {
 	std::cout << "===== Test: insert() =====" << std::endl;
-	Timer t("insert()");
 	// to do
 }
 
@@ -30,7 +29,6 @@ template <typename Container>
 static void test_erase()
 {
 	std::cout << "===== Test: erase() =====" << std::endl;
-	Timer t("erase()");
 	// to do
 }
 
@@ -38,7 +36,6 @@ template <typename Container>
 static void test_push_back()
 {
 	std::cout << "===== Test: push_back() =====" << std::endl;
-	Timer t("push_back()");
 	Container c;
 	for (std::size_t i = 0; i < 150; ++i)
 	{
@@ -52,11 +49,9 @@ template <typename Container>
 static void test_pop_back()
 {
 	std::cout << "===== Test: pop_back() =====" << std::endl;
-	Timer t("pop_back()");
 	typedef typename Container::size_type size_type;
 	size_type size = 150;
-	Container c;
-	fill_n(c, size);
+	Container c = fill_n<Container>(size);
 	for (size_type i = 0; i < size - 1; ++i)
 	{
 		c.pop_back();
@@ -69,7 +64,6 @@ template <typename Container>
 static void test_resize()
 {
 	std::cout << "===== Test: resize() =====" << std::endl;
-	Timer t("resize()");
 	// to do
 }
 
@@ -77,7 +71,6 @@ template <typename Container>
 static void test_swap()
 {
 	std::cout << "===== Test: swap() =====" << std::endl;
-	Timer t("swap()");
 	// to do
 }
 
@@ -134,3 +127,5 @@ void test_modifiers_func()
 	test_modifier<Container>(MOD_RESIZE);
 	test_modifier<Container>(MOD_SWAP);
 }
+
+#endif

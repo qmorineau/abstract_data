@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_NON_MEMBER_FUNC_TPP
+#define TEST_NON_MEMBER_FUNC_TPP
 
 /*
 	operator==
@@ -14,14 +15,12 @@ template <typename Container>
 static void test_is_equal()
 {
 	std::cout << "===== Test: operator== =====" << std::endl;
-	Timer t("operator==");
 }
 
 template <typename Container>
 static void test_is_different()
 {
 	std::cout << "===== Test: operator!= =====" << std::endl;
-	Timer t("operator!=");
 	// to do
 }
 
@@ -29,7 +28,6 @@ template <typename Container>
 static void test_is_greater_equal()
 {
 	std::cout << "===== Test: operate>= =====" << std::endl;
-	Timer t("operate>=");
 	// to do
 }
 
@@ -37,7 +35,6 @@ template <typename Container>
 static void test_is_greater()
 {
 	std::cout << "===== Test: operator> =====" << std::endl;
-	Timer t("operator>");
 	// to do
 }
 
@@ -45,7 +42,6 @@ template <typename Container>
 static void test_is_lesser_equal()
 {
 	std::cout << "===== Test: operator<= =====" << std::endl;
-	Timer t("operator<=");
 	// to do
 }
 
@@ -53,7 +49,6 @@ template <typename Container>
 static void test_is_lesser()
 {
 	std::cout << "===== Test: operator< =====" << std::endl;
-	Timer t("operator<");
 	// to do
 }
 
@@ -61,7 +56,6 @@ template <typename Container>
 static void test_swap_specialization()
 {
 	std::cout << "===== Test: std::swap() =====" << std::endl;
-	Timer t("std::swap()");
 	// to do
 }
 
@@ -118,3 +112,5 @@ void test_non_member_func()
 	test_modifier<Container>(MOD_IS_GREATER);
 	test_modifier<Container>(MOD_SWAP_SPECIALIZATION);
 }
+
+#endif

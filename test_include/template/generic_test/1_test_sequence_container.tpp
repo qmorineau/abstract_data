@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_SEQUENCE_CONTAINER_TPP
+#define TEST_SEQUENCE_CONTAINER_TPP
 
 template <template <typename, typename> class Container, typename T>
 static void test_sequence_container_type_typed()
@@ -47,16 +48,18 @@ void test_sequence_container()
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing vector" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "===== Vector =====" << std::endl;
+	std::cerr << "===== Vector =====" << std::endl;
 	test_sequence_container_type<ns::vector>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing deque" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "===== Deque =====" << std::endl;
+	std::cerr << "===== Deque =====" << std::endl;
 	// test_sequence_container_type<ns::deque>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing list" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "===== List =====" << std::endl;
+	std::cerr << "===== List =====" << std::endl;
 	// test_sequence_container_type<ns::list>();
 }
+
+#endif

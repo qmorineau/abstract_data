@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_COMMON_FUNC_TPP
+#define TEST_COMMON_FUNC_TPP
 
 /*
 	Functions managed:
@@ -13,7 +14,6 @@ template <typename Container>
 static void test_constructors()
 {
 	std::cout << "===== Test: Default Constructor =====" << std::endl;
-	Timer t("constructor");
 	Container a;
 }
 
@@ -21,7 +21,6 @@ template <typename Container>
 static void test_destructors()
 {
 	std::cout << "===== Test: Default Destructor =====" << std::endl;
-	Timer t("destructor");
 	Container* a = new Container();
 	delete a;
 }
@@ -30,7 +29,6 @@ template <typename Container>
 static void test_copy_constructor()
 {
 	std::cout << "===== Test: Copy Constructor =====" << std::endl;
-	Timer t("copy constructor");
 	Container a;
 	Container b(a);
 }
@@ -39,7 +37,6 @@ template <typename Container>
 static void test_copy_operator()
 {
 	std::cout << "===== Test: operator= =====" << std::endl;
-	Timer t("operator=");
 	Container a;
 	Container b = a;
 }
@@ -48,14 +45,12 @@ template <typename Container>
 static void test_assign_it()
 {
 	std::cout << "===== Test: assign(InputIt first, InputIt last) =====" << std::endl;
-	Timer t("assign(first, last)");
 }
 
 template <typename Container>
 static void test_assign_value()
 {
 	std::cout << "===== Test: assign(size_type count, const T& value) =====" << std::endl;
-	Timer t("assign(count, value)");
 }
 
 template <typename Container>
@@ -69,7 +64,6 @@ template <typename Container>
 static void test_get_allocator()
 {
 	std::cout << "===== Test: get_allocator() =====" << std::endl;
-	Timer t("get_allocator()");
 	typedef typename Container::allocator_type allocator_type;
 	Container c;
 	allocator_type alloc = c.get_allocator();
@@ -121,3 +115,5 @@ void test_common_func()
 	test_modifier<Container>(MOD_ASSIGN);
 	test_modifier<Container>(MOD_GET_ALLOCATOR);
 }
+
+#endif

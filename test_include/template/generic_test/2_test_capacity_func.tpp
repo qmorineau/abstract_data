@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_CAPACITY_FUNC_TPP
+#define TEST_CAPACITY_FUNC_TPP
 
 /*
 	empty
@@ -12,7 +13,6 @@ template <typename Container>
 static void test_empty()
 {
 	std::cout << "===== Test: empty() =====" << std::endl;
-	Timer t("empty()");
 	// todo
 }
 
@@ -20,7 +20,6 @@ template <typename Container>
 static void test_size()
 {
 	std::cout << "===== Test: size() =====" << std::endl;
-	Timer t("size()");
 	
 }
 
@@ -28,7 +27,6 @@ template <typename Container>
 static void test_max_size()
 {
 	std::cout << "===== Test: max_size() =====" << std::endl;
-	Timer t("max_size()");
 	Container c;
 	std::cout << c.max_size() << std::endl;
 }
@@ -37,7 +35,6 @@ template <typename Container>
 static void test_reserve()
 {
 	std::cout << "===== Test: reserve() =====" << std::endl;
-	Timer t("reserve()");
 	// todo
 }
 
@@ -45,7 +42,6 @@ template <typename Container>
 static void test_capacity()
 {
 	std::cout << "===== Test: capacity() =====" << std::endl;
-	Timer t("capacity()");
 	// todo
 }
 
@@ -92,3 +88,5 @@ void test_capacity_func()
 	test_modifier<Container>(MOD_RESERVE);
 	test_modifier<Container>(MOD_CAPACITY);
 }
+
+#endif

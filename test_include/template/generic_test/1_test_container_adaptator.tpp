@@ -1,4 +1,5 @@
-#include "test.hpp"
+#ifndef TEST_CONTAINER_ADAPATATOR_TPP
+#define TEST_CONTAINER_ADAPATATOR_TPP
 
 template <template <typename, typename> class Container>
 void test_container_adaptor()
@@ -7,3 +8,5 @@ void test_container_adaptor()
 	// queue
 	// queue_priority
 }
+
+#endif
