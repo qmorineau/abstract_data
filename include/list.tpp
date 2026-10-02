@@ -27,22 +27,19 @@ namespace ft
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
 		init_sentinel();
-		// _head = _allocator.allocate(1);
-		// _tail = _head;
-		// // todo
-		// while (first != last)
-		// {
-		// 	Node* tmp = _allocator.allocate();
-		// 	_allocator.construct(tmp->data, *first);
-		// 	++first;
-		// 	// insert end
-		// }
+		while (first != last)
+		{
+			push_back(*first);
+			++first;
+		}
 	}
 
 	template <class T, class Allocator>
-	ft::list<T, Allocator>::list(const list<T,Allocator>& x)
+	ft::list<T, Allocator>::list(const list<T,Allocator>& x) : _allocator(x._allocator), _node_alloc(x._node_alloc), _size(x._size)
 	{
-		// todo
+		init_sentinel();
+		for (iterator it = x.begin(); it != x.end(); ++it)
+			push_back(*it);
 	}
 
 	template <class T, class Allocator>
@@ -60,7 +57,8 @@ namespace ft
 	list<T,Allocator>&
 	ft::list<T, Allocator>::operator=(const list<T,Allocator>& x)
 	{
-		// todo
+		clear();
+		insert(end(), x.begin(), x.end());
 	}
 
 	template <class T, class Allocator>
@@ -76,7 +74,9 @@ namespace ft
 	void
 	ft::list<T, Allocator>::assign(size_type n, const T& t)
 	{
-		// todo
+		clear();
+		for (size_type i = 0; i < n; ++i)
+			push_back(t);
 	}
 
 	template <class T, class Allocator>
@@ -175,7 +175,16 @@ namespace ft
 	void
 	ft::list<T, Allocator>::resize(size_type sz, T c)
 	{
-		// tod
+		if (sz < _size)
+		{
+			while (sz < _size)
+				pop_back();
+		}
+		else
+		{
+			while (_size < sz)
+				insert(end(), c);
+		}
 	}
 
 	// ======================
@@ -246,7 +255,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::pop_back()
 	{
-		// todo
+		erase(--end());
 	}
 
 	template <class T, class Allocator>
@@ -279,21 +288,31 @@ namespace ft
 	void
 	ft::list<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last)
 	{
-		// todo
+		while (first != last)
+		{
+			insert(position, *first);
+			++first;
+		}
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::erase(iterator position)
 	{
-		// todo
+		Node<T>* to_destroy = position.base();
+		to_destroy->next->prev = to_destroy->prev;
+		to_destroy->prev->next = to_destroy->next;
+		_allocator.destroy(&to_destroy->value);
+		_node_alloc.deallocate(to_destroy, 1);
+		--_size;
 	}
 
 	template <class T, class Allocator>
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::erase(iterator position, iterator last)
 	{
-		// todo
+		while (position != last)
+			erase(position++);
 	}
 
 	template <class T, class Allocator>
@@ -316,6 +335,7 @@ namespace ft
 			Node<T>* to_destroy = (it++).base();
 			_allocator.destroy(&to_destroy->value);
 			_node_alloc.deallocate(to_destroy, 1);
+			--_size;
 		}
 		_sentinel->prev = _sentinel;
 		_sentinel->next = _sentinel;
@@ -404,9 +424,16 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	void ft::list<T, Allocator>::reverse()
+	void
+	ft::list<T, Allocator>::reverse()
 	{
-		// todo
+		for (iterator it = begin(); it != end(); ++it)
+		{
+			Node<T>* n = it.base();
+			ft::swap(n->prev, n->next);
+		}
+		Node<T>* n = end();
+		ft::swap(n->prev, n->next);
 	}
 
 	// =====================
@@ -414,7 +441,8 @@ namespace ft
 	// =====================
 
 	template <class T, class Allocator>
-	void ft::list<T, Allocator>::init_sentinel()
+	void
+	ft::list<T, Allocator>::init_sentinel()
 	{
 		_sentinel = _node_alloc.allocate(1);
 		_sentinel->prev = _sentinel;
@@ -429,42 +457,52 @@ namespace ft
 	bool
 	operator==(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
-		return false;// todo
-	}
-
-	template <class T, class Allocator>
-	bool
-	operator< (const list<T,Allocator>& x, const list<T,Allocator>& y)
-	{
-		return false;// todo
+		if (x.size() != y.size())
+			return false;
+		typedef typename list<T,Allocator>::const_iterator const_iterator;
+		const_iterator itx = x.begin();
+		const_iterator ity = y.begin();
+		for (; itx != x.end() && ity != y.end(); ++itx, ++ity)
+		{
+			if (!(*itx == *ity))
+				return false;
+		}
+		return true;
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator!=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
-		return false;// todo
+		return !(x == y);
+	}
+
+	template <class T, class Allocator>
+	bool
+	operator< (const list<T,Allocator>& x, const list<T,Allocator>& y)
+	{
+		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator> (const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
-		return false;// todo
+		return (y < x);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator>=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
-		return false;// todo
+		return !(x < y);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator<=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
-		return false;// todo
+		return !(y < x);
 	}
 
 	// ======================

@@ -7,11 +7,7 @@ static void print_vector(ns::vector<T>& v)
 {
 	std::cout << "print_vector: ";
 	for (typename ns::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
-	{
-		if (it != v.begin())
-			std::cout << " / ";
-		std::cout << *it;
-	}
+		print<ns::vector<T> >(v);
 	std::cout << std::endl << "capacity = " << v.capacity() << ", size = " << v.size() << std::endl;
 }
 //type

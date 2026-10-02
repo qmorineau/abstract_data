@@ -1,5 +1,5 @@
-#ifndef VALUE_GENERATOR_TPP
-#define VALUE_GENERATOR_TPP
+#ifndef HELPER_TPP
+#define HELPER_TPP
 
 template <typename T>
 struct value_generator
@@ -19,7 +19,7 @@ struct value_generator<std::string>
 };
 
 template <typename Container>
-Container fill_n(std::size_t n)
+Container fill_n(size_t n)
 {
 	typedef typename Container::value_type value_type;
 	std::vector<value_type> v;
@@ -29,10 +29,19 @@ Container fill_n(std::size_t n)
 }
 
 template <typename Container>
-typename Container::value_type generate_value(std::size_t n)
+typename Container::value_type generate_value(size_t n)
 {
 	typedef typename Container::value_type value_type;
 	return value_generator<value_type>::make(static_cast<int>(n));
+}
+
+template <typename Container>
+void print(Container c)
+{
+	typename Container::iterator it = c.begin();
+	for (; it != c.end(); ++it)
+		std::cout << *it << "|";
+	std::cout << std::endl;
 }
 
 #endif

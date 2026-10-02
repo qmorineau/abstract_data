@@ -64,19 +64,15 @@ fclean: clean
 
 test: all
 	clear
-	-./$(NAME) > $(F_FT_OUT) 2> $(F_FT_TIME)
-	-./$(NAME_STD) > $(F_STD_OUT) 2> $(F_STD_TIME)
-	-diff $(F_FT_OUT) $(F_STD_OUT)
-	-awk -v seuil=$(SEUIL) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	@make diff
+	@make benchmark
 
 diff: all
-	clear
 	-./$(NAME) > $(F_FT_OUT)
 	-./$(NAME_STD) > $(F_STD_OUT)
 	-diff $(F_FT_OUT) $(F_STD_OUT)
 
 benchmark: all
-	clear
 	./$(NAME) benchmark > $(F_FT_TIME)
 	./$(NAME_STD) benchmark > $(F_STD_TIME)
 	-awk -v seuil=$(SEUIL) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
@@ -85,6 +81,6 @@ ft: all
 	clear
 	./$(NAME)
 
-.PHONY: all re clean fclean test
+.PHONY: all re clean fclean test diff benchmark
 
 -include $(DEP)

@@ -13,14 +13,24 @@ template <typename Container>
 static void test_empty()
 {
 	std::cout << "===== Test: empty() =====" << std::endl;
-	// todo
+	for (size_t i = 0; i < 10; ++i)
+	{
+		Container c = fill_n<Container>(i % 3);
+		std::cout << c.empty() << "|";
+	}
+	std::cout << std::endl;
 }
 
 template <typename Container>
 static void test_size()
 {
 	std::cout << "===== Test: size() =====" << std::endl;
-	
+	for (size_t i = 0; i < 15; ++i)
+	{
+		Container c = fill_n<Container>(i);
+		std::cout << c.size() << "|";
+	}
+	std::cout << std::endl;
 }
 
 template <typename Container>

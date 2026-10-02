@@ -55,13 +55,15 @@ void test_modifiers_func();
 template <typename Container>
 void test_non_member_func();
 
-// Helper to fill container
+// Helper
 template <typename Container>
-Container fill_n(std::size_t n);
+Container fill_n(size_t n);
 template <typename Container>
-typename Container::value_type generate_value(std::size_t n);
+typename Container::value_type generate_value(size_t n);
+template <typename Container>
+void print(Container c);
 
-#include "template/generic_test/value_generator.tpp"
+#include "template/generic_test/helper.tpp"
 
 #include "template/generic_test/2_test_common_func.tpp"
 #include "template/generic_test/2_test_capacity_func.tpp"

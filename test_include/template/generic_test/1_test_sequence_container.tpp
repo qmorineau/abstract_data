@@ -21,7 +21,6 @@ static void test_sequence_container_type()
 	<< "Testing int" << std::endl
 	<< "=======================================" << std::endl 
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "=== int ===" << std::endl;
 	test_sequence_container_type_typed<Container, int>();
 	// String
 	std::cout << "=======================================" << std::endl
@@ -29,14 +28,12 @@ static void test_sequence_container_type()
 	<< "Testing std::string" << std::endl
 	<< "=======================================" << std::endl 
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "=== std::string ===" << std::endl;
 	test_sequence_container_type_typed<Container, std::string>();
 	std::cout << "=======================================" << std::endl
 	<< "=======================================" << std::endl
 	<< "Testing Foo" << std::endl
 	<< "=======================================" << std::endl 
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << std::endl << "=== Foo ===" << std::endl;
 	test_sequence_container_type_typed<Container, Foo>();
 	// Throwing class
 	// test_sequence_container_type_typed<Container, ThrowingClass>();
@@ -48,17 +45,14 @@ void test_sequence_container()
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing vector" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << "===== Vector =====" << std::endl;
 	test_sequence_container_type<ns::vector>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing deque" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << "===== Deque =====" << std::endl;
 	// test_sequence_container_type<ns::deque>();
 	std::cout << "=======================================" << std::endl 
 	<< "===== Testing list" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	std::cerr << "===== List =====" << std::endl;
 	// test_sequence_container_type<ns::list>();
 }
 
