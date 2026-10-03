@@ -6,8 +6,7 @@ template <class T>
 static void print_vector(ns::vector<T>& v)
 {
 	std::cout << "print_vector: ";
-	for (typename ns::vector<T>::iterator it = v.begin(); it != v.end(); ++it)
-		print<ns::vector<T> >(v);
+	print<ns::vector<T> >(v);
 	std::cout << std::endl << "capacity = " << v.capacity() << ", size = " << v.size() << std::endl;
 }
 //type
@@ -71,13 +70,13 @@ static void test_resize_unit(Container& c, T arg)
 		c.resize(arg);
 		print_vector(c);
 	}
-	catch(const std::length_error& e)
+	catch(const ns::length_error& e)
 	{
-		std::cout << e.what() << '\n';
+		std::cout << "Good exception" << std::endl;
 	}
-	catch(const ns::exception& e)
+	catch(...)
 	{
-		std::cout << e.what() << '\n';
+		std::cout << "Wrong exception throw vector::test_resize_unit()" << std::endl;
 	}
 }
 static void test_vector_resize()
@@ -184,7 +183,7 @@ static void test_vector_empty()
 	std::cout << test.empty() << std::endl;
 }
 //insert
-static void test_insert_value()
+static void test_vector_insert_value()
 {
 	std::cout << "===== Test: vector.insert(it pos, value) =====" << std::endl;
 	ns::vector<int> test;
@@ -203,7 +202,7 @@ static void test_insert_value()
 	std::cout << "it:" << *it << "|";
 	print_vector(test);
 }
-static void test_insert_n_value()
+static void test_vector_insert_n_value()
 {
 	std::cout << "===== Test: vector.insert(it pos, n, value) =====" << std::endl;
 	ns::vector<int> test;
@@ -218,7 +217,7 @@ static void test_insert_n_value()
 	test.insert(test.begin(), 5, 1024);
 	print_vector(test);
 }
-static void test_insert_it()
+static void test_vector_insert_it()
 {
 	std::cout << "===== Test: vector.insert(it pos, it first, it last) =====" << std::endl;
 	ns::vector<int> test;
@@ -228,12 +227,12 @@ static void test_insert_it()
 }
 static void test_vector_insert()
 {
-	test_insert_value();
-	test_insert_n_value();
-	test_insert_it();
+	test_vector_insert_value();
+	test_vector_insert_n_value();
+	test_vector_insert_it();
 }
 // erase
-static void test_erase_pos()
+static void test_vector_erase_pos()
 {
 	std::cout << "===== Test: vector.erase(it pos) =====" << std::endl;
 	ns::vector<int> test;
@@ -245,7 +244,7 @@ static void test_erase_pos()
 	test.erase(++test.begin());
 	print_vector(test);
 }
-static void test_erase_it()
+static void test_vector_erase_it()
 {
 	std::cout << "===== Test: vector.erase(it first, it last) =====" << std::endl;
 	ns::vector<int> test;
@@ -264,8 +263,8 @@ static void test_erase_it()
 }
 static void test_vector_erase()
 {
-	test_erase_pos();
-	test_erase_it();
+	test_vector_erase_pos();
+	test_vector_erase_it();
 }
 //clear
 static void test_vector_clear()
@@ -467,7 +466,7 @@ static void test_vector_comparator()
 void test_vector()
 {
 	std::cout << "=======================================" << std::endl 
-	<< "Testing " << NAMESPACE_NAME << "::vector" << std::endl
+	<< "Testing ::vector" << std::endl
 	<< "=======================================" << std::endl;
 	test_vector_type();
 	test_vector_assign();

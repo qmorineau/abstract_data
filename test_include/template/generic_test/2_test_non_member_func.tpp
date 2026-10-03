@@ -17,6 +17,8 @@ struct test_is_equal
 	static void run()
 	{
 		std::cout << "===== Test: operator== =====" << std::endl;
+		// to do
+		assert(true == false);
 	}
 };
 
@@ -27,6 +29,7 @@ struct test_is_different
 	{
 		std::cout << "===== Test: operator!= =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -37,6 +40,7 @@ struct test_is_greater_equal
 	{
 		std::cout << "===== Test: operate>= =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -47,6 +51,7 @@ struct test_is_greater
 	{
 		std::cout << "===== Test: operator> =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -57,6 +62,7 @@ struct test_is_lesser_equal
 	{
 		std::cout << "===== Test: operator<= =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -67,6 +73,7 @@ struct test_is_lesser
 	{
 		std::cout << "===== Test: operator< =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -77,6 +84,7 @@ struct test_swap_specialization
 	{
 		std::cout << "===== Test: std::swap() =====" << std::endl;
 		// to do
+		assert(true == false);
 	}
 };
 
@@ -86,13 +94,13 @@ void test_non_member_func()
 	std::cout << "=======================================" << std::endl 
 	<< "===== Non Member Func" << std::endl
 	<< "=======================================" << std::endl;
-	RUN_IF(has_is_equal_operator, test_is_equal, Container);
-	RUN_IF(has_is_different_operator, test_is_different, Container);
-	RUN_IF(has_is_lesser_equal_operator, test_is_lesser_equal, Container);
-	RUN_IF(has_is_lesser_operator, test_is_lesser, Container);
-	RUN_IF(has_is_greater_equal_operator, test_is_greater_equal, Container);
-	RUN_IF(has_is_greater_operator, test_is_greater, Container);
-	RUN_IF(has_swap_specialization, test_swap_specialization, Container);
+	// RUN_IF(has_is_equal_operator, test_is_equal, Container);
+	// RUN_IF(has_is_different_operator, test_is_different, Container);
+	// RUN_IF(has_is_lesser_equal_operator, test_is_lesser_equal, Container);
+	// RUN_IF(has_is_lesser_operator, test_is_lesser, Container);
+	// RUN_IF(has_is_greater_equal_operator, test_is_greater_equal, Container);
+	// RUN_IF(has_is_greater_operator, test_is_greater, Container);
+	// RUN_IF(has_swap_specialization, test_swap_specialization, Container);
 }
 
 #endif

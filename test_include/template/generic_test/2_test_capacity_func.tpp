@@ -18,7 +18,8 @@ struct test_empty
 		for (size_t i = 0; i < 10; ++i)
 		{
 			Container c = fill_n<Container>(i % 3);
-			std::cout << c.empty() << "|";
+			bool ret = c.empty();
+			std::cout << ret << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -33,7 +34,8 @@ struct test_size
 		for (size_t i = 0; i < 15; ++i)
 		{
 			Container c = fill_n<Container>(i);
-			std::cout << c.size() << "|";
+			typename Container::size_type ret = c.size();
+			std::cout << ret << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -44,31 +46,34 @@ struct test_max_size
 {
 	static void run()
 	{
-		std::cout << "===== Test: max_size() =====" << std::endl;
+		std::cout << "===== Test: max_size()* =====" << std::endl;
 		Container c;
-		std::cout << c.max_size() << std::endl;
+		typename Container::size_type ret = c.max_size();
+		std::cout << "*: could be different, implement dependant => " << ret << std::endl;
 	}
 };
 
-template <typename Container>
-struct test_reserve
-{
-	static void run()
-	{
-		std::cout << "===== Test: reserve() =====" << std::endl;
-		// todo
-	}
-};
+// template <typename Container>
+// struct test_reserve
+// {
+// 	static void run()
+// 	{
+// 		std::cout << "===== Test: reserve() =====" << std::endl;
+// 		for ();
+// 		Container c;
+		
+// 	}
+// };
 
-template <typename Container>
-struct test_capacity
-{
-	static void run()
-	{
-		std::cout << "===== Test: capacity() =====" << std::endl;
-		// todo
-	}
-};
+// template <typename Container>
+// struct test_capacity
+// {
+// 	static void run()
+// 	{
+// 		std::cout << "===== Test: capacity() =====" << std::endl;
+// 		// todo
+// 	}
+// };
 
 template <typename Container>
 void test_capacity_func()
@@ -79,8 +84,8 @@ void test_capacity_func()
 	RUN_IF(has_empty, test_empty, Container);
 	RUN_IF(has_size, test_size, Container);
 	RUN_IF(has_max_size, test_max_size, Container);
-	RUN_IF(has_reserve, test_reserve, Container);
-	RUN_IF(has_capacity, test_capacity, Container);
+	// RUN_IF(has_reserve, test_reserve, Container);
+	// RUN_IF(has_capacity, test_capacity, Container);
 }
 
 #endif

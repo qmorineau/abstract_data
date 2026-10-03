@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
 	else
 	{
 		std::cout << "=======================================" << std::endl 
-		<< "Testing " << NAMESPACE_NAME << "::containers" << std::endl
+		<< "Testing ::containers" << std::endl
 		<< "=======================================" << std::endl << std::endl;
 		std::cout << "=======================================" << std::endl 
 		<< "Generic Test" << std::endl
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 		// test_exceptions();
 		// test_iterators();
 
-		// test_sequence_container<ns::vector>("vector");
+		test_sequence_container<ns::vector>("vector");
 		// test_sequence_container<ns::deque>("deque");
 		test_sequence_container<ns::list>("list");
 
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 		std::cout << "=======================================" << std::endl 
 		<< "Specific Test" << std::endl
 		<< "=======================================" << std::endl << std::endl;
-		// test_vector();
+		test_vector();
 		// test_deque();
 		test_list();
 		

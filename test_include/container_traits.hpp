@@ -29,8 +29,7 @@ struct container_traits_default
 	enum
 	{
 		// common
-		has_constructor = 1,
-		has_destructor = 1,
+		has_constructor_destructor = 1,
 		has_copy_constructor = 1,
 		has_copy_operator = 1,
 		has_assign = 0,
@@ -56,6 +55,7 @@ struct container_traits_default
 		has_clear = 0,
 		has_insert = 0,
 		has_erase = 0,
+		has_erase_key = 0,
 		has_push_front = 0,
 		has_pop_front = 0,
 		has_push_back = 0,

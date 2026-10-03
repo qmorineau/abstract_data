@@ -1,8 +1,8 @@
 # Compiler
-CCPP = g++
+CXX = g++
 
 # Flags
-CPPFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address
+CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj
@@ -36,20 +36,20 @@ SEUIL ?= 20
 all: $(NAME) $(NAME_STD)
 
 $(NAME): $(OBJ_FT)
-	@$(CCPP) $(CPPFLAGS) $(INCLUDES) $(OBJ_FT) -o $(NAME)
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJ_FT) -o $(NAME)
 	@echo "$(NAME) compiled"
 
 $(NAME_STD): $(OBJ_STD)
-	@$(CCPP) $(CPPFLAGS) $(INCLUDES) $(OBJ_STD) -D STD -o $(NAME_STD)
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJ_STD) -D STD -o $(NAME_STD)
 	@echo "$(NAME_STD) compiled"
 
 $(OBJ_DIR_FT)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
-	@$(CCPP) $(CPPFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJ_DIR_STD)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(dir $@)
-	@$(CCPP) $(CPPFLAGS) $(INCLUDES) -D STD -c $< -o $@
+	@$(CXX) $(CXXFLAGS) $(INCLUDES) -D STD -c $< -o $@
 
 re:	fclean all
 

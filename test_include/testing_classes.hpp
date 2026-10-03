@@ -43,10 +43,9 @@ class Foo
 	private:
 		Bar*	_allocated_ptr;
 		int		_n;
-
-
 };
 
 std::ostream& operator<<(std::ostream& out_stream, const Foo& f);
+bool operator==(const Foo& x, const Foo& y);
 
 #endif

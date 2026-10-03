@@ -34,7 +34,7 @@ struct test_at
 		}
 		catch(const ns::out_of_range& e)
 		{
-			std::cout << e.what() << '\n';
+			std::cout << "Good exception" << '\n';
 		}
 		catch(...)
 		{

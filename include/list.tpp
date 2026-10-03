@@ -35,7 +35,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::list<T, Allocator>::list(const list<T,Allocator>& x) : _allocator(x._allocator), _node_alloc(x._node_alloc), _size(x._size)
+	ft::list<T, Allocator>::list(const list<T,Allocator>& x) : _allocator(x._allocator), _node_alloc(x._node_alloc), _size(0)
 	{
 		init_sentinel();
 		for (iterator it = x.begin(); it != x.end(); ++it)
@@ -315,6 +315,7 @@ namespace ft
 	{
 		while (position != last)
 			erase(position++);
+		return last;
 	}
 
 	template <class T, class Allocator>

@@ -7,14 +7,14 @@
 namespace ft
 {
 	template <class T, class Pointer = T*, class Reference = T&>
-	class list_iterator : public iterator<ft::random_access_iterator_tag, T, ft::ptrdiff_t, Pointer, Reference>
+	class list_iterator : public iterator<ft::bidirectional_iterator_tag, T, ft::ptrdiff_t, Pointer, Reference>
 	{
 		public:
 			typedef Pointer								pointer;
 			typedef Reference							reference;
 			typedef T 									value_type;
 			typedef ft::ptrdiff_t						difference_type;
-			typedef ft::random_access_iterator_tag		iterator_category;
+			typedef ft::bidirectional_iterator_tag		iterator_category;
 
 			// construct / destruct / copy
 			list_iterator(void);
