@@ -1,36 +1,50 @@
 #include "test.hpp"
 
-template <class C, typename T>
-static void bench_push_back_empty(std::string type)
+template <class C>
+struct bench_push_back_empty
 {
-	TimerAccum t(type + ": push_back_empty");
-	for (int i = 0; i < 100000; ++i)
-	{
-		C c;
-		Accum a(t.total());
-		c.push_back(generate_value<C>(i));
+	static void run(const std::string& name)
+    {
+		TimerAccum t(name + ": push_back_empty");
+		for (int i = 0; i < 100000; ++i)
+		{
+			C c;
+			Accum a(t.total());
+			c.push_back(generate_value<C>(i));
+		}
 	}
+};
+
+template <class C>
+struct bench_push_back
+{
+	static void run(const std::string& name)
+    {
+		Timer t(name + ": push_back");
+		C c;
+		for (int i = 0; i < 100000; ++i)
+			c.push_back(generate_value<C>(i));
+	}
+};
+
+template <class C>
+static void bench_unit(const std::string name)
+{
+	RUN_BENCH_IF(has_push_back, bench_push_back, C, name);
+	RUN_BENCH_IF(has_push_back, bench_push_back_empty, C, name);
 }
 
-template <class C, typename T>
-static void bench_push_back(std::string type)
+template <template <typename, typename> class Container>
+void benchmark_type(std::string name)
 {
-	Timer t(type + ": push_back");
-	C c;
-	for (int i = 0; i < 100000; ++i)
-		c.push_back(generate_value<C>(i));
-}
-
-template <typename T>
-static void bench_vector(std::string type)
-{
-	bench_push_back_empty<ns::vector<T>, T>("vector<" + type + ">");
-	bench_push_back<ns::vector<T>, T>("vector<" + type + ">");
+	bench_unit<Container<int, std::allocator<int> > >(name + "<int>");
+	bench_unit<Container<std::string, std::allocator<std::string> > >(name + "<std::string>");
+	bench_unit<Container<Foo, std::allocator<Foo> > >(name + "<Foo>");
+	std::cout << std::endl;
 }
 
 void benchmark()
 {
-	bench_vector<int>("int");
-	bench_vector<std::string>("std::string");
-	bench_vector<Foo>("Foo");
+	benchmark_type<ns::vector>("vector");
+	benchmark_type<ns::list>("list");
 }
