@@ -22,7 +22,7 @@ namespace ft
 	template <class T, class Pointer, class Reference>
 	template <class T2, class Pointer2, class Reference2>
 	list_iterator<T, Pointer, Reference>::list_iterator(const list_iterator<T2, Pointer2, Reference2>& other)
-		: _current(other._current)
+		: _current(other.base())
 	{}
 
 	template <class T, class Pointer, class Reference>

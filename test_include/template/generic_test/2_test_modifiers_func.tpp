@@ -12,106 +12,88 @@
 */
 
 template <typename Container>
-static void test_clear()
+struct test_clear
 {
-	std::cout << "===== Test: clear() =====" << std::endl;
-	// to do
-}
-
-template <typename Container>
-static void test_insert()
-{
-	std::cout << "===== Test: insert() =====" << std::endl;
-	// to do
-}
-
-template <typename Container>
-static void test_erase()
-{
-	std::cout << "===== Test: erase() =====" << std::endl;
-	// to do
-}
-
-template <typename Container>
-static void test_push_back()
-{
-	std::cout << "===== Test: push_back() =====" << std::endl;
-	Container c;
-	for (std::size_t i = 0; i < 150; ++i)
+	static void run()
 	{
-		c.push_back(generate_value<Container>(i));
-		std::cout << *c.rbegin() << "|";
+		std::cout << "===== Test: clear() =====" << std::endl;
+		// to do
 	}
-	std::cout << std::endl;
-}
+};
 
 template <typename Container>
-static void test_pop_back()
+struct test_insert
 {
-	std::cout << "===== Test: pop_back() =====" << std::endl;
-	typedef typename Container::size_type size_type;
-	size_type size = 150;
-	Container c = fill_n<Container>(size);
-	for (size_type i = 0; i < size - 1; ++i)
+	static void run()
 	{
-		c.pop_back();
-		std::cout << *c.rbegin() << "|";
+		std::cout << "===== Test: insert() =====" << std::endl;
+		// to do
 	}
-	std::cout << std::endl;
-}
+};
 
 template <typename Container>
-static void test_resize()
+struct test_erase
 {
-	std::cout << "===== Test: resize() =====" << std::endl;
-	// to do
-}
-
-template <typename Container>
-static void test_swap()
-{
-	std::cout << "===== Test: swap() =====" << std::endl;
-	// to do
-}
-
-template <typename Container>
-static void test_modifier(ModifiersFuncModifier modifier)
-{
-	switch (modifier)
+	static void run()
 	{
-		case MOD_CLEAR:
-			if (container_traits<Container>::has_clear)
-				test_clear<Container>();
-			break;
-		case MOD_INSERT:
-			if (container_traits<Container>::has_insert)
-				test_insert<Container>();
-			break;
-		case MOD_ERASE:
-			if (container_traits<Container>::has_erase)
-				test_erase<Container>();
-			break;
-		case MOD_PUSH_BACK:
-			if (container_traits<Container>::has_push_back)
-				test_push_back<Container>();
-			break;
-		case MOD_POP_BACK:
-			if (container_traits<Container>::has_pop_back)
-				test_pop_back<Container>();
-			break;
-		case MOD_RESIZE:
-			if (container_traits<Container>::has_resize)
-				test_resize<Container>();
-			break;
-		case MOD_SWAP:
-			if (container_traits<Container>::has_swap)
-				test_swap<Container>();
-			break;
-		default:
-			std::cerr << "ModifierFuncModifier not managed" << std::endl;
-			break;
+		std::cout << "===== Test: erase() =====" << std::endl;
+		// to do
 	}
-}
+};
+
+template <typename Container>
+struct test_push_back
+{
+	static void run()
+	{
+		std::cout << "===== Test: push_back() =====" << std::endl;
+		Container c;
+		for (std::size_t i = 0; i < 150; ++i)
+		{
+			c.push_back(generate_value<Container>(i));
+			std::cout << *c.rbegin() << "|";
+		}
+		std::cout << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_pop_back
+{
+	static void run()
+	{
+		std::cout << "===== Test: pop_back() =====" << std::endl;
+		typedef typename Container::size_type size_type;
+		size_type size = 150;
+		Container c = fill_n<Container>(size);
+		for (size_type i = 0; i < size - 1; ++i)
+		{
+			c.pop_back();
+			std::cout << *c.rbegin() << "|";
+		}
+		std::cout << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_resize
+{
+	static void run()
+	{
+		std::cout << "===== Test: resize() =====" << std::endl;
+		// to do
+	}
+};
+
+template <typename Container>
+struct test_swap
+{
+	static void run()
+	{
+		std::cout << "===== Test: swap() =====" << std::endl;
+		// to do
+	}
+};
 
 template <typename Container>
 void test_modifiers_func()
@@ -119,13 +101,13 @@ void test_modifiers_func()
 	std::cout << "=======================================" << std::endl 
 	<< "===== Modifiers Func" << std::endl
 	<< "=======================================" << std::endl;
-	test_modifier<Container>(MOD_CLEAR);
-	test_modifier<Container>(MOD_INSERT);
-	test_modifier<Container>(MOD_ERASE);
-	test_modifier<Container>(MOD_PUSH_BACK);
-	test_modifier<Container>(MOD_POP_BACK);
-	test_modifier<Container>(MOD_RESIZE);
-	test_modifier<Container>(MOD_SWAP);
+	RUN_IF(has_clear, test_clear, Container);
+	RUN_IF(has_insert, test_insert, Container);
+	RUN_IF(has_erase, test_erase, Container);
+	RUN_IF(has_push_back, test_push_back, Container);
+	RUN_IF(has_pop_back, test_pop_back, Container);
+	RUN_IF(has_resize, test_resize, Container);
+	RUN_IF(has_swap, test_swap, Container);
 }
 
 #endif

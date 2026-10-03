@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
 		// test_exceptions();
 		// test_iterators();
 
-		// test_sequence_container<ns::vector>(	);
-		// test_sequence_container<ns::deque>();
-		// test_sequence_container<ns::list>();
+		// test_sequence_container<ns::vector>("vector");
+		// test_sequence_container<ns::deque>("deque");
+		test_sequence_container<ns::list>("list");
 
 		// test_associative_container<ns::map>();
 		// test_associative_container<ns::set>();

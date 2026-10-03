@@ -14,7 +14,6 @@
 #include "stdexcept.hpp"
 
 #include "benchmark.hpp"
-#include "container_modifier.hpp"
 #include "container_traits.hpp"
 #include "testing_classes.hpp"
 
@@ -26,6 +25,20 @@
 	# define NAMESPACE_NAME "ft"
 #endif
 
+template <bool Enabled, template <typename> class Test, typename C>
+struct run_if
+{
+    static void run() { Test<C>::run(); }
+};
+
+template <template <typename> class Test, typename C>
+struct run_if<false, Test, C>
+{
+    static void run() { std::cout << "(skipped)" << std::endl; }
+};
+
+#define RUN_IF(trait, test, C) run_if<container_traits<C>::trait, test, C>::run()
+
 // Specific Test
 void test_exceptions();
 void test_iterators();
@@ -35,7 +48,7 @@ void test_list();
 
 // Container Type
 template <template <typename, typename> class Container>
-void test_sequence_container();
+void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
 void test_associative_container();
 template <template <typename, typename> class Container>
@@ -62,6 +75,7 @@ template <typename Container>
 typename Container::value_type generate_value(size_t n);
 template <typename Container>
 void print(Container c);
+
 
 #include "template/generic_test/helper.tpp"
 

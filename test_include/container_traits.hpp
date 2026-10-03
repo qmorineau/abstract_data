@@ -29,8 +29,10 @@ struct container_traits_default
 	enum
 	{
 		// common
-		has_copy_constructor = 0,
-		has_copy_operator = 0,
+		has_constructor = 1,
+		has_destructor = 1,
+		has_copy_constructor = 1,
+		has_copy_operator = 1,
 		has_assign = 0,
 		has_get_allocator = 0,
 		// element access
@@ -82,8 +84,6 @@ struct container_traits<ns::vector<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
-		has_copy_constructor = 1,
-		has_copy_operator = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access
@@ -128,8 +128,6 @@ struct container_traits<ns::deque<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
-		has_copy_constructor = 1,
-		has_copy_operator = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access
@@ -171,8 +169,6 @@ struct container_traits<ns::list<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
-		has_copy_constructor = 1,
-		has_copy_operator = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access

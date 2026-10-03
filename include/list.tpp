@@ -300,11 +300,13 @@ namespace ft
 	ft::list<T, Allocator>::erase(iterator position)
 	{
 		Node<T>* to_destroy = position.base();
+		iterator ret = iterator(to_destroy->next);
 		to_destroy->next->prev = to_destroy->prev;
 		to_destroy->prev->next = to_destroy->next;
 		_allocator.destroy(&to_destroy->value);
 		_node_alloc.deallocate(to_destroy, 1);
 		--_size;
+		return ret;
 	}
 
 	template <class T, class Allocator>
@@ -427,13 +429,13 @@ namespace ft
 	void
 	ft::list<T, Allocator>::reverse()
 	{
-		for (iterator it = begin(); it != end(); ++it)
+		Node<T>* current = _sentinel;
+		do
 		{
-			Node<T>* n = it.base();
-			ft::swap(n->prev, n->next);
+			ft::swap(current->prev, current->next);
+			current = current->prev;
 		}
-		Node<T>* n = end();
-		ft::swap(n->prev, n->next);
+		while (current != _sentinel);
 	}
 
 	// =====================

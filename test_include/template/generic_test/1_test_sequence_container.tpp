@@ -13,9 +13,12 @@ static void test_sequence_container_type_typed()
 }
 
 template <template <typename, typename> class Container>
-static void test_sequence_container_type()
+void test_sequence_container(std::string name)
 {
-	// Int
+	std::cout << "=======================================" << std::endl 
+	<< "===== Testing " << name << std::endl
+	<< "=======================================" << std::endl << std::endl;
+
 	std::cout << "=======================================" << std::endl
 	<< "=======================================" << std::endl
 	<< "Testing int" << std::endl
@@ -37,23 +40,6 @@ static void test_sequence_container_type()
 	test_sequence_container_type_typed<Container, Foo>();
 	// Throwing class
 	// test_sequence_container_type_typed<Container, ThrowingClass>();
-}
-
-template <template <typename, typename> class Container>
-void test_sequence_container()
-{
-	std::cout << "=======================================" << std::endl 
-	<< "===== Testing vector" << std::endl
-	<< "=======================================" << std::endl << std::endl;
-	test_sequence_container_type<ns::vector>();
-	std::cout << "=======================================" << std::endl 
-	<< "===== Testing deque" << std::endl
-	<< "=======================================" << std::endl << std::endl;
-	// test_sequence_container_type<ns::deque>();
-	std::cout << "=======================================" << std::endl 
-	<< "===== Testing list" << std::endl
-	<< "=======================================" << std::endl << std::endl;
-	// test_sequence_container_type<ns::list>();
 }
 
 #endif
