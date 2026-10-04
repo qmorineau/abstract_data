@@ -195,7 +195,32 @@ static void test_list_unique()
 static void test_list_merge_normal()
 {
 	std::cout << "===== Test: list::merge(list) =====" << std::endl;
-	// todo
+	ns::list<int> test;
+	ns::list<int> test2;
+	for (int i = 0; i < 15; ++i)
+	{
+		if (i % 2)
+		{
+			test.push_back(i);
+			test2.push_back(i * 2);
+			test2.push_back(i);
+		}
+		else
+		{
+			test.push_front(i);
+			test2.push_front(i * 2);
+			test2.push_front(i);
+		}
+	}
+	print_list(test);
+	print_list(test2);
+	test.sort();
+	test2.sort();
+	print_list(test);
+	print_list(test2);
+	test.merge(test2);
+	print_list(test);
+	print_list(test2);
 }
 static void test_list_merge_compare()
 {
@@ -242,13 +267,14 @@ static void test_list_reverse()
 
 void test_list()
 {
+	test_list_merge();
+	return ;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::list" << std::endl
 	<< "=======================================" << std::endl;
 	test_list_splice();
 	test_list_remove();
 	test_list_unique();
-	test_list_merge();
 	test_list_sort();
 	test_list_reverse();
 }

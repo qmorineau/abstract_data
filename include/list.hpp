@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "algorithm.hpp"
+#include "functional.hpp"
 #include "cstddef.hpp"
 #include "type_traits.hpp"
 #include "list_iterator.hpp"
@@ -33,12 +34,12 @@ namespace ft
 			explicit list(const Allocator& = Allocator());
 			explicit list(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			list(InputIterator first, InputIterator last, const Allocator& = Allocator());
+			list(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			list(const list<T,Allocator>& x);
 			~list();
 			list<T,Allocator>& operator=(const list<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last);
+			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& t);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -68,7 +69,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last);
+			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			iterator erase(iterator position);
 			iterator erase(iterator position, iterator last);
 			void swap(list<T,Allocator>&);
@@ -84,9 +85,11 @@ namespace ft
 			template <class BinaryPredicate>
 			void unique(BinaryPredicate binary_pred);
 			void merge(list<T,Allocator>& x);
-			template <class Compare> void merge(list<T,Allocator>& x, Compare comp);
+			template <class Compare>
+			void merge(list<T,Allocator>& x, Compare comp);
 			void sort();
-			template <class Compare> void sort(Compare comp);
+			template <class Compare>
+			void sort(Compare comp);
 			void reverse();
 		private:
 			Allocator		_allocator;
@@ -95,6 +98,8 @@ namespace ft
 			Node<T>*		_sentinel;
 
 			void init_sentinel();
+			template <class Compare>
+			static void mergeSort(list<T,Allocator>& l, Compare comp);
 	};
 	// non-members
 	template <class T, class Allocator>

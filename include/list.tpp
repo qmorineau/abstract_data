@@ -19,19 +19,37 @@ namespace ft
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
 		init_sentinel();
-		insert(end(), n, value);
+		try
+		{
+			insert(end(), n, value);		
+		}
+		catch(...)
+		{
+			clear();
+			_node_alloc.deallocate(_sentinel, 1);
+			throw;
+		}
 	}
 	
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::list<T, Allocator>::list(InputIterator first, InputIterator last, const Allocator& alloc)
+	ft::list<T, Allocator>::list(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
 		init_sentinel();
-		while (first != last)
+		try
 		{
-			push_back(*first);
-			++first;
+			while (first != last)
+			{
+				push_back(*first);
+				++first;
+			}
+		}
+		catch(...)
+		{
+			clear();
+			_node_alloc.deallocate(_sentinel, 1);
+			throw ;
 		}
 	}
 
@@ -39,8 +57,17 @@ namespace ft
 	ft::list<T, Allocator>::list(const list<T,Allocator>& x) : _allocator(x._allocator), _node_alloc(x._node_alloc), _size(0)
 	{
 		init_sentinel();
-		for (iterator it = x.begin(); it != x.end(); ++it)
-			push_back(*it);
+		try
+		{
+			for (const_iterator it = x.begin(); it != x.end(); ++it)
+				push_back(*it);
+		}
+		catch(...)
+		{
+			clear();
+			_node_alloc.deallocate(_sentinel, 1);
+			throw ;
+		}
 	}
 
 	template <class T, class Allocator>
@@ -58,15 +85,18 @@ namespace ft
 	list<T,Allocator>&
 	ft::list<T, Allocator>::operator=(const list<T,Allocator>& x)
 	{
-		clear();
-		insert(end(), x.begin(), x.end());
+		if (this != &x)
+		{
+			clear();
+			insert(end(), x.begin(), x.end());
+		}
 		return *this;
 	}
 
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::list<T, Allocator>::assign(InputIterator first, InputIterator last)
+	ft::list<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		clear();
 		insert(begin(), first, last);
@@ -85,7 +115,7 @@ namespace ft
 	typename ft::list<T, Allocator>::allocator_type
 	ft::list<T, Allocator>::get_allocator() const
 	{
-		return allocator_type(_node_alloc);
+		return _allocator;
 	}
 
 	// =====================
@@ -236,14 +266,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::pop_front()
 	{
-		Node<T>* to_pop = begin().base();
-		Node<T>* prev = to_pop->prev;
-		Node<T>* next = to_pop->next;
-		_allocator.destroy(to_pop->value);
-		_node_alloc.deallocate(to_pop, 1);
-		prev->next = next;
-		next->prev = prev;
-		--_size;
+		erase(begin());
 	}
 
 	template <class T, class Allocator>
@@ -264,11 +287,18 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::insert(iterator position, const T& x)
 	{
-		T value = x;
 		Node<T>* prev = position.base()->prev;
 		Node<T>* next = position.base();
 		Node<T>* new_node = _node_alloc.allocate(1);
-		_allocator.construct(&new_node->value, value);
+		try
+		{
+			_allocator.construct(&new_node->value, x);
+		}
+		catch(...)
+		{
+			_node_alloc.deallocate(new_node, 1);
+			throw ;
+		}
 		new_node->prev = prev;
 		new_node->next = next;
 		next->prev = new_node;
@@ -288,7 +318,7 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::list<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last)
+	ft::list<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		while (first != last)
 		{
@@ -366,6 +396,8 @@ namespace ft
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator it)
 	{
+		if (position == it)
+			return ;
 		Node<T>* to_insert = it.base();
 		to_insert->prev->next = to_insert->next;
 		to_insert->next->prev = to_insert->prev;
@@ -396,13 +428,15 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove(const T& value)
 	{
+		ft::list<T, Allocator> to_remove;
 		iterator it = begin();
 		while (it != end())
 		{
+			iterator next = it;
+			++next;
 			if (*it == value)
-				it = erase(it);
-			else
-				++it;
+				to_remove.splice(to_remove.end(), *this, it);
+			it = next;
 		}
 	}
 
@@ -411,49 +445,49 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove_if(Predicate pred)
 	{
+		ft::list<T, Allocator> to_remove;
 		iterator it = begin();
 		while (it != end())
 		{
+			iterator next = it;
+			++next;
 			if (pred(*it))
-				it = erase(it);
-			else
-				++it;
+				to_remove.splice(to_remove.end(), *this, it);
+			it = next;
 		}
 	}
 
 	template <class T, class Allocator>
-	void ft::list<T, Allocator>::unique()
+	void
+	ft::list<T, Allocator>::unique()
 	{
-		iterator it = begin();
-		value_type value = *(it++);
-		while (it != end())
-		{
-			if (value == *it)
-				it = erase(it);
-			else
-				value = *(it++);
-		}
+		unique(ft::equal_to<T>());
 	}
 
 	template <class T, class Allocator>
 	template <class BinaryPredicate>
-	void ft::list<T, Allocator>::unique(BinaryPredicate binary_pred)
+	void
+	ft::list<T, Allocator>::unique(BinaryPredicate binary_pred)
 	{
+		if (empty())
+			return ;
 		iterator it = begin();
-		value_type value = *(it++);
-		while (it != end())
+		iterator next = it;
+		++next;
+		while (next != end())
 		{
-			if (binary_pred(value, *it))
-				it = erase(it);
+			if (binary_pred(*it, *next))
+				next = erase(next);
 			else
-				value = *(it++);
+				it = next++;
 		}
 	}
 
 	template <class T, class Allocator>
-	void ft::list<T, Allocator>::merge(list<T,Allocator>& x)
+	void
+	ft::list<T, Allocator>::merge(list<T,Allocator>& x)
 	{
-		// todo
+		merge(x, ft::less<T>());
 	}
 
 	template <class T, class Allocator>
@@ -461,14 +495,28 @@ namespace ft
 	void
 	ft::list<T, Allocator>::merge(list<T,Allocator>& x, Compare comp)
 	{
-		// todo
+		if (this != &x)
+		{
+			iterator it = begin();
+			while (it != end())
+			{
+				iterator to_insert = x.begin();
+				if (to_insert == x.end())
+					return;
+				if (comp(*to_insert, *it))
+					splice(it, x, to_insert);
+				else
+					++it;
+			}
+			splice(end(), x, x.begin(), x.end());
+		}
 	}
-	
+
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::sort()
 	{
-		// todo
+		mergeSort(*this, ft::less<T>());
 	}
 
 	template <class T, class Allocator>
@@ -476,7 +524,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::sort(Compare comp)
 	{
-		// todo
+		mergeSort(*this, comp);
 	}
 
 	template <class T, class Allocator>
@@ -503,6 +551,23 @@ namespace ft
 		_sentinel = _node_alloc.allocate(1);
 		_sentinel->prev = _sentinel;
 		_sentinel->next = _sentinel;
+	}
+
+	template <class T, class Allocator>
+	template <class Compare>
+	void
+	ft::list<T, Allocator>::mergeSort(ft::list<T,Allocator>& l, Compare comp)
+	{
+		if (l.size() < 2)
+			return ;
+		iterator middle = l.begin();
+		for (size_type i = 0; i < l.size() / 2; ++i)
+			++middle;
+		ft::list<T, Allocator> right;
+		right.splice(right.begin(), l, middle, l.end());
+		mergeSort(l, comp);
+		mergeSort(right, comp);
+		l.merge(right, comp);
 	}
 
 	// =====================

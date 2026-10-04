@@ -59,7 +59,7 @@ namespace ft
 	typename ft::list_iterator<T, Pointer, Reference>::pointer
 	list_iterator<T, Pointer, Reference>::operator->(void) const
 	{
-		return _current;
+		return &_current->value;
 	}
 
 	// ====== Bidirectional Iterator ======
@@ -73,7 +73,7 @@ namespace ft
 	}
 
 	template <class T, class Pointer, class Reference>
-	typename ft::list_iterator<T, Pointer, Reference>
+	ft::list_iterator<T, Pointer, Reference>
 	list_iterator<T, Pointer, Reference>::operator++(int)
 	{
 		list_iterator tmp(_current);
@@ -100,29 +100,6 @@ namespace ft
 
 	// ====== Non-Members ======
 
-	template <class T, class Pointer, class Reference>
-	list_iterator<T, Pointer, Reference>
-	operator+(typename list_iterator<T, Pointer, Reference>::difference_type n, const list_iterator<T, Pointer, Reference>& it)
-	{
-		if (n > 0)
-		{
-			while (n > 0)
-			{
-				++it;
-				--n;
-			}
-		}
-		else
-		{
-			while (n < 0)
-			{
-				--it;
-				++n;
-			}
-		}
-		return it;
-	}
-	
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
 	bool
 	operator==(const list_iterator<T, Pointer1, Reference1>& x, const list_iterator<T, Pointer2, Reference2>& y)

@@ -9,3 +9,5 @@ queue
 priority queue
 stack
 
+
+list -> sort() / sort(comp) function

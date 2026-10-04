@@ -48,6 +48,8 @@ class Foo
 std::ostream& operator<<(std::ostream& out_stream, const Foo& f);
 bool operator==(const Foo& x, const Foo& y);
 
+// Predicate
+
 template <typename T>
 struct PredEqualTo
 {
@@ -63,6 +65,8 @@ struct PredLesserThan
 	PredLesserThan(T v) : value(v) {};
 	bool operator()(T v) const {return v < value;};
 };
+
+// Binary Predicate
 
 template <typename T>
 struct BinaryPredEqualTo

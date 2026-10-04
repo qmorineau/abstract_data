@@ -2,7 +2,7 @@
 CXX = g++
 
 # Flags
-CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address
+CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address,undefined
 # Project Paths
 SRC_DIR = srcs
 OBJ_DIR = .obj
