@@ -77,11 +77,11 @@ benchmark: all
 	./$(NAME_STD) benchmark > $(F_STD_TIME)
 	-awk -v seuil=$(SEUIL) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 	
-ft: all
+ft: $(NAME)
 	clear
 	./$(NAME)
 
-std: all
+std: $(NAME_STD)
 	clear
 	./$(NAME_STD)
 

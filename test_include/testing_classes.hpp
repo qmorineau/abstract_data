@@ -48,4 +48,34 @@ class Foo
 std::ostream& operator<<(std::ostream& out_stream, const Foo& f);
 bool operator==(const Foo& x, const Foo& y);
 
+template <typename T>
+struct PredEqualTo
+{
+	T value;
+	PredEqualTo(T v) : value(v) {};
+	bool operator()(T v) const {return v == value;};
+};
+
+template <typename T>
+struct PredLesserThan
+{
+	T value;
+	PredLesserThan(T v) : value(v) {};
+	bool operator()(T v) const {return v < value;};
+};
+
+template <typename T>
+struct BinaryPredEqualTo
+{
+	BinaryPredEqualTo() {};
+	bool operator()(T v1, T v2) const {return v1 == v2;};
+};
+
+template <typename T>
+struct BinaryPredGreaterThan
+{
+	BinaryPredGreaterThan() {};
+	bool operator()(T v1, T v2) const {return v1 > v2;};
+};
+
 #endif

@@ -19,6 +19,7 @@ namespace ft
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
 		init_sentinel();
+		insert(end(), n, value);
 	}
 	
 	template <class T, class Allocator>
@@ -395,7 +396,14 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove(const T& value)
 	{
-		
+		iterator it = begin();
+		while (it != end())
+		{
+			if (*it == value)
+				it = erase(it);
+			else
+				++it;
+		}
 	}
 
 	template <class T, class Allocator>
@@ -403,20 +411,43 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove_if(Predicate pred)
 	{
-		// todo
+		iterator it = begin();
+		while (it != end())
+		{
+			if (pred(*it))
+				it = erase(it);
+			else
+				++it;
+		}
 	}
 
 	template <class T, class Allocator>
 	void ft::list<T, Allocator>::unique()
 	{
-		// todo
+		iterator it = begin();
+		value_type value = *(it++);
+		while (it != end())
+		{
+			if (value == *it)
+				it = erase(it);
+			else
+				value = *(it++);
+		}
 	}
 
 	template <class T, class Allocator>
 	template <class BinaryPredicate>
 	void ft::list<T, Allocator>::unique(BinaryPredicate binary_pred)
 	{
-		// todo
+		iterator it = begin();
+		value_type value = *(it++);
+		while (it != end())
+		{
+			if (binary_pred(value, *it))
+				it = erase(it);
+			else
+				value = *(it++);
+		}
 	}
 
 	template <class T, class Allocator>
