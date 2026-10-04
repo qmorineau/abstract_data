@@ -75,7 +75,7 @@ namespace ft
 			void clear();
 			// list operations:
 			void splice(iterator position, list<T,Allocator>& x);
-			void splice(iterator position, list<T,Allocator>& x, iterator i);
+			void splice(iterator position, list<T,Allocator>& x, iterator it);
 			void splice(iterator position, list<T,Allocator>& x, iterator first, iterator last);
 			void remove(const T& value);
 			template <class Predicate>

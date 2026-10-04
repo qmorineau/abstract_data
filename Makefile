@@ -81,6 +81,10 @@ ft: all
 	clear
 	./$(NAME)
 
-.PHONY: all re clean fclean test diff benchmark
+std: all
+	clear
+	./$(NAME_STD)
+
+.PHONY: all re clean fclean test diff benchmark ft std
 
 -include $(DEP)

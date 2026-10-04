@@ -59,6 +59,7 @@ namespace ft
 	{
 		clear();
 		insert(end(), x.begin(), x.end());
+		return *this;
 	}
 
 	template <class T, class Allocator>
@@ -352,28 +353,49 @@ namespace ft
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x)
 	{
-		// todo
+		while (!x.empty())
+		{
+			iterator it = --x.end();
+			splice(position, x, it);
+			--position;
+		}
 	}
 
 	template <class T, class Allocator>
 	void
-	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator i)
+	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator it)
 	{
-		// todo
+		Node<T>* to_insert = it.base();
+		to_insert->prev->next = to_insert->next;
+		to_insert->next->prev = to_insert->prev;
+		Node<T>* pos = position.base();
+		to_insert->prev = pos->prev;
+		to_insert->next = pos;
+		to_insert->prev->next = to_insert;
+		to_insert->next->prev = to_insert;
+		--x._size;
+		++_size;
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator first, iterator last)
 	{
-		// todo
+		--first;
+		--last;
+		while (first != last)
+		{
+			iterator it = last--;
+			splice(position, x, it);
+			--position;
+		}
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::list<T, Allocator>::remove(const T& value)
 	{
-		// todo
+		
 	}
 
 	template <class T, class Allocator>
