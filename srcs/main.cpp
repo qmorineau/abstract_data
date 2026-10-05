@@ -6,7 +6,7 @@ int main(int argc, char *argv[])
 	{
 		if (std::string(argv[1]) == "benchmark")
 		{
-			// benchmark();
+			benchmark();
 		}
 		else
 		{
@@ -24,10 +24,10 @@ int main(int argc, char *argv[])
 		<< "=======================================" << std::endl << std::endl;
 		// test_exceptions();
 		// test_iterators();
-
-		// test_sequence_container<ns::vector>("vector");
+// 
+		test_sequence_container<ns::vector>("vector");
 		// test_sequence_container<ns::deque>("deque");
-		// test_sequence_container<ns::list>("list");
+		test_sequence_container<ns::list>("list");
 
 		// test_associative_container<ns::map>();
 		// test_associative_container<ns::set>();
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 		std::cout << "=======================================" << std::endl 
 		<< "Specific Test" << std::endl
 		<< "=======================================" << std::endl << std::endl;
-		// test_vector();
+		test_vector();
 		// test_deque();
 		test_list();
 		

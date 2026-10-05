@@ -197,25 +197,11 @@ static void test_list_merge_normal()
 	std::cout << "===== Test: list::merge(list) =====" << std::endl;
 	ns::list<int> test;
 	ns::list<int> test2;
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
-		if (i % 2)
-		{
-			test.push_back(i);
-			test2.push_back(i * 2);
-			test2.push_back(i);
-		}
-		else
-		{
-			test.push_front(i);
-			test2.push_front(i * 2);
-			test2.push_front(i);
-		}
+			test.push_back(i * 2);
+			test2.push_back(i * 3);
 	}
-	print_list(test);
-	print_list(test2);
-	test.sort();
-	test2.sort();
 	print_list(test);
 	print_list(test2);
 	test.merge(test2);
@@ -225,7 +211,31 @@ static void test_list_merge_normal()
 static void test_list_merge_compare()
 {
 	std::cout << "===== Test: list::merge(list, compare) =====" << std::endl;
-	// todo
+	ns::list<int> test;
+	ns::list<int> test2;
+	for (int i = 0; i < 30; ++i)
+	{
+		test.push_back(i * 2);
+		test2.push_back(i * 3);
+	}
+	print_list(test);
+	print_list(test2);
+	test.sort(std::greater<int>());
+	test2.sort(std::greater<int>());
+	test.merge(test2, std::greater<int>());
+	print_list(test);
+	print_list(test2);
+	for (int i = 0; i < 30; ++i)
+		test2.push_back(i);
+	print_list(test);
+	print_list(test2);
+	test.sort(std::less<int>());
+	test2.sort(std::less<int>());
+	print_list(test);
+	print_list(test2);
+	test2.merge(test, std::less<int>());
+	print_list(test);
+	print_list(test2);
 }
 static void test_list_merge()
 {
@@ -239,12 +249,36 @@ static void test_list_merge()
 static void test_list_sort_normal()
 {
 	std::cout << "===== Test: list::sort() =====" << std::endl;
-	// todo
+	ns::list<int> test;
+	test.sort();
+	for (int i = 0; i < 15; ++i)
+	{
+		if (i % 2)
+			test.push_back(i * 3);
+		else
+			test.push_front(i);
+	}
+	print_list(test);
+	test.sort();
+	print_list(test);
 }
 static void test_list_sort_compare()
 {
 	std::cout << "===== Test: list::sort(compare) =====" << std::endl;
-	// todo
+		ns::list<int> test;
+	test.sort(std::less<int>());
+	for (int i = 0; i < 15; ++i)
+	{
+		if (i % 2)
+			test.push_back(i * 3);
+		else
+			test.push_front(i);
+	}
+	print_list(test);
+	test.sort(std::less<int>());
+	print_list(test);
+	test.sort(std::greater<int>());
+	print_list(test);
 }
 static void test_list_sort()
 {
@@ -267,14 +301,13 @@ static void test_list_reverse()
 
 void test_list()
 {
-	test_list_merge();
-	return ;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::list" << std::endl
 	<< "=======================================" << std::endl;
 	test_list_splice();
 	test_list_remove();
 	test_list_unique();
+	test_list_merge();
 	test_list_sort();
 	test_list_reverse();
 }

@@ -1,13 +1,8 @@
 tests
-vector
 deque
-list
 map
 multimap
 set
 queue
 priority queue
 stack
-
-
-list -> sort() / sort(comp) function
