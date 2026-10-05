@@ -10,7 +10,7 @@ The goal is to match the behavior and interface of the standard containers while
 |------------------|----------------|-------|-------------|
 | `vector`         | done           | done  | in progress |
 | `list`           | done           | done  | todo        |
-| `deque`          | todo           | -     | -           |
+| `deque`          | in progress    | -     | -           |
 | `map`            | todo           | -     | -           |
 | `set`            | todo           | -     | -           |
 | `multimap`       | todo           | -     | -           |
