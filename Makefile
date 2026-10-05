@@ -31,7 +31,7 @@ F_STD_TIME = output.std.time
 F_FT_TIME = output.ft.time
 AWK_FILE = compare.awk
 
-SEUIL ?= 20
+THRESHOLD ?= 20
 
 all: $(NAME) $(NAME_STD)
 
@@ -75,7 +75,7 @@ diff: all
 benchmark: all
 	./$(NAME) benchmark > $(F_FT_TIME)
 	./$(NAME_STD) benchmark > $(F_STD_TIME)
-	-awk -v seuil=$(SEUIL) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	-awk -v threshold=$(THRESHOLD) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 	
 ft: $(NAME)
 	clear

@@ -16,7 +16,7 @@ NR == FNR { t_std[FNR] = $(NF-1); next }   # 1er fichier = std
     }
 
     ratio = ft / std
-    if (ratio > seuil) { col = RED;   state = "KO"; found = 1 }
+    if (ratio > threshold) { col = RED;   state = "KO"; found = 1 }
     else               { col = GREEN; state = "OK" }
 
     printf "%-45s ft=%10d  std=%10d  x%-7.2f %s%s%s\n", n, ft, std, ratio, col, state, RESET
