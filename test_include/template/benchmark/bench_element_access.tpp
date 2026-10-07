@@ -11,22 +11,32 @@ struct bench_at
         C c = fill_n<C>(1000);
         {
             Timer t(name + "::at() &");
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 reference ref = c.at(0);
+                do_not_optimize(&ref);
+                clobber();
                 ref = c.at(500);
+                do_not_optimize(&ref);
+                clobber();
                 ref = c.at(999);
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
         {
             Timer t(name + "::at() const&");
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 const_reference ref1 = c.at(0);
+                do_not_optimize(&ref1);
+                clobber();
                 const_reference ref2 = c.at(500);
+                do_not_optimize(&ref2);
+                clobber();
                 const_reference ref3 = c.at(999);
-                (void) ref1; (void) ref2; (void) ref3;
+                do_not_optimize(&ref3);
+                clobber();
             }
         }
     }
@@ -42,22 +52,32 @@ struct bench_operator_square_bracket
         C c = fill_n<C>(1000);
         {
             Timer t("& " + name + "::operator[]");
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 reference ref = c[0];
+                do_not_optimize(&ref);
+                clobber();
                 ref = c[500];
+                do_not_optimize(&ref);
+                clobber();
                 ref = c[999];
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
         {
             Timer t("const&" + name + "::operator[]");
-            for (int i = 0; i < 500; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 const_reference ref1 = c[0];
+                do_not_optimize(&ref1);
+                clobber();
                 const_reference ref2 = c[500];
+                do_not_optimize(&ref2);
+                clobber();
                 const_reference ref3 = c[999];
-                (void) ref1; (void) ref2; (void) ref3;
+                do_not_optimize(&ref3);
+                clobber();
             }
         }
     }
@@ -73,18 +93,20 @@ struct bench_front
         C c = fill_n<C>(10000);
         {
             Timer t("& " + name + "::front()");
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 reference ref = c.front();
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
         {
             Timer t("const& " + name + "::front()");
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 const_reference ref = c.front();
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
     }
@@ -100,18 +122,20 @@ struct bench_back
         C c = fill_n<C>(10000);
         {
             Timer t("& " + name + "::back()");
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 reference ref = c.back();
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
         {
             Timer t("const& " + name + "::back()");
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 const_reference ref = c.back();
-                (void) ref;
+                do_not_optimize(&ref);
+                clobber();
             }
         }
     }
@@ -126,18 +150,20 @@ struct bench_data
         C c = fill_n<C>(10000);
         {
             Timer t("T* " + name + "::data()");
-            for (int i = 0; i < 1000; ++i)
+            for (int i = 0; i < 1000000; ++i)
             {
                 value_type* data = c.data();
-                (void) data;
+                do_not_optimize(data);
+                clobber();
             }
         }
         {
-            Timer t("const T* " + name + "::back()");
-            for (int i = 0; i < 1000; ++i)
+            Timer t("const T* " + name + "::data()");
+            for (int i = 0; i < 1000000; ++i)
             {
                 const value_type* data = c.data();
-                (void) data;
+                do_not_optimize(data);
+                clobber();
             }
         }
     }

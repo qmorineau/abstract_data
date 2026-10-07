@@ -66,7 +66,6 @@ class Accum
 #include "template/benchmark/bench_common.tpp"
 #include "template/benchmark/bench_element_access.tpp"
 
-void benchmark();
 template <class C>
 void bench_common(const std::string& name);
 template <class C>

@@ -7,8 +7,12 @@ struct bench_constructor_destructor
 	static void run(const std::string& name)
     {
          Timer t (name + " default constructor");
-        for (int i = 0; i < 100; ++i)
+        for (int i = 0; i < 1000000; ++i)
+        {
             C c;
+            do_not_optimize(&c);
+            clobber();
+        }
     }
 };
 
@@ -19,8 +23,11 @@ struct bench_copy_constructor
     {
         C to_copy = fill_n<C>(1500);
         Timer t (name + " copy constructor");
-        for (int i = 0; i < 100; ++i)
+        for (int i = 0; i < 10000; ++i)
+        {
             C tmp(to_copy);
+            touch_all(tmp);
+        }
     }
 };
 
@@ -30,9 +37,13 @@ struct bench_copy_operator
 	static void run(const std::string& name)
     {
         C to_copy = fill_n<C>(1500);
+        C dest;
         Timer t (name + "::operator=");
-        for (int i = 0; i < 100; ++i)
-            C tmp = to_copy;
+        for (int i = 0; i < 10000; ++i)
+        {
+            dest = to_copy;
+            touch_all(dest);
+        }
     }
 };
 
@@ -44,11 +55,13 @@ struct bench_assign_value
         typename C::size_type size = 150;
         typename C::value_type value = generate_value<C>(12345);        
         TimerAccum t(name + "::assign(size n, value)");
-        for (int i = 0; i < 1000; ++i)
+        for (int i = 0; i < 10000; ++i)
         {
             C c;
             Accum a(t.total());
             c.assign(size, value);
+            do_not_optimize(&c);
+            clobber();
         }
     }
 };
@@ -61,11 +74,13 @@ struct bench_assign_it
         typedef typename C::value_type value_type;
         std::vector<value_type> v = fill_n<std::vector<value_type> >(100);
         TimerAccum t(name + "::assign(first, last)");
-        for (int i = 0; i < 1000; ++i)
+        for (int i = 0; i < 10000; ++i)
         {
             C c;
             Accum a(t.total());
             c.assign(v.begin(), v.end());
+            do_not_optimize(&c);
+            clobber();
         }
     }
 };
@@ -78,7 +93,10 @@ struct bench_get_allocator
         C c;
         Timer t(name + "::get_allocator");
         for (int i = 0; i < 1000; ++i)
-            c.get_allocator();
+        {
+            do_not_optimize(&c.get_allocator());
+            clobber();
+        }
     }
 };
 

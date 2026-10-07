@@ -86,6 +86,7 @@ namespace ft
 			size_type		_capacity;
 
 			void range_check(size_type n) const;
+			void throw_out_of_range(size_type n) const;
 			template <class InputIt>
 			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>

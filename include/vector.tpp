@@ -467,13 +467,19 @@ namespace ft
 	ft::vector<T, Allocator>::range_check(size_type n) const
 	{
 		if (n >= this->size())
-		{
-			std::string msg("vector::range_check: n (which is "
-				+ ft::to_string(n)
-				+ ") >= this->size() (which is "
-				+ ft::to_string(this->size()) + ")");
-			throw ft::out_of_range(msg);
-		}
+			throw_out_of_range(n);
+	}
+
+	template <class T, class Allocator>
+	void
+	ft::vector<T, Allocator>::throw_out_of_range(size_type n) const
+	{
+		throw ft::out_of_range(
+			std::string("vector::range_check: n (which is "
+			+ ft::to_string(n)
+			+ ") >= this->size() (which is "
+			+ ft::to_string(this->size()) + ")")
+		);
 	}
 
 	template <class T, class Allocator>

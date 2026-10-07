@@ -85,7 +85,7 @@ void benchmark_type(std::string name)
 	std::cout << std::endl;
 }
 
-void benchmark()
+int main()
 {
 	benchmark_type<ns::vector>("vector");
 	benchmark_type<ns::list>("list");
