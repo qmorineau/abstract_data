@@ -6,6 +6,7 @@
 #include <string>
 
 #include "container_traits.hpp"
+#include "helper.hpp"
 
 class Timer
 {
@@ -61,8 +62,14 @@ class Accum
 };
 
 
-#include "template/benchmark.tpp"
+#include "template/benchmark/benchmark.tpp"
+#include "template/benchmark/bench_common.tpp"
+#include "template/benchmark/bench_element_access.tpp"
 
 void benchmark();
+template <class C>
+void bench_common(const std::string& name);
+template <class C>
+void bench_element_access(const std::string& name);
 
 #endif

@@ -10,7 +10,7 @@ struct run_if_bench
 template <template <typename> class Bench, typename C>
 struct run_if_bench<false, Bench, C>
 {
-    static void run() { std::cout << "(skipped)" << std::endl; }
+    static void run(const std::string& name) {(void) name;}
 };
 
 #define RUN_BENCH_IF(trait, bench, C, name) \

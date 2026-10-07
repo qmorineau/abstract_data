@@ -16,6 +16,7 @@
 #include "benchmark.hpp"
 #include "container_traits.hpp"
 #include "testing_classes.hpp"
+#include "helper.hpp"
 
 #ifdef STD
 	namespace ns = std;
@@ -77,7 +78,6 @@ template <typename Container>
 void print(Container c);
 
 
-#include "template/generic_test/helper.tpp"
 
 #include "template/generic_test/2_test_common_func.tpp"
 #include "template/generic_test/2_test_capacity_func.tpp"

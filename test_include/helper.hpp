@@ -1,5 +1,9 @@
-#ifndef HELPER_TPP
-#define HELPER_TPP
+#ifndef HELPER_HPP
+#define HELPER_HPP
+
+#include <string>
+#include <iostream>
+#include <sstream>
 
 template <typename T>
 struct value_generator
