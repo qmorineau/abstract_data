@@ -65,10 +65,17 @@ class Accum
 #include "template/benchmark/benchmark.tpp"
 #include "template/benchmark/bench_common.tpp"
 #include "template/benchmark/bench_element_access.tpp"
+#include "template/benchmark/bench_modifier.tpp"
+#include "template/benchmark/bench_non_member.tpp"
 
 template <class C>
 void bench_common(const std::string& name);
 template <class C>
 void bench_element_access(const std::string& name);
+template <class C>
+void bench_modifier(const std::string& name);
+template <class C>
+void bench_non_member(const std::string& name);
+
 
 #endif

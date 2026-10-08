@@ -198,17 +198,6 @@ struct test_pop_back
 };
 
 template <typename Container>
-struct test_resize
-{
-	static void run()
-	{
-		std::cout << "===== Test: resize() =====" << std::endl;
-		// to do
-		assert(true == false);
-	}
-};
-
-template <typename Container>
 struct test_swap
 {
 	static void run()
@@ -246,7 +235,6 @@ void test_modifiers_func()
 	RUN_IF(has_erase_key, test_erase_key, Container);
 	RUN_IF(has_push_back, test_push_back, Container);
 	RUN_IF(has_pop_back, test_pop_back, Container);
-	// RUN_IF(has_resize, test_resize, Container);
 	RUN_IF(has_swap, test_swap, Container);
 }
 

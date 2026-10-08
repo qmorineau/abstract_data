@@ -51,6 +51,7 @@ struct container_traits_default
 		has_max_size = 0,
 		has_reserve = 0,
 		has_capacity = 0,
+		has_resize = 0,
 		// modifiers
 		has_clear = 0,
 		has_insert = 0,
@@ -60,7 +61,6 @@ struct container_traits_default
 		has_pop_front = 0,
 		has_push_back = 0,
 		has_pop_back = 0,
-		has_resize = 0,
 		has_swap = 0,
 		// non member
 		has_is_equal_operator = 0,

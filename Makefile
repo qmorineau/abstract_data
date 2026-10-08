@@ -38,8 +38,6 @@ F_STD_TIME = output.std.time
 F_FT_TIME = output.ft.time
 AWK_FILE = compare.awk
 
-THRESHOLD ?= 20
-
 all: $(NAME) $(NAME_STD) $(BENCH) $(BENCH_STD)
 
 $(NAME): $(OBJ_FT)
@@ -98,10 +96,10 @@ diff: all
 benchmark: $(BENCH) $(BENCH_STD)
 	./$(BENCH) > $(F_FT_TIME)
 	./$(BENCH_STD) > $(F_STD_TIME)
-	-awk -v threshold=$(THRESHOLD) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 awk:
-	-awk -v threshold=$(THRESHOLD) -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 ft: $(NAME)
 	clear

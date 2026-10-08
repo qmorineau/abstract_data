@@ -54,6 +54,17 @@ struct test_max_size
 };
 
 // template <typename Container>
+// struct test_resize
+// {
+// 	static void run()
+// 	{
+// 		std::cout << "===== Test: resize() =====" << std::endl;
+// 		// to do
+// 		assert(true == false);
+// 	}
+// };
+
+// template <typename Container>
 // struct test_reserve
 // {
 // 	static void run()
@@ -86,6 +97,7 @@ void test_capacity_func()
 	RUN_IF(has_max_size, test_max_size, Container);
 	// RUN_IF(has_reserve, test_reserve, Container);
 	// RUN_IF(has_capacity, test_capacity, Container);
+	// RUN_IF(has_resize, test_resize, Container);
 }
 
 #endif

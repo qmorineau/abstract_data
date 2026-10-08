@@ -1,25 +1,46 @@
-# usage: awk -v threshold=1.5 \
-#            -f compare.awk output.ft.time output.std.time
-#   threshold : ratio above which ft is a KO (ft_time / std_time)
-#   low       : ratio below which ft is "too fast to be true"
-#   noise     : time (in the file's units) below which a measure is just noise
+# usage: awk -f compare.awk output.ft.time output.std.time
+#   ratio = ft_time / std_time
+#   NOISE : both times < NOISE
+#   KO    : ratio > THRESHOLD (subject requirement)
+#   CHECK : ratio < LOW (suspiciously fast, verify the bench)
+#   OK    : ratio < GOOD, leave it alone (bold green)
+#   OPTIM : GOOD <= ratio <= THRESHOLD, worth optimizing
+#           (colored yellow -> orange -> red on a log scale)
 
 # strip the ": 1234 useconds" suffix to keep only the test name
 function name(s) { sub(/: *[0-9.e+-]+ useconds.*$/, "", s); return s }
 
-BEGIN {
-    RED = "\033[31m"; GREEN = "\033[32m"; YELLOW = "\033[33m"; GREY = "\033[90m"
-    RESET = "\033[0m"
+# 256-color escape for a ratio: first color at x GOOD, last at x THRESHOLD
+function gradient(r,    pos, idx) {
+    if (r <= GOOD) return pal[1]
+    pos = log(r / GOOD) / log(THRESHOLD / GOOD)   # 0 at x GOOD, 1 at x THRESHOLD
+    if (pos > 1) pos = 1
+    idx = int(pos * (NPAL - 1)) + 1
+    return pal[idx]
+}
 
-    low   = 0.5   # ratio below which ft is "too fast to be true"
-    noise = 5     # time (in useconds) below which a measure is just noise
-    if (threshold == "") threshold = 1.5   # still overridable from the Makefile
+BEGIN {
+    THRESHOLD = 20    # fixed by the subject
+    GOOD      = 2     # below this ratio, nothing to do
+    LOW       = 0.5   # ratio below which ft is "too fast to be true"
+    NOISE     = 5     # time (in useconds) below which a measure is just noise
+
+    RESET     = "\033[0m"
+    GREY      = "\033[90m"
+    GOOD_COL  = "\033[1;38;5;46m"       # bold bright green: untouched
+    CHECK_COL = "\033[1;5;38;5;201m"    # bold blinking magenta: verify the bench
+    KO_COL    = "\033[1;97;41m"         # bold white on red background
+
+    # yellow -> orange -> red (gradient for tests to optimize)
+    NPAL = split("226 220 214 208 202 196", codes, " ")
+    for (i = 1; i <= NPAL; i++)
+        pal[i] = "\033[38;5;" codes[i] "m"
 }
 
 # lines that are not measurements (separators, titles): copy them as is
 !/useconds *$/ { if (NR != FNR) print; next }
 
-# 1st file = ft: store times and names by line number
+# 1st file = ft
 NR == FNR { t_ft[FNR] = $(NF-1); next }
 
 # 2nd file = std: compare ft against it
@@ -36,16 +57,18 @@ NR == FNR { t_ft[FNR] = $(NF-1); next }
 
     ratio = ft / std
 
-    if (ft < noise && std < noise)           { col = GREY;   state = "NOISE" }               # too short to be meaningful
-    else if (ratio > threshold)              { col = RED;    state = "KO";    ko++ }         # ft noticeably slower
-    else if (ratio < low)                    { col = YELLOW; state = "CHECK"; check++ }      # suspiciously fast: verify the bench
-    else                                     { col = GREEN;  state = "OK" }
+    if (ft < NOISE && std < NOISE)  { col = GREY;      state = "NOISE" }
+    else if (ratio > THRESHOLD)     { col = KO_COL;    state = "KO";    ko++ }
+    else if (ratio < LOW)           { col = CHECK_COL; state = "CHECK"; check++ }
+    else if (ratio < GOOD)          { col = GOOD_COL;  state = "OK";    ok++ }
+    else                            { col = gradient(ratio); state = "OPTIM"; optim++ }
 
     printf "%-45s ft=%10d  std=%10d  x%-7.2f %s%s%s\n", n, ft, std, ratio, col, state, RESET
 }
 
-# only KO makes the script fail (CHECK is a hint, not an error)
+# only KO makes the script fail (CHECK and OPTIM are hints, not errors)
 END {
-    print ko+0 " KO, " check+0 " to check"
+    printf "%s%d OK%s, %d OPTIM, %d CHECK, %s%d KO%s\n", \
+        GOOD_COL, ok+0, RESET, optim+0, check+0, (ko > 0 ? KO_COL : ""), ko+0, RESET
     exit (ko > 0)
 }

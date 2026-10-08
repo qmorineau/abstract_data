@@ -10,7 +10,6 @@ static void print_list(ns::list<T>& l)
 }
 
 // splice
-
 static void test_list_splice_full()
 {
 	std::cout << "===== Test: list::splice(pos, list) =====" << std::endl;
@@ -103,7 +102,6 @@ static void test_list_splice()
 }
 
 //remove
-
 static void test_list_remove_value()
 {
 	std::cout << "===== Test: list::remove(const T& value) =====" << std::endl;
@@ -148,7 +146,6 @@ static void test_list_remove()
 }
 
 // unique
-
 static void test_list_unique_no_pred()
 {
 	std::cout << "===== Test: list::unique() =====" << std::endl;
@@ -191,7 +188,6 @@ static void test_list_unique()
 }
 
 // merge
-
 static void test_list_merge_normal()
 {
 	std::cout << "===== Test: list::merge(list) =====" << std::endl;
@@ -243,9 +239,7 @@ static void test_list_merge()
 	test_list_merge_compare();
 }
 
-
 // sort
-
 static void test_list_sort_normal()
 {
 	std::cout << "===== Test: list::sort() =====" << std::endl;
@@ -287,7 +281,6 @@ static void test_list_sort()
 }
 
 // reverse
-
 static void test_list_reverse()
 {
 	std::cout << "===== Test: list::reverse() =====" << std::endl;
