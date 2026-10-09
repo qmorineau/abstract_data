@@ -99,7 +99,8 @@ benchmark: $(BENCH) $(BENCH_STD)
 	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 awk:
-	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	clear
+	@-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 ft: $(NAME)
 	clear

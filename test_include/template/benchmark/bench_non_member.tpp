@@ -6,7 +6,13 @@ struct bench_is_equal
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+        C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator==");
+		for (int i = 0; i < 100000; ++i)
+			a == b;
     }
 };
 
@@ -15,7 +21,13 @@ struct bench_is_different
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+		C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator!=");
+		for (int i = 0; i < 100000; ++i)
+			a != b;
     }
 };
 
@@ -24,7 +36,13 @@ struct bench_is_lesser
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+        C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator<");
+		for (int i = 0; i < 100000; ++i)
+			a < b;
     }
 };
 
@@ -33,7 +51,13 @@ struct bench_is_lesser_equal
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+        C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator<=");
+		for (int i = 0; i < 100000; ++i)
+			a <= b;
     }
 };
 
@@ -42,7 +66,13 @@ struct bench_is_greater
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+    	C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator>");
+		for (int i = 0; i < 100000; ++i)
+			a > b;
     }
 };
 
@@ -51,7 +81,13 @@ struct bench_is_greater_equal
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+        C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + "::operator>=");
+		for (int i = 0; i < 100000; ++i)
+			a >= b;
     }
 };
 
@@ -60,7 +96,13 @@ struct bench_std_swap_specialization
 {
 	static void run(const std::string& name)
     {
-        (void) name;
+        C a = fill_n<C>(1000);
+		C b = fill_n<C>(1001);
+		do_not_optimize(&a);
+		do_not_optimize(&b);
+		Timer t(name + " std::swap specialization");
+		for (int i = 0; i < 1000; ++i)
+			std::swap(a, b);
     }
 };
 

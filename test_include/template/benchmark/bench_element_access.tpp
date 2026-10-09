@@ -9,6 +9,7 @@ struct bench_at
         typedef typename C::reference reference;
         typedef typename C::const_reference const_reference;
         C c = fill_n<C>(1000);
+		do_not_optimize(&c);
         {
             Timer t(name + "::at() &");
             for (int i = 0; i < 1000000; ++i)
@@ -50,6 +51,7 @@ struct bench_operator_square_bracket
         typedef typename C::reference reference;
         typedef typename C::const_reference const_reference;
         C c = fill_n<C>(1000);
+		do_not_optimize(&c);
         {
             Timer t("& " + name + "::operator[]");
             for (int i = 0; i < 1000000; ++i)
@@ -91,6 +93,7 @@ struct bench_front
         typedef typename C::reference reference;
         typedef typename C::const_reference const_reference;
         C c = fill_n<C>(10000);
+		do_not_optimize(&c);
         {
             Timer t("& " + name + "::front()");
             for (int i = 0; i < 1000000; ++i)
@@ -120,6 +123,7 @@ struct bench_back
         typedef typename C::reference reference;
         typedef typename C::const_reference const_reference;
         C c = fill_n<C>(10000);
+		do_not_optimize(&c);
         {
             Timer t("& " + name + "::back()");
             for (int i = 0; i < 1000000; ++i)
@@ -148,6 +152,7 @@ struct bench_data
     {
         typedef typename C::value_type value_type;
         C c = fill_n<C>(10000);
+		do_not_optimize(&c);
         {
             Timer t("T* " + name + "::data()");
             for (int i = 0; i < 1000000; ++i)

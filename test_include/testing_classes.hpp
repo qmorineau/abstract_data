@@ -34,6 +34,10 @@ class Foo
 				_n = other._n;
 			return *this;
 		}
+		bool operator<(const Foo& other) const
+		{
+			return _n < other._n;
+		}
 		~Foo()
 		{
 			if (_allocated_ptr)

@@ -38,6 +38,7 @@ class TimerAccum
 			std::cout << _label << ": " << _total << " useconds"<< std::endl;
 		}
 		double& total() {return _total;}
+		double& operator*() {return _total;};
 	private:
 		std::string 	_label;
 		double			_total;

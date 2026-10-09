@@ -38,6 +38,7 @@ struct bench_copy_operator
     {
         C to_copy = fill_n<C>(1500);
         C dest;
+		do_not_optimize(&dest);
         Timer t (name + "::operator=");
         for (int i = 0; i < 10000; ++i)
         {
@@ -58,9 +59,9 @@ struct bench_assign_value
         for (int i = 0; i < 10000; ++i)
         {
             C c;
-            Accum a(t.total());
+			do_not_optimize(&c);
+            Accum a(*t);
             c.assign(size, value);
-            do_not_optimize(&c);
             clobber();
         }
     }
@@ -77,9 +78,9 @@ struct bench_assign_it
         for (int i = 0; i < 10000; ++i)
         {
             C c;
-            Accum a(t.total());
-            c.assign(v.begin(), v.end());
             do_not_optimize(&c);
+            Accum a(*t);
+            c.assign(v.begin(), v.end());
             clobber();
         }
     }
@@ -91,6 +92,7 @@ struct bench_get_allocator
 	static void run(const std::string& name)
     {
         C c;
+		do_not_optimize(&c);
         Timer t(name + "::get_allocator");
         for (int i = 0; i < 1000; ++i)
         {

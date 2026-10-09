@@ -23,7 +23,7 @@ BEGIN {
     THRESHOLD = 20    # fixed by the subject
     GOOD      = 2     # below this ratio, nothing to do
     LOW       = 0.5   # ratio below which ft is "too fast to be true"
-    NOISE     = 5     # time (in useconds) below which a measure is just noise
+    NOISE     = 10000 # time (in useconds) below which a measure is just noise
 
     RESET     = "\033[0m"
     GREY      = "\033[90m"
@@ -51,7 +51,7 @@ NR == FNR { t_ft[FNR] = $(NF-1); next }
 
     # invalid reference time: avoid a division by zero
     if (std <= 0) {
-        printf "%-45s ft=%10d  std=%10d  x?       N/A\n", n, ft, std
+        printf "%-55s ft=%10d  std=%10d  x?       N/A\n", n, ft, std
         next
     }
 
@@ -63,7 +63,10 @@ NR == FNR { t_ft[FNR] = $(NF-1); next }
     else if (ratio < GOOD)          { col = GOOD_COL;  state = "OK";    ok++ }
     else                            { col = gradient(ratio); state = "OPTIM"; optim++ }
 
-    printf "%-45s ft=%10d  std=%10d  x%-7.2f %s%s%s\n", n, ft, std, ratio, col, state, RESET
+	if (state != "OK")
+	{
+    	printf "%-55s ft=%10d  std=%10d  x%-7.2f %s%s%s\n", n, ft, std, ratio, col, state, RESET
+	}
 }
 
 # only KO makes the script fail (CHECK and OPTIM are hints, not errors)
