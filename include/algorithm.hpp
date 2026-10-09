@@ -10,7 +10,19 @@ namespace ft
 	bool lexicographical_compare(InputIterator1 first1, InputIterator1 last1, InputIterator2 first2, InputIterator2 last2, Compare comp);
 
 	template <class T>
-	void swap( T& a, T& b );
+	void swap(T& a, T& b );
+
+	template <class T>
+	const T& min(const T& a, const T& b);
+
+	template <class T, class Compare>
+	const T& min(const T& a, const T& b, Compare comp);
+
+	template <class T>
+	const T& max(const T& a, const T& b);
+
+	template <class T, class Compare>
+	const T& max(const T& a, const T& b, Compare comp);
 }
 
 #include "algorithm.tpp"

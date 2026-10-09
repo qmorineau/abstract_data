@@ -16,6 +16,8 @@ struct bench_push_front
 				do_not_optimize(&c);
                 Accum a(*t);
                 c.push_front(value);
+				touch(c);
+				clobber();
             }
         }
         {
@@ -24,7 +26,11 @@ struct bench_push_front
 			do_not_optimize(&c);
             Timer t(name + "::push_front()");
             for (int i = 0; i < 100000; ++i)
+			{
                 c.push_front(value);
+				touch(c);
+				clobber();
+			}
         }
     }
 };
@@ -43,6 +49,8 @@ struct bench_pop_front
 				do_not_optimize(&c);
                 Accum a(*t);
                 c.pop_front();
+				touch(c);
+				clobber();
             }
         }
         {
@@ -52,6 +60,7 @@ struct bench_pop_front
             for (size_t i = 0; i < size; ++i)
 			{
                 c.pop_front();
+				touch(c);
 				clobber();
 			}
         }
@@ -73,6 +82,8 @@ struct bench_push_back
 				do_not_optimize(&c);
                 Accum a(*t);
                 c.push_back(value);
+				touch(c);
+				clobber();
             }
         }
         {
@@ -81,7 +92,11 @@ struct bench_push_back
 			do_not_optimize(&c);
             Timer t(name + "::push_back()");
             for (int i = 0; i < 100000; ++i)
+			{
                 c.push_back(value);
+				touch(c);
+				clobber();
+			}
         }
     }
 };
@@ -99,6 +114,8 @@ struct bench_pop_back
 				do_not_optimize(&c);
                 Accum a(*t);
                 c.pop_back();
+				touch(c);
+				clobber();
             }
         }
         {
@@ -109,6 +126,7 @@ struct bench_pop_back
             for (size_t i = 0; i < size; ++i)
 			{
                 c.pop_back();
+				touch(c);
 				clobber();
 			}
         }
@@ -131,6 +149,8 @@ struct bench_insert_value
 				iterator it = c.begin();
 				Accum a(*t);
 				c.insert(it, value);
+				touch(c);
+				clobber();
 			}
 		}
 		{
@@ -142,6 +162,8 @@ struct bench_insert_value
 				iterator it = c.end();
 				Accum a(*t);
 				c.insert(it, value);
+				touch(c);
+				clobber();
 			}
 		}
     }
@@ -164,6 +186,8 @@ struct bench_insert_n_value
 				iterator it = c.begin();
 				Accum a(*t);
 				c.insert(it, size, value);
+				touch(c);
+				clobber();
 			}
 		}
 		{
@@ -175,6 +199,8 @@ struct bench_insert_n_value
 				iterator it = c.end();
 				Accum a(*t);
 				c.insert(it, size, value);
+				touch(c);
+				clobber();
 			}
 		}
     }
@@ -202,6 +228,8 @@ struct bench_insert_it
 				iterator it = c.begin();
 				Accum a(*t);
 				c.insert(it, first, last);
+				touch(c);
+				clobber();
 			}
 		}
 		{
@@ -213,6 +241,8 @@ struct bench_insert_it
 				iterator it = c.end();
 				Accum a(*t);
 				c.insert(it, first, last);
+				touch(c);
+				clobber();
 			}
 		}
     }
@@ -233,6 +263,8 @@ struct bench_erase_pos
 			iterator it = c.begin();
 			Accum a(*t);
 			c.erase(it);
+			touch(c);
+			clobber();
 		}
     }
 };
@@ -253,6 +285,8 @@ struct bench_erase_it
 			iterator last = c.end();
 			Accum a(*t);
 			c.erase(first, last);
+			touch(c);
+			clobber();
 		}
     }
 };
@@ -268,7 +302,12 @@ struct bench_swap
 		do_not_optimize(&b);
 		Timer t(name + "::swap(Container)");
 		for (int i = 0; i < 100000; ++i)
+		{
 			a.swap(b);
+			touch(a);
+			touch(b);
+			clobber();
+		}
     }
 };
 
@@ -280,10 +319,11 @@ struct bench_clear
 		TimerAccum t(name + "::clear()");
 		for (int i = 0; i < 1000; ++i)
 		{
-	        C c = fill_n<C>(10000);
+	        C c = fill_n<C>(1000);
 			do_not_optimize(&c);
 			Accum a(*t);
 			c.clear();
+			touch(c);
 			clobber();
 		}
     }

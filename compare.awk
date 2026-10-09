@@ -1,4 +1,4 @@
-# usage: awk -f compare.awk output.ft.time output.std.time
+# usage: awk [-v show_ok=1] -f compare.awk output.ft.time output.std.time
 #   ratio = ft_time / std_time
 #   NOISE : both times < NOISE
 #   KO    : ratio > THRESHOLD (subject requirement)
@@ -63,7 +63,7 @@ NR == FNR { t_ft[FNR] = $(NF-1); next }
     else if (ratio < GOOD)          { col = GOOD_COL;  state = "OK";    ok++ }
     else                            { col = gradient(ratio); state = "OPTIM"; optim++ }
 
-	if (state != "OK")
+	if (state != "OK" || show_ok)
 	{
     	printf "%-55s ft=%10d  std=%10d  x%-7.2f %s%s%s\n", n, ft, std, ratio, col, state, RESET
 	}

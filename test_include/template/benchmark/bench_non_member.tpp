@@ -11,8 +11,11 @@ struct bench_is_equal
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator==");
-		for (int i = 0; i < 100000; ++i)
-			a == b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a == b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -26,8 +29,11 @@ struct bench_is_different
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator!=");
-		for (int i = 0; i < 100000; ++i)
-			a != b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a != b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -41,8 +47,11 @@ struct bench_is_lesser
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator<");
-		for (int i = 0; i < 100000; ++i)
-			a < b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a < b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -56,8 +65,11 @@ struct bench_is_lesser_equal
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator<=");
-		for (int i = 0; i < 100000; ++i)
-			a <= b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a <= b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -71,8 +83,11 @@ struct bench_is_greater
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator>");
-		for (int i = 0; i < 100000; ++i)
-			a > b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a > b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -86,8 +101,11 @@ struct bench_is_greater_equal
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		Timer t(name + "::operator>=");
-		for (int i = 0; i < 100000; ++i)
-			a >= b;
+		for (int i = 0; i < 10000; ++i)
+		{
+			bool ret = a >= b;
+			do_not_optimize(&ret);
+		}
     }
 };
 
@@ -102,7 +120,7 @@ struct bench_std_swap_specialization
 		do_not_optimize(&b);
 		using std::swap;
 		Timer t(name + " std::swap specialization");
-		for (int i = 0; i < 100000; ++i)
+		for (int i = 0; i < 10000; ++i)
 		{
 			swap(a, b);
 			clobber();

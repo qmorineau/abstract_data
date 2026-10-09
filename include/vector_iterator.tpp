@@ -14,7 +14,7 @@ namespace ft
 	{}
 
 	template <class T, class Pointer, class Reference>
-	vector_iterator<T, Pointer, Reference>::vector_iterator(T* p)
+	vector_iterator<T, Pointer, Reference>::vector_iterator(pointer p)
 		: _ptr(p)
 	{}
 
@@ -32,14 +32,13 @@ namespace ft
 	vector_iterator<T, Pointer, Reference>&
 	vector_iterator<T, Pointer, Reference>::operator=(const vector_iterator& other)
 	{
-		if (this != &other)
-			_ptr = other._ptr;
+		_ptr = other._ptr;
 		return *this;
 	}
 
 	// ====== base() ======
 	template <class T, class Pointer, class Reference>
-	typename vector_iterator<T, Pointer, Reference>::value_type*
+	typename vector_iterator<T, Pointer, Reference>::pointer
 	vector_iterator<T, Pointer, Reference>::base(void) const
 	{
 		return _ptr;

@@ -17,7 +17,7 @@ namespace ft
 
 			// construct / destruct / copy
 			vector_iterator(void);
-			vector_iterator(T* p);
+			vector_iterator(pointer p);
 			template <class T2, class Pointer2, class Reference2>
 			vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other);
 			~vector_iterator();
@@ -48,9 +48,9 @@ namespace ft
 			bool operator>=(const vector_iterator&) const;
 
 			// getter
-			T* base(void) const;
+			pointer base(void) const;
 		private:
-			T*	_ptr;
+			pointer	_ptr;
 	};
 	// non-members
 	template <class T, class Pointer, class Reference>

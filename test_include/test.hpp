@@ -43,6 +43,7 @@ struct run_if<false, Test, C>
 // Specific Test
 void test_exceptions();
 void test_iterators();
+void test_helpers();
 void test_vector();
 void test_deque();
 void test_list();

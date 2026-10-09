@@ -84,8 +84,9 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
-		clear();
-		insert(begin(), first, last);
+		// clear();
+		// insert(begin(), first, last);
+		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 	template <class T, class Allocator>
 	void
@@ -534,6 +535,67 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
+	template <class InputIt>
+	void
+	ft::vector<T, Allocator>::assign_dispatch(InputIt first, InputIt last, input_iterator_tag)
+	{
+		vector<T, Allocator> tmp;
+		for (; first != last; ++first)
+			tmp.push_back(*first);
+		assign_dispatch(tmp.begin(), tmp.end(), forward_iterator_tag());
+	}
+
+	template <class T, class Allocator>
+	template <class ForwardIt>
+	void
+	ft::vector<T, Allocator>::assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
+	{
+		size_type new_size = ft::distance(first, last);
+		if (_capacity < new_size)
+		{
+			if (new_size > max_size())
+				throw ft::length_error("vector::assign");
+			T* tmp = _allocator.allocate(new_size);
+			size_type i = 0;
+			try
+	        {
+	            for (; i < new_size; ++i, ++first)
+	                _allocator.construct(tmp + i, *first);
+	        }
+	        catch (...)
+	        {
+	            for (size_type j = 0; j < i; ++j)
+	                _allocator.destroy(tmp + j);
+	            _allocator.deallocate(tmp, new_size);
+	            throw;
+	        }
+			destroy_all();
+			_capacity = new_size;
+			_data = tmp;
+		}
+		else if (new_size > _size)
+		{
+			size_type i = 0;
+			for (; i < _size; ++i, ++first)
+				_data[i] = *first;
+			for (; i < new_size; ++i)
+			{
+				_allocator.construct(_data + i, *first++);
+				++_size;
+			}
+		}
+		else
+		{
+			size_type i = 0;
+			for (; i < new_size; ++i, ++first)
+				_data[i] = *first;
+			for (; i < _size; ++i)
+				_allocator.destroy(_data + i);
+		}
+		_size = new_size;
+	}
+
+	template <class T, class Allocator>
 	void
 	ft::vector<T, Allocator>::destroy_all()
 	{
@@ -559,7 +621,9 @@ namespace ft
 		typedef typename vector<T,Allocator>::const_iterator const_iterator;
 		const_iterator itx = x.begin();
 		const_iterator ity = y.begin();
-		for (; itx != x.end() && ity != y.end(); ++itx, ++ity)
+		const_iterator x_end = x.end();
+		const_iterator y_end = y.end();
+		for (; itx != x_end && ity != y_end; ++itx, ++ity)
 		{
 			if (!(*itx == *ity))
 				return false;

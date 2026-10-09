@@ -10,6 +10,7 @@ int main()
 	<< "=======================================" << std::endl << std::endl;
 	// test_exceptions();
 	// test_iterators();
+	test_helpers();
 	test_sequence_container<ns::vector>("vector");
 	// test_sequence_container<ns::deque>("deque");
 	test_sequence_container<ns::list>("list");

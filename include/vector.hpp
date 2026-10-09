@@ -91,6 +91,10 @@ namespace ft
 			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>
 			void insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag);
+			template <class InputIt>
+			void assign_dispatch(InputIt first, InputIt last, input_iterator_tag);
+			template <class ForwardIt>
+			void assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
 			void destroy_all();
 	};
 	// operator

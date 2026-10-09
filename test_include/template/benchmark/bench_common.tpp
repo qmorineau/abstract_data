@@ -21,7 +21,7 @@ struct bench_copy_constructor
 {
 	static void run(const std::string& name)
     {
-        C to_copy = fill_n<C>(1500);
+        C to_copy = fill_n<C>(1000);
         Timer t (name + " copy constructor");
         for (int i = 0; i < 1000; ++i)
         {
@@ -40,7 +40,7 @@ struct bench_copy_operator
         C dest;
 		do_not_optimize(&dest);
         Timer t (name + "::operator=");
-        for (int i = 0; i < 1000; ++i)
+        for (int i = 0; i < 100; ++i)
         {
             dest = to_copy;
             touch_all(dest);
@@ -94,9 +94,10 @@ struct bench_get_allocator
         C c;
 		do_not_optimize(&c);
         Timer t(name + "::get_allocator");
-        for (int i = 0; i < 1000; ++i)
+        for (int i = 0; i < 1000000; ++i)
         {
-            do_not_optimize(&c.get_allocator());
+			typename C::allocator_type a = c.get_allocator();
+            do_not_optimize(&a);
             clobber();
         }
     }
@@ -110,7 +111,7 @@ void bench_common(const std::string& name)
     RUN_BENCH_IF(has_copy_operator, bench_copy_operator, C, name);
     RUN_BENCH_IF(has_assign, bench_assign_value, C, name);
     RUN_BENCH_IF(has_assign, bench_assign_it, C, name);
-    RUN_BENCH_IF(has_get_allocator, bench_copy_operator, C, name);
+    RUN_BENCH_IF(has_get_allocator, bench_get_allocator, C, name);
 }
 
 #endif

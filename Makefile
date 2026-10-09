@@ -2,8 +2,9 @@
 CXX = c++
 
 # Flags
-CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic #-fsanitize=address,undefined
+CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address,undefined
 CXXFLAGS_BENCH = -Wall -Wextra -Werror -MMD -g -std=c++98 -O2
+MAKEFLAGS += -j$(shell nproc)
 
 # Project Paths
 SRC_DIR = srcs
@@ -12,7 +13,7 @@ INC_DIR = include
 INC_TEST_DIR = test_include
 
 # Include Paths
-INCLUDES = -I $(INC_DIR) -I $(INC_TEST_DIR) \
+INCLUDES = -I $(INC_DIR) -I $(INC_TEST_DIR)
 			
 # Sources
 SRC_TEST  = $(shell find $(SRC_DIR)/test $(SRC_DIR)/common -name "*.cpp" 2>/dev/null)
@@ -73,7 +74,9 @@ $(OBJ_DIR)/bench_std/%.o: $(SRC_DIR)/%.cpp
 	@$(CXX) $(CXXFLAGS_BENCH) $(INCLUDES) -D STD -c $< -o $@
 
 
-re:	fclean all
+re:
+	$(MAKE) fclean
+	$(MAKE) all
 
 clean:
 	@rm -rf $(OBJ_DIR)
@@ -86,9 +89,11 @@ fclean: clean
 	@rm -rf $(BENCH_STD)
 	@echo "Clear binaries file"
 
-test: diff benchmark
+test:
+	$(MAKE) diff
+	$(MAKE) benchmark
 
-diff: all
+diff: $(NAME) $(NAME_STD)
 	-./$(NAME) > $(F_FT_OUT)
 	-./$(NAME_STD) > $(F_STD_OUT)
 	-diff $(F_FT_OUT) $(F_STD_OUT)
@@ -97,6 +102,10 @@ benchmark: $(BENCH) $(BENCH_STD)
 	./$(BENCH) > $(F_FT_TIME)
 	./$(BENCH_STD) > $(F_STD_TIME)
 	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+
+awkall:
+	clear
+	@-awk -v show_ok=1 -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 awk:
 	clear

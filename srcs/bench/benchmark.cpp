@@ -12,8 +12,8 @@ static void bench_unit(const std::string name)
 template <template <typename, typename> class Container>
 void benchmark_type(std::string name)
 {
-	// bench_unit<Container<int, std::allocator<int> > >(name + "<int>");
-	// bench_unit<Container<std::string, std::allocator<std::string> > >(name + "<std::string>");
+	bench_unit<Container<int, std::allocator<int> > >(name + "<int>");
+	bench_unit<Container<std::string, std::allocator<std::string> > >(name + "<std::string>");
 	bench_unit<Container<Foo, std::allocator<Foo> > >(name + "<Foo>");
 	std::cout << std::endl;
 }
@@ -21,5 +21,5 @@ void benchmark_type(std::string name)
 int main()
 {
 	benchmark_type<ns::vector>("vector");
-	// benchmark_type<ns::list>("list");
+	benchmark_type<ns::list>("list");
 }
