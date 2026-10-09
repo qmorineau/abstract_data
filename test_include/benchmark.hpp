@@ -21,7 +21,7 @@ class Timer
 			clock_gettime(CLOCK_MONOTONIC, &end);
 
 			long ns = (end.tv_sec - _start.tv_sec) * 1e9 + (end.tv_nsec - _start.tv_nsec);
-			std::cout << _label << ": " << ns << " useconds"<< std::endl;
+			std::cout << _label << ": " << ns << " nseconds"<< std::endl;
 		}
 	private:
 		std::string 	_label;
@@ -35,7 +35,7 @@ class TimerAccum
 		{}
 		~TimerAccum()
 		{
-			std::cout << _label << ": " << _total << " useconds"<< std::endl;
+			std::cout << _label << ": " << _total << " nseconds"<< std::endl;
 		}
 		double& total() {return _total;}
 		double& operator*() {return _total;};

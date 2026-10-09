@@ -95,23 +95,17 @@ namespace ft
 	};
 	// operator
 	template <class T, class Allocator>
-	bool operator==(const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator==(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator< (const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator< (const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator!=(const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator!=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator> (const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator> (const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator>=(const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator>=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator<=(const ft::vector<T,Allocator>& x,
-		const ft::vector<T,Allocator>& y);
+	bool operator<=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
 	// specialized algorithms:
 	template <class T, class Allocator>
 	void swap(ft::vector<T,Allocator>& x, ft::vector<T,Allocator>& y);

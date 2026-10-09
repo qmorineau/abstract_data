@@ -7,8 +7,8 @@
 #   OPTIM : GOOD <= ratio <= THRESHOLD, worth optimizing
 #           (colored yellow -> orange -> red on a log scale)
 
-# strip the ": 1234 useconds" suffix to keep only the test name
-function name(s) { sub(/: *[0-9.e+-]+ useconds.*$/, "", s); return s }
+# strip the ": 1234 nseconds" suffix to keep only the test name
+function name(s) { sub(/: *[0-9.e+-]+ nseconds.*$/, "", s); return s }
 
 # 256-color escape for a ratio: first color at x GOOD, last at x THRESHOLD
 function gradient(r,    pos, idx) {
@@ -23,7 +23,7 @@ BEGIN {
     THRESHOLD = 20    # fixed by the subject
     GOOD      = 2     # below this ratio, nothing to do
     LOW       = 0.5   # ratio below which ft is "too fast to be true"
-    NOISE     = 10000 # time (in useconds) below which a measure is just noise
+    NOISE     = 10000 # time (in nseconds) below which a measure is just noise
 
     RESET     = "\033[0m"
     GREY      = "\033[90m"
@@ -38,7 +38,7 @@ BEGIN {
 }
 
 # lines that are not measurements (separators, titles): copy them as is
-!/useconds *$/ { if (NR != FNR) print; next }
+!/nseconds *$/ { if (NR != FNR) print; next }
 
 # 1st file = ft
 NR == FNR { t_ft[FNR] = $(NF-1); next }

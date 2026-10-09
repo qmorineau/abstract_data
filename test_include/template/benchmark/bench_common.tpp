@@ -23,7 +23,7 @@ struct bench_copy_constructor
     {
         C to_copy = fill_n<C>(1500);
         Timer t (name + " copy constructor");
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 1000; ++i)
         {
             C tmp(to_copy);
             touch_all(tmp);
@@ -40,7 +40,7 @@ struct bench_copy_operator
         C dest;
 		do_not_optimize(&dest);
         Timer t (name + "::operator=");
-        for (int i = 0; i < 10000; ++i)
+        for (int i = 0; i < 1000; ++i)
         {
             dest = to_copy;
             touch_all(dest);
