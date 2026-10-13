@@ -28,7 +28,7 @@ Container fill_n(size_t n)
 	typedef typename Container::value_type value_type;
 	std::vector<value_type> v;
 	for (std::size_t i = 0; i < n; ++i)
-		v.push_back(value_generator<value_type>::make(static_cast<int>(i)));
+		v.push_back(value_generator<value_type>::make(static_cast<int>(i * 10)));
 	return Container(v.begin(), v.end());
 }
 

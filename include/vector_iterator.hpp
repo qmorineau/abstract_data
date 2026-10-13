@@ -2,6 +2,7 @@
 #define VECTOR_ITERATOR_HPP
 
 #include "iterator.hpp"
+#include "cstddef.hpp"
 
 namespace ft
 {

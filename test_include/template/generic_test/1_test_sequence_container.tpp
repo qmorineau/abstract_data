@@ -21,8 +21,8 @@ template <template <typename, typename> class Container>
 void test_sequence_container(std::string name)
 {
 	test_sequence_container_type<Container<int, std::allocator<int> > >(name + "<int>");
-	test_sequence_container_type<Container<std::string, std::allocator<std::string> > >(name + "<int>");
-	test_sequence_container_type<Container<Foo, std::allocator<Foo> > >(name + "<int>");
+	test_sequence_container_type<Container<std::string, std::allocator<std::string> > >(name + "<std::string>");
+	test_sequence_container_type<Container<Foo, std::allocator<Foo> > >(name + "<Foo>");
 	// Throwing class
 	// test_sequence_container_type_typed<Container, ThrowingClass>();
 }

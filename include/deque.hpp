@@ -5,6 +5,8 @@
 
 #include "cstddef.hpp"
 #include "deque_iterator.hpp"
+#include "deque_chunk.hpp"
+#include "vector.hpp"
 
 namespace ft
 {
@@ -74,7 +76,16 @@ namespace ft
 			void swap(deque<T,Allocator>&);
 			void clear();
 		private:
+			// const ft::size_t	_element_per_chunk;
+			// ft::size_t			_block_size;
+			ft::vector<ft::Chunk<T>*>	_map;
 
+			ft::size_t			_start_node;
+			ft::size_t			_start_offset;
+			ft::size_t			_end_node;
+			ft::size_t			_end_offset;
+
+			ft::size_t			_size;
 	};
 	// operator
 	template <class T, class Allocator>

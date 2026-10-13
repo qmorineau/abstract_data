@@ -2,7 +2,10 @@
 #define DEQUE_ITERATOR_HPP
 
 #include "iterator.hpp"
-#include "vector.hpp"
+#include "cstddef.hpp"
+
+template <class T, class Allocator = std::allocator<T> >
+class deque;
 
 namespace ft
 {
@@ -15,10 +18,10 @@ namespace ft
 			typedef T 									value_type;
 			typedef ft::ptrdiff_t						difference_type;
 			typedef ft::random_access_iterator_tag		iterator_category;
-
+ 
 			// construct / destruct / copy
 			deque_iterator(void);
-			deque_iterator(T* p);
+			deque_iterator(deque<T>* owner, ft::size_t map_idx, ft::size_t offset);
 			template <class T2, class Pointer2, class Reference2>
 			deque_iterator(const deque_iterator<T2, Pointer2, Reference2>& other);
 			~deque_iterator();
@@ -49,14 +52,11 @@ namespace ft
 			bool operator>=(const deque_iterator&) const;
 
 			// getter
-			T* base(void) const;
+			pointer base(void) const;
 		private:
-			const ft::size_t	_element_per_chunk;
-			ft::size_t			_block_size;
-			ft::vector<T*>		_map;
-			ft::size_t			_map_begin_idx;
-			ft::size_t			_first;
-
+			deque<T>*	_owner;
+			ft::size_t	_map_idx;
+			ft::size_t	_offset;
 	};
 	// non-members
 	template <class T, class Pointer, class Reference>
@@ -70,6 +70,6 @@ namespace ft
 	bool operator!=(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
 }
 
-#include "deque_iterator.tpp"
+// #include "deque_iterator.tpp"
 
 #endif
