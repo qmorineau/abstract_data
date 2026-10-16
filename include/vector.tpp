@@ -84,8 +84,6 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
-		// clear();
-		// insert(begin(), first, last);
 		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 	template <class T, class Allocator>

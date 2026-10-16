@@ -76,9 +76,12 @@ namespace ft
 			void swap(deque<T,Allocator>&);
 			void clear();
 		private:
-			// const ft::size_t	_element_per_chunk;
-			// ft::size_t			_block_size;
-			ft::vector<ft::Chunk<T>*>	_map;
+			typedef typename Allocator::template rebind<Chunk<T> >::other	chunk_allocator;
+
+			const ft::size_t							_chunk_size = 64;
+			allocator_type								_allocator;
+			chunk_allocator								_chunk_alloc;
+			ft::vector<ft::Chunk<T>*, allocator_type>	_map;
 
 			ft::size_t			_start_node;
 			ft::size_t			_start_offset;
@@ -86,6 +89,8 @@ namespace ft
 			ft::size_t			_end_offset;
 
 			ft::size_t			_size;
+
+			void destroy_all();
 	};
 	// operator
 	template <class T, class Allocator>

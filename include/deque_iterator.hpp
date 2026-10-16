@@ -57,6 +57,8 @@ namespace ft
 			deque<T>*	_owner;
 			ft::size_t	_map_idx;
 			ft::size_t	_offset;
+
+			friend class deque;
 	};
 	// non-members
 	template <class T, class Pointer, class Reference>
@@ -70,6 +72,6 @@ namespace ft
 	bool operator!=(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y);
 }
 
-// #include "deque_iterator.tpp"
+#include "deque_iterator.tpp"
 
 #endif

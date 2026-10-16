@@ -8,15 +8,23 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::deque<T, Allocator>::deque(const Allocator&)
-	{
-		// todo
-	}
+	ft::deque<T, Allocator>::deque(const Allocator& alloc)
+		: _allocator(alloc), _chunk_alloc(alloc), _size(0)
+	{}
 
 	template <class T, class Allocator>
 	ft::deque<T, Allocator>::deque(size_type n, const T& value, const Allocator& alloc)
+		: _allocator(alloc), _chunk_alloc(alloc), _size(0)
 	{
-		// todo
+		try
+		{
+			assign(n, value);
+		}
+		catch(...)
+		{
+			destroy_all();
+			throw ;
+		}
 	}
 
 	template <class T, class Allocator>
@@ -308,6 +316,16 @@ namespace ft
 	// =====================
 	//	  Private-Members
 	// =====================
+
+	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::destroy_all()
+	{
+		if (_size > 0)
+		{
+			// to do destroy each element of chunk, then destroy chunk
+		}
+	}
 
 	// =====================
 	//	    Non-Members

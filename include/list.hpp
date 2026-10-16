@@ -21,7 +21,6 @@ namespace ft
 			typedef typename Allocator::const_reference						const_reference;
 			typedef typename Allocator::pointer								pointer;
 			typedef typename Allocator::const_pointer						const_pointer;
-			typedef typename Allocator::template rebind<Node<T> >::other	node_allocator;
 			typedef T														value_type;
 			typedef ft::size_t												size_type;
 			typedef ft::ptrdiff_t											difference_type;
@@ -92,7 +91,9 @@ namespace ft
 			void sort(Compare comp);
 			void reverse();
 		private:
-			Allocator		_allocator;
+			typedef typename Allocator::template rebind<Node<T> >::other	node_allocator;
+
+			allocator_type	_allocator;
 			node_allocator	_node_alloc;
 			size_type		_size;
 			Node<T>*		_sentinel;

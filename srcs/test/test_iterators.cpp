@@ -388,9 +388,9 @@ void test_iterators()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing Vector Iterator" << std::endl
 	<< "=======================================" << std::endl;
-	test_it_seq_container<ns::vector>("vector");
-	test_it_seq_container<ns::list>("list");
-	// test_it_seq_container<ns::deque>("deque");
+	// test_it_seq_container<ns::vector>("vector");
+	// test_it_seq_container<ns::list>("list");
+	test_it_seq_container<ns::deque>("deque");
 
 	// test_container<ns::vector<int>, int>(true, "vector<int>");
 	// test_pointer<ns::vector>();
