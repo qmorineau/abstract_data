@@ -8,38 +8,21 @@
 #include "container_traits.hpp"
 #include "helper.hpp"
 
-class Timer
-{
-	public:
-		Timer(const std::string& label) : _label(label)
-		{
-			clock_gettime(CLOCK_MONOTONIC, &_start);
-		}
-		~Timer()
-		{
-			struct timespec end;
-			clock_gettime(CLOCK_MONOTONIC, &end);
-
-			long ns = (end.tv_sec - _start.tv_sec) * 1e9 + (end.tv_nsec - _start.tv_nsec);
-			std::cout << _label << ": " << ns << " nseconds"<< std::endl;
-		}
-	private:
-		std::string 	_label;
-		struct timespec _start;
-};
-
 class TimerAccum
 {
 	public:
-		TimerAccum(const std::string& label) : _label(label), _total(0)
+		TimerAccum(const std::string& label) : _iterations(0), _label(label), _total(0)
 		{}
 		~TimerAccum()
 		{
-			std::cout << _label << ": " << _total << " nseconds"<< std::endl;
+			std::cout << _label << ": " << _total << " nseconds; " << _iterations << " iterations" << std::endl;
 		}
+		void	addIterations(size_t i) {_iterations += i;};
+		bool	isEnoughTime() const {return _total > 1000000.0;};
 		double& total() {return _total;}
 		double& operator*() {return _total;};
 	private:
+		size_t			_iterations;
 		std::string 	_label;
 		double			_total;
 };
@@ -61,7 +44,6 @@ class Accum
 		double&			_total;
 		struct timespec _start;
 };
-
 
 #include "template/benchmark/benchmark.tpp"
 #include "template/benchmark/bench_common.tpp"

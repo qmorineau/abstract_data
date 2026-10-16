@@ -6,13 +6,19 @@ struct bench_constructor_destructor
 {
 	static void run(const std::string& name)
     {
-         Timer t (name + " default constructor");
-        for (int i = 0; i < 1000000; ++i)
-        {
-            C c;
-            do_not_optimize(&c);
-            clobber();
-        }
+        TimerAccum t(name + " default constructor");
+		do
+		{
+			size_t size = 10000;
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				C c;
+				do_not_optimize(&c);
+				clobber();
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -22,12 +28,18 @@ struct bench_copy_constructor
 	static void run(const std::string& name)
     {
         C to_copy = fill_n<C>(1000);
-        Timer t (name + " copy constructor");
-        for (int i = 0; i < 1000; ++i)
-        {
-            C tmp(to_copy);
-            touch_all(tmp);
-        }
+		TimerAccum t(name + " copy constructor");
+		do
+		{
+			size_t size = 10;
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				C tmp(to_copy);
+            	touch_all(tmp);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -36,15 +48,21 @@ struct bench_copy_operator
 {
 	static void run(const std::string& name)
     {
-        C to_copy = fill_n<C>(1500);
-        C dest;
+        TimerAccum t(name + "::operator=");
+		C to_copy = fill_n<C>(1500);
+		C dest;
 		do_not_optimize(&dest);
-        Timer t (name + "::operator=");
-        for (int i = 0; i < 100; ++i)
-        {
-            dest = to_copy;
-            touch_all(dest);
-        }
+		do
+		{
+			size_t size = 10;
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				dest = to_copy;
+				touch_all(dest);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -53,17 +71,24 @@ struct bench_assign_value
 {
 	static void run(const std::string& name)
     {
-        typename C::size_type size = 150;
+        typename C::size_type size_type = 150;
         typename C::value_type value = generate_value<C>(12345);        
         TimerAccum t(name + "::assign(size n, value)");
-        for (int i = 0; i < 10000; ++i)
-        {
-            C c;
-			do_not_optimize(&c);
-            Accum a(*t);
-            c.assign(size, value);
-            clobber();
-        }
+		do
+		{
+			size_t size = 100;
+			for (size_t i = 0; i < size; ++i)
+			{
+				C c;
+				do_not_optimize(&c);
+				{
+					Accum acc(*t);
+					c.assign(size_type, value);
+				}
+				clobber();
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -75,14 +100,19 @@ struct bench_assign_it
         typedef typename C::value_type value_type;
         std::vector<value_type> v = fill_n<std::vector<value_type> >(100);
         TimerAccum t(name + "::assign(first, last)");
-        for (int i = 0; i < 10000; ++i)
-        {
-            C c;
-            do_not_optimize(&c);
-            Accum a(*t);
-            c.assign(v.begin(), v.end());
-            clobber();
-        }
+		do
+		{
+			size_t size = 100;
+			for (size_t i = 0; i < size; ++i)
+			{
+				C c;
+				do_not_optimize(&c);
+				Accum acc(*t);
+				c.assign(v.begin(), v.end());
+				clobber();
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -93,13 +123,19 @@ struct bench_get_allocator
     {
         C c;
 		do_not_optimize(&c);
-        Timer t(name + "::get_allocator");
-        for (int i = 0; i < 1000000; ++i)
-        {
-			typename C::allocator_type a = c.get_allocator();
-            do_not_optimize(&a);
-            clobber();
-        }
+        TimerAccum t(name + "::get_allocator");
+		do
+		{
+			size_t size = 100;
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				typename C::allocator_type a = c.get_allocator();
+				do_not_optimize(&a);
+				clobber();
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 

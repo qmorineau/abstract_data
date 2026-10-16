@@ -101,15 +101,19 @@ diff: $(NAME) $(NAME_STD)
 benchmark: $(BENCH) $(BENCH_STD)
 	./$(BENCH) > $(F_FT_TIME)
 	./$(BENCH_STD) > $(F_STD_TIME)
-	-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	$(MAKE) awk
 
 awkall:
 	clear
-	@-awk -v show_ok=1 -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+	@-awk -v show_ok=1 -v show_all=1 -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 awk:
 	clear
 	@-awk -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
+
+awkiter:
+	clear
+	@-awk -v show_iter=1 -f $(AWK_FILE) $(F_FT_TIME) $(F_STD_TIME)
 
 ft: $(NAME)
 	clear
@@ -119,6 +123,6 @@ std: $(NAME_STD)
 	clear
 	./$(NAME_STD)
 
-.PHONY: all re clean fclean test diff benchmark ft std awk
+.PHONY: all re clean fclean test diff benchmark ft std awk awkall awkiter
 
 -include $(DEP)

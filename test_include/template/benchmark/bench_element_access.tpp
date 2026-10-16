@@ -11,34 +11,46 @@ struct bench_at
         C c = fill_n<C>(1000);
 		do_not_optimize(&c);
         {
-            Timer t(name + "::at() &");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                reference ref = c.at(0);
-                do_not_optimize(&ref);
-                clobber();
-                ref = c.at(500);
-                do_not_optimize(&ref);
-                clobber();
-                ref = c.at(999);
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t(name + "::at() &");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					reference ref = c.at(0);
+					do_not_optimize(&ref);
+					clobber();
+					ref = c.at(500);
+					do_not_optimize(&ref);
+					clobber();
+					ref = c.at(999);
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
         {
-            Timer t(name + "::at() const&");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                const_reference ref1 = c.at(0);
-                do_not_optimize(&ref1);
-                clobber();
-                const_reference ref2 = c.at(500);
-                do_not_optimize(&ref2);
-                clobber();
-                const_reference ref3 = c.at(999);
-                do_not_optimize(&ref3);
-                clobber();
-            }
+            TimerAccum t(name + "::at() const&");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					const_reference ref1 = c.at(0);
+					do_not_optimize(&ref1);
+					clobber();
+					const_reference ref2 = c.at(500);
+					do_not_optimize(&ref2);
+					clobber();
+					const_reference ref3 = c.at(999);
+					do_not_optimize(&ref3);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
     }
 };
@@ -53,34 +65,46 @@ struct bench_operator_square_bracket
         C c = fill_n<C>(1000);
 		do_not_optimize(&c);
         {
-            Timer t("& " + name + "::operator[]");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                reference ref = c[0];
-                do_not_optimize(&ref);
-                clobber();
-                ref = c[500];
-                do_not_optimize(&ref);
-                clobber();
-                ref = c[999];
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t("& " + name + "::operator[]");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					reference ref = c[0];
+					do_not_optimize(&ref);
+					clobber();
+					ref = c[500];
+					do_not_optimize(&ref);
+					clobber();
+					ref = c[999];
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
         {
-            Timer t("const&" + name + "::operator[]");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                const_reference ref1 = c[0];
-                do_not_optimize(&ref1);
-                clobber();
-                const_reference ref2 = c[500];
-                do_not_optimize(&ref2);
-                clobber();
-                const_reference ref3 = c[999];
-                do_not_optimize(&ref3);
-                clobber();
-            }
+            TimerAccum t("const&" + name + "::operator[]");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					const_reference ref1 = c[0];
+					do_not_optimize(&ref1);
+					clobber();
+					const_reference ref2 = c[500];
+					do_not_optimize(&ref2);
+					clobber();
+					const_reference ref3 = c[999];
+					do_not_optimize(&ref3);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
     }
 };
@@ -95,22 +119,34 @@ struct bench_front
         C c = fill_n<C>(10000);
 		do_not_optimize(&c);
         {
-            Timer t("& " + name + "::front()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                reference ref = c.front();
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t("& " + name + "::front()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					reference ref = c.front();
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
         {
-            Timer t("const& " + name + "::front()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                const_reference ref = c.front();
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t("const& " + name + "::front()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					const_reference ref = c.front();
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
     }
 };
@@ -125,22 +161,34 @@ struct bench_back
         C c = fill_n<C>(10000);
 		do_not_optimize(&c);
         {
-            Timer t("& " + name + "::back()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                reference ref = c.back();
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t("& " + name + "::back()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					reference ref = c.back();
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
         {
-            Timer t("const& " + name + "::back()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                const_reference ref = c.back();
-                do_not_optimize(&ref);
-                clobber();
-            }
+            TimerAccum t("const& " + name + "::back()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					const_reference ref = c.back();
+					do_not_optimize(&ref);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
     }
 };
@@ -154,22 +202,34 @@ struct bench_data
         C c = fill_n<C>(10000);
 		do_not_optimize(&c);
         {
-            Timer t("T* " + name + "::data()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                value_type* data = c.data();
-                do_not_optimize(data);
-                clobber();
-            }
+            TimerAccum t("T* " + name + "::data()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					value_type* data = c.data();
+					do_not_optimize(data);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
         {
-            Timer t("const T* " + name + "::data()");
-            for (int i = 0; i < 1000000; ++i)
-            {
-                const value_type* data = c.data();
-                do_not_optimize(data);
-                clobber();
-            }
+            TimerAccum t("const T* " + name + "::data()");
+			do
+			{
+				size_t size = 1000;
+				for (size_t i = 0; i < size; ++i)
+				{
+					Accum acc(*t);
+					const value_type* data = c.data();
+					do_not_optimize(data);
+					clobber();
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
         }
     }
 };

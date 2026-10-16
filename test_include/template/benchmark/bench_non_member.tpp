@@ -10,12 +10,18 @@ struct bench_is_equal
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator==");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator==");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a == b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a == b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -28,12 +34,18 @@ struct bench_is_different
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator!=");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator!=");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a != b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a != b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -46,12 +58,18 @@ struct bench_is_lesser
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator<");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator<");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a < b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a < b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -64,12 +82,18 @@ struct bench_is_lesser_equal
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator<=");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator<=");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a <= b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a <= b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -82,12 +106,18 @@ struct bench_is_greater
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator>");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator>");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a > b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a > b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -100,12 +130,18 @@ struct bench_is_greater_equal
 		C b = fill_n<C>(1001);
 		do_not_optimize(&a);
 		do_not_optimize(&b);
-		Timer t(name + "::operator>=");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + "::operator>=");
+		size_t size = 1000;
+		do
 		{
-			bool ret = a >= b;
-			do_not_optimize(&ret);
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				Accum acc(*t);
+				bool ret = a >= b;
+				do_not_optimize(&ret);
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
@@ -119,12 +155,20 @@ struct bench_std_swap_specialization
 		do_not_optimize(&a);
 		do_not_optimize(&b);
 		using std::swap;
-		Timer t(name + " std::swap specialization");
-		for (int i = 0; i < 10000; ++i)
+		TimerAccum t(name + " std::swap specialization");
+		size_t size = 1000;
+		do
 		{
-			swap(a, b);
-			clobber();
-		}
+			for (size_t i = 0; i < size; ++i)
+			{
+				{
+					Accum acc(*t);
+					swap(a, b);
+				}
+				clobber();
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
     }
 };
 
