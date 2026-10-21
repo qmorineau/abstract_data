@@ -38,6 +38,14 @@ namespace ft
 		return *this;
 	}
 
+	// ====== base() ======
+	template <class T, class Pointer, class Reference>
+	deque_position
+	deque_iterator<T, Pointer, Reference>::base(void) const
+	{
+		return deque_position(_map_idx, _offset);
+	}
+
 	// ====== Input Iterator ======
 	template <class T, class Pointer, class Reference>
 	typename deque_iterator<T, Pointer, Reference>::reference
@@ -59,7 +67,7 @@ namespace ft
 	deque_iterator<T, Pointer, Reference>::operator++(void)
 	{
 		++_offset;
-		if (_offset == deque_chunk_size && _map_idx != deque_chunk_size)
+		if (_offset == deque_chunk_size)
 		{
 			++_map_idx;
 			_offset = 0;
@@ -104,16 +112,11 @@ namespace ft
 	deque_iterator<T, Pointer, Reference>&
 	deque_iterator<T, Pointer, Reference>::operator+=(difference_type n)
 	{
-		ft::size_t curr_chunk_diff = deque_chunk_size - 1 - _offset;
-		if (n < static_cast<ft::ptrdiff_t>(curr_chunk_diff))
-			_offset += n;
-		else
-		{
-			ft::size_t incr_map = (n - curr_chunk_diff) / deque_chunk_size;
-			ft::size_t new_offset = (n - curr_chunk_diff) % deque_chunk_size; 
-			_offset = new_offset;
-			_map_idx += incr_map;
-		}
+		const difference_type chunk_size = static_cast<difference_type>(deque_chunk_size);
+		difference_type pos = static_cast<difference_type>(_map_idx) * chunk_size
+								+ static_cast<difference_type>(_offset) + n;
+		_map_idx = static_cast<ft::size_t>(pos / chunk_size);
+		_offset = static_cast<ft::size_t>(pos % chunk_size);
 		return *this;
 	}
 
@@ -130,16 +133,7 @@ namespace ft
 	deque_iterator<T, Pointer, Reference>&
 	deque_iterator<T, Pointer, Reference>::operator-=(difference_type n)
 	{
-		if (n < static_cast<difference_type>(_offset))
-			_offset -= n;
-		else
-		{
-			ft::size_t decr_map = (n - _offset) / deque_chunk_size;
-			ft::size_t new_offset = deque_chunk_size - ((n - _offset) % deque_chunk_size);
-			_map_idx -= decr_map;
-			_offset = new_offset;
-		}
-		return *this;
+		return *this += -n;
 	}
 
 	template <class T, class Pointer, class Reference>
@@ -155,12 +149,12 @@ namespace ft
 	typename deque_iterator<T, Pointer, Reference>::difference_type
 	deque_iterator<T, Pointer, Reference>::operator-(const deque_iterator& other) const
 	{
-		difference_type total_diff = 0;
-
-		difference_type map_diff = _map_idx - other._map_idx;
-		(void) map_diff;
-		return total_diff;
-		// todo
+		const difference_type chunk_size = static_cast<difference_type>(deque_chunk_size);
+		difference_type curr_pos = static_cast<difference_type>(_map_idx) * chunk_size
+								+ static_cast<difference_type>(_offset);
+		difference_type other_pos = static_cast<difference_type>(other._map_idx) * chunk_size
+								+ static_cast<difference_type>(other._offset);
+		return curr_pos - other_pos;
 	}
 
 	template <class T, class Pointer, class Reference>
@@ -168,37 +162,34 @@ namespace ft
 	deque_iterator<T, Pointer, Reference>::operator[](difference_type n) const
 	{
 		return *deque_iterator(*this + n);
-		// not sure
 	}
 
 	template <class T, class Pointer, class Reference>
 	bool
 	deque_iterator<T, Pointer, Reference>::operator<(const deque_iterator& other) const
 	{
-		if (_map_idx == other._map_idx)
-			return (_offset < other._offset);
-		return (_map_idx < other._map_idx);
+		return (_map_idx < other._map_idx || (_map_idx == other._map_idx && _offset < other._offset));
 	}
 
 	template <class T, class Pointer, class Reference>
 	bool
 	deque_iterator<T, Pointer, Reference>::operator>(const deque_iterator& other) const
 	{
-		return !(*this < other);
+		return (_map_idx > other._map_idx || (_map_idx == other._map_idx && _offset > other._offset));
 	}
 
 	template <class T, class Pointer, class Reference>
 	bool
 	deque_iterator<T, Pointer, Reference>::operator<=(const deque_iterator& other) const
 	{
-		return !(*this > other);
+		return (_map_idx < other._map_idx || (_map_idx == other._map_idx && _offset <= other._offset));
 	}
 
 	template <class T, class Pointer, class Reference>
 	bool
 	deque_iterator<T, Pointer, Reference>::operator>=(const deque_iterator& other) const
 	{
-		return !(*this < other);
+		return (_map_idx > other._map_idx || (_map_idx == other._map_idx && _offset >= other._offset));
 	}
 
 	// ====== Non-Members ======
@@ -213,19 +204,19 @@ namespace ft
 	bool
 	operator==(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y)
 	{
-		// return x.base() == y.base();
-		(void) x;
-		(void) y;
-		return false;
+		deque_position x_base = x.base();
+		deque_position y_base = y.base();
+
+		return (x_base.map_index == y_base.map_index && x_base.offset == y_base.offset);
 	}
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
 	bool
 	operator!=(const deque_iterator<T, Pointer1, Reference1>& x, const deque_iterator<T, Pointer2, Reference2>& y)
 	{
-		(void) x;
-		(void) y;
-		// return x.base() != y.base();
-		return false;
+		deque_position x_base = x.base();
+		deque_position y_base = y.base();
+
+		return !(x_base.map_index == y_base.map_index && x_base.offset == y_base.offset);
 	}
 }
 

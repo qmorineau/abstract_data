@@ -5,6 +5,7 @@
 
 #include "cstddef.hpp"
 #include "deque_constants.hpp"
+#include "deque_position.hpp"
 #include "deque_iterator.hpp"
 #include "vector.hpp"
 
@@ -79,10 +80,8 @@ namespace ft
 			allocator_type	_allocator;
 			ft::vector<T*>	_map;
 			
-			ft::size_t	_start_chunk;
-			ft::size_t	_start_offset;
-			ft::size_t	_end_chunk;
-			ft::size_t	_end_offset;
+			deque_position _start;
+			deque_position _end;
 
 			ft::size_t	_size;
 

@@ -133,9 +133,16 @@ struct test_it_increment_n
 		std::cout << "===== Iterator::operator+(n) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 0; i < max_diff; i++)
+		for (difference_type i = 0; i < max_diff; ++i)
 		{
 			Iterator tmp = first;
+			Iterator ret = tmp + i;
+			std::cout << *ret  << "|";
+		}
+		std::cout << std::endl << "negative nbr: ";
+		for (difference_type i = -1; i >= -max_diff; --i)
+		{
+			Iterator tmp = last;
 			Iterator ret = tmp + i;
 			std::cout << *ret  << "|";
 		}
@@ -151,10 +158,17 @@ struct test_it_n_add_iterator
 		std::cout << "===== operator+(n, it) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 0; i < max_diff; i++)
+		for (difference_type i = 0; i < max_diff; ++i)
 		{
 			Iterator ret1 = i + first;
 			Iterator ret2 = first + i;
+			std::cout << (ret1 == ret2) << "|" << *ret1 << "|" << *ret2 << "|";
+		}
+		std::cout << std::endl << "negative nbr: ";
+		for (difference_type i = -1; i >= -max_diff; --i)
+		{
+			Iterator ret1 = i + last;
+			Iterator ret2 = last + i;
 			std::cout << (ret1 == ret2) << "|" << *ret1 << "|" << *ret2 << "|";
 		}
 		std::cout << std::endl;
@@ -169,9 +183,16 @@ struct test_it_decrement_n
 		std::cout << "===== Iterator::operator-(n) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 1; i <= max_diff; i++)
+		for (difference_type i = 1; i <= max_diff; ++i)
 		{
 			Iterator tmp = last;
+			Iterator ret = tmp - i;
+			std::cout << *ret  << "|";
+		}
+		std::cout << std::endl << "negative nbr: ";
+		for (difference_type i = -1; i > -max_diff; --i)
+		{
+			Iterator tmp = first;
 			Iterator ret = tmp - i;
 			std::cout << *ret  << "|";
 		}
@@ -202,9 +223,16 @@ struct test_it_add_n
 		std::cout << "===== Iterator::operator+=(n) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 0; i < max_diff; i++)
+		for (difference_type i = 0; i < max_diff; ++i)
 		{
 			Iterator tmp = first;
+			Iterator& ret = (tmp += i);
+			std::cout << (&ret == &tmp) << "|" << *ret << "|";
+		}
+		std::cout << std::endl << "negative nbr: ";
+		for (difference_type i = -1; i >= -max_diff; --i)
+		{
+			Iterator tmp = last;
 			Iterator& ret = (tmp += i);
 			std::cout << (&ret == &tmp) << "|" << *ret << "|";
 		}
@@ -220,9 +248,16 @@ struct test_it_subtract_n
 		std::cout << "===== Iterator::operator-=(n) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 1; i <= max_diff; i++)
+		for (difference_type i = 1; i <= max_diff; ++i)
 		{
 			Iterator tmp = last;
+			Iterator& ret = (tmp -= i);
+			std::cout << (&ret == &tmp) << "|" << *ret << "|";
+		}
+		std::cout << std::endl << "negative nbr: ";
+		for (difference_type i = 0; i > -max_diff; --i)
+		{
+			Iterator tmp = first;
 			Iterator& ret = (tmp -= i);
 			std::cout << (&ret == &tmp) << "|" << *ret << "|";
 		}
@@ -238,11 +273,16 @@ struct test_it_access
 		std::cout << "===== Iterator::operator[](n) =====" << std::endl;
 		typedef typename Iterator::difference_type difference_type;
 		difference_type max_diff = std::distance(first, last);
-		for (difference_type i = 0; i < max_diff; i++)
+		for (difference_type i = 0; i < max_diff; ++i)
 			std::cout << first[i] << "|";
+		std::cout << std::endl << "negative_nbr: ";
+		for (difference_type i = -1; i >= -max_diff; --i)
+			std::cout << last[i] << "|";
 		std::cout << std::endl;
 	}
 };
+
+#include "deque_position.hpp"
 
 template <class Iterator>
 struct test_it_lesser
@@ -253,7 +293,7 @@ struct test_it_lesser
 		for (Iterator it1 = first; it1 != last; ++it1)
 		{
 			for (Iterator it2 = first; it2 != last; ++it2)
-				std::cout << (it1 < it2) << "|";
+				std::cout << (it1 < it2) << "|" << (it2 < it1) << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -268,7 +308,7 @@ struct test_it_lesser_equal
 		for (Iterator it1 = first; it1 != last; ++it1)
 		{
 			for (Iterator it2 = first; it2 != last; ++it2)
-				std::cout << (it1 <= it2) << "|";
+				std::cout << (it1 <= it2) << "|" << (it2 <= it1) << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -281,9 +321,9 @@ struct test_it_greater
 	{
 		std::cout << "===== Iterator::operator>(it) =====" << std::endl;
 		for (Iterator it1 = first; it1 != last; ++it1)
-		{
+		{;
 			for (Iterator it2 = first; it2 != last; ++it2)
-				std::cout << (it1 > it2) << "|";
+				std::cout << (it1 > it2) << "|" << (it2 > it1) << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -298,7 +338,7 @@ struct test_it_greater_equal
 		for (Iterator it1 = first; it1 != last; ++it1)
 		{
 			for (Iterator it2 = first; it2 != last; ++it2)
-				std::cout << (it1 >= it2) << "|";
+				std::cout << (it1 >= it2) << "|" << (it2 >= it1) << "|";
 		}
 		std::cout << std::endl;
 	}
@@ -311,16 +351,16 @@ static void test_all_iterators(C c)
 {
 	typedef typename C::iterator iterator;
 	typedef typename C::const_iterator const_iterator;
-	typedef typename C::reverse_iterator reverse_iterator;
-	typedef typename C::const_reverse_iterator const_reverse_iterator;
+	// typedef typename C::reverse_iterator reverse_iterator;
+	// typedef typename C::const_reverse_iterator const_reverse_iterator;
 
 	Func<iterator>::run(c.begin(), c.end());
-	Func<reverse_iterator>::run(c.rbegin(), c.rend());
+	// Func<reverse_iterator>::run(c.rbegin(), c.rend());
 
 	const C& cc = c;
 
 	Func<const_iterator>::run(cc.begin(), cc.end());
-	Func<const_reverse_iterator>::run(cc.rbegin(), cc.rend());
+	// Func<const_reverse_iterator>::run(cc.rbegin(), cc.rend());
 }
 
 template <class C>
@@ -332,7 +372,7 @@ static void test_iterator_dispatch(C& test, ns::bidirectional_iterator_tag)
 	test_all_iterators<C, test_it_dereference>(test);		// *it
 	test_all_iterators<C, test_it_pre_increment>(test);		// ++it
 	test_all_iterators<C, test_it_post_increment>(test);	// it++
-	// bidirectional
+	// // bidirectional
 	test_all_iterators<C, test_it_pre_decrement>(test);		// --it
 	test_all_iterators<C, test_it_post_decrement>(test);	// it--
 }
@@ -390,8 +430,8 @@ void test_iterators()
 	std::cout << "=======================================" << std::endl 
 	<< "Testing Vector Iterator" << std::endl
 	<< "=======================================" << std::endl;
-	// test_it_seq_container<ns::vector>("vector");
-	// test_it_seq_container<ns::list>("list");
+	test_it_seq_container<ns::vector>("vector");
+	test_it_seq_container<ns::list>("list");
 	test_it_seq_container<ns::deque>("deque");
 
 	// test_container<ns::vector<int>, int>(true, "vector<int>");

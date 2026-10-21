@@ -4,6 +4,7 @@
 #include "iterator.hpp"
 #include "cstddef.hpp"
 #include "deque_constants.hpp"
+#include "deque_position.hpp"
 #include "vector.hpp"
 
 namespace ft
@@ -50,6 +51,8 @@ namespace ft
 			bool operator<=(const deque_iterator&) const;
 			bool operator>=(const deque_iterator&) const;
 
+			// base
+			deque_position base(void) const;
 		private:
 			const vector<T*>*	_map;
 			ft::size_t			_map_idx;

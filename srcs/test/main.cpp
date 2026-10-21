@@ -1,5 +1,14 @@
 #include "test.hpp"
 
+void test()
+{
+	ft::deque<int> t = fill_n<ft::deque<int> >(10);
+
+	typename ft::deque<int>::iterator it = t.begin();
+	for (; it != t.end(); ++it)
+		std::cout << *it << std::endl;
+}
+
 int main()
 {
 	std::cout << "=======================================" << std::endl 

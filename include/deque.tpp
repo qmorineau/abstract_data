@@ -125,28 +125,28 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::begin()
 	{
-		return iterator(&_map, _start_chunk, _start_offset);
+		return iterator(&_map, _start.map_index, _start.offset);
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::const_iterator
 	ft::deque<T,Allocator>::begin() const
 	{
-		return const_iterator(&_map, _start_chunk, _start_offset);
+		return const_iterator(&_map, _start.map_index, _start.offset);
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::end()
 	{
-		return iterator(&_map, _end_chunk, _end_offset);
+		return iterator(&_map, _end.map_index, _end.offset);
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::const_iterator
 	ft::deque<T,Allocator>::end() const
 	{
-		return const_iterator(&_map, _end_chunk, _end_offset);
+		return const_iterator(&_map, _end.map_index, _end.offset);
 	}
 
 	template <class T, class Allocator>
@@ -296,17 +296,20 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::push_back(const T& x)
 	{
-		if (_end_offset == deque_chunk_size - 1)
+		if (_end.offset == deque_chunk_size - 1)
 		{
-			if (_map.size() == _end_chunk + 1)
+			if (_map.size() == _end.map_index + 1)
 				_map.push_back(NULL);
-			_map[_end_chunk + 1] = create_chunk();
-			++_end_chunk;
-			_end_offset = 0;
+			_map[_end.map_index + 1] = create_chunk();
 		}
-		_allocator.construct(_map[_end_chunk] + _end_offset, x);
-		++_end_offset;
+		_allocator.construct(_map[_end.map_index] + _end.offset, x);
+		++_end.offset;
 		++_size;
+		if (_end.offset == deque_chunk_size)
+		{
+			++_end.map_index;
+			_end.offset = 0;
+		}
 	}
 
 	template <class T, class Allocator>
@@ -368,10 +371,8 @@ namespace ft
 			ft::swap(_allocator, other._allocator);
 			ft::swap(_map, other._map);
 
-			ft::swap(_start_chunk, other._start_chunk);
-			ft::swap(_start_offset, other._start_offset);
-			ft::swap(_end_chunk, other._end_chunk);
-			ft::swap(_end_offset, other._end_offset);
+			ft::swap(_start, other._start);
+			ft::swap(_end, other._end);
 			ft::swap(_size, other._size);
 		}
 	}
@@ -382,24 +383,26 @@ namespace ft
 	{
 		if (_size > 0)
 		{
-			for (ft::size_t map_idx = _start_chunk; map_idx != _end_chunk + 1; ++map_idx)
+			for (ft::size_t map_idx = _start.map_index; map_idx != _end.map_index + 1; ++map_idx)
 			{
 				ft::size_t offset = 0;
 				ft::size_t end_chunk = deque_chunk_size;
-				if (map_idx == _start_chunk)
-					offset = _start_offset;
-				if (map_idx == _end_chunk)
-					end_chunk = _end_offset;
+				if (map_idx == _start.map_index)
+					offset = _start.offset;
+				if (map_idx == _end.map_index)
+					end_chunk = _end.offset;
 				for (; offset < end_chunk; ++offset)
 					_allocator.destroy(_map[map_idx] + offset);
-				if (map_idx != _start_chunk)
+				if (map_idx != _start.map_index)
+				{
 					_allocator.deallocate(_map[map_idx], deque_chunk_size);
-				_map[map_idx] = NULL;
+					_map[map_idx] = NULL;
+				}
 			}
 			_size = 0;
-			_start_offset = deque_chunk_size / 2;
-			_end_chunk = _start_chunk;
-			_end_offset = _start_offset;
+			_start.offset = deque_chunk_size / 2;
+			_end.map_index = _start.map_index;
+			_end.offset = _start.offset;
 		}
 	}
 
@@ -429,12 +432,12 @@ namespace ft
 	{
 		_map.assign(5, NULL);
 		T* new_chunk = create_chunk();
-		_start_chunk = 2;
-		_map[_start_chunk] = new_chunk;
+		_start.map_index = 2;
+		_map[_start.map_index] = new_chunk;
 
-		_end_chunk = _start_chunk;
-		_start_offset = deque_chunk_size / 2;
-		_end_offset = _start_offset;
+		_end.map_index = _start.map_index;
+		_start.offset = deque_chunk_size / 2;
+		_end.offset = _start.offset;
 	}
 
 	template <class T, class Allocator>
@@ -453,11 +456,10 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
 	{
-		size_type new_size = ft::distance(first, last);
-		(void) new_size;
-		// for i < size, assign element
-		// if < size, delete all element after
-		// else push back
+		deque<T> tmp(_allocator);
+		for (; first != last; ++first)
+			tmp.push_back(*first);
+		swap(tmp);
 	}
 
 	template <class T, class Allocator>
@@ -465,7 +467,7 @@ namespace ft
 	ft::deque<T,Allocator>::destroy_all()
 	{
 		clear();
-		_allocator.deallocate(_map[_start_chunk], deque_chunk_size);
+		_allocator.deallocate(_map[_start.map_index], deque_chunk_size);
 	}
 
 	// =====================
