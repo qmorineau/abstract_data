@@ -370,6 +370,8 @@ static void test_it_container_type(std::string type)
 	test_iterator_dispatch<C>(c, category());
 	c = fill_n<C>(10);
 	test_iterator_dispatch<C>(c, category());
+	c = fill_n<C>(100);
+	test_iterator_dispatch<C>(c, category());
 }
 
 template <template <typename, typename> class Container>

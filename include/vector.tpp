@@ -437,7 +437,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::swap(vector<T,Allocator>&other)
+	ft::vector<T, Allocator>::swap(vector<T,Allocator>& other)
 	{
 		if (this != &other)
 		{

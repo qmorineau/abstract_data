@@ -4,8 +4,8 @@
 #include <memory>
 
 #include "cstddef.hpp"
+#include "deque_constants.hpp"
 #include "deque_iterator.hpp"
-#include "deque_chunk.hpp"
 #include "vector.hpp"
 
 namespace ft
@@ -76,21 +76,24 @@ namespace ft
 			void swap(deque<T,Allocator>&);
 			void clear();
 		private:
-			typedef typename Allocator::template rebind<Chunk<T> >::other	chunk_allocator;
+			allocator_type	_allocator;
+			ft::vector<T*>	_map;
+			
+			ft::size_t	_start_chunk;
+			ft::size_t	_start_offset;
+			ft::size_t	_end_chunk;
+			ft::size_t	_end_offset;
 
-			const ft::size_t							_chunk_size = 64;
-			allocator_type								_allocator;
-			chunk_allocator								_chunk_alloc;
-			ft::vector<ft::Chunk<T>*, allocator_type>	_map;
+			ft::size_t	_size;
 
-			ft::size_t			_start_node;
-			ft::size_t			_start_offset;
-			ft::size_t			_end_node;
-			ft::size_t			_end_offset;
-
-			ft::size_t			_size;
-
+			template <class InputIt>
+			void assign_dispatch(InputIt first, InputIt last, input_iterator_tag);
+			template <class ForwardIt>
+			void assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
 			void destroy_all();
+			void throw_out_of_range(size_type n) const;
+			void init_deque();
+			T* create_chunk();
 	};
 	// operator
 	template <class T, class Allocator>
