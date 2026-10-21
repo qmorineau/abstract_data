@@ -37,7 +37,7 @@ namespace ft
 			~deque();
 			deque<T,Allocator>& operator=(const deque<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last);
+			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& t);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -69,7 +69,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last);
+			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			void pop_front();
 			void pop_back();
 			iterator erase(iterator position);
@@ -85,6 +85,10 @@ namespace ft
 
 			ft::size_t	_size;
 
+			template <class InputIt>
+			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
+			template <class ForwardIt>
+			void insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag);
 			template <class InputIt>
 			void assign_dispatch(InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>

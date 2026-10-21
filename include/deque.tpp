@@ -95,7 +95,7 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::deque<T,Allocator>::assign(InputIterator first, InputIterator last)
+	ft::deque<T,Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
@@ -199,7 +199,17 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::resize(size_type sz, T c)
 	{
-		// todo
+		if (_size < sz)
+		{
+			for (size_type i = _size; i <= sz; ++i)
+				push_back(c);
+		}
+		else
+		{
+			iterator new_end = begin() + sz;
+			while (new_end != end())
+				pop_back();
+		}
 	}
 
 	template <class T, class Allocator>
@@ -257,28 +267,32 @@ namespace ft
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::front()
 	{
-		// todo
+		return _map[_start.map_index][_start.offset];
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::front() const
 	{
-		// todo
+		return _map[_start.map_index][_start.offset];
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::back()
 	{
-		// todo
+		if (_end.offset == 0)
+			_map[_end.map_index - 1][deque_chunk_size - 1];
+		return _map[_end.map_index][_end.offset - 1];
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::back() const
 	{
-		// todo
+		if (_end.offset == 0)
+			_map[_end.map_index - 1][deque_chunk_size - 1];
+		return _map[_end.map_index][_end.offset - 1];
 	}
 
 	// =====================
@@ -316,7 +330,9 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::insert(iterator position, const T& x)
 	{
-		return begin();// todo
+		size_type pos = static_cast<size_type>(position - begin());
+		insert(begin() + pos, 1, x);
+		return begin() + pos;
 	}
 
 	template <class T, class Allocator>
@@ -329,37 +345,81 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::deque<T,Allocator>::insert(iterator position, InputIterator first, InputIterator last)
+	ft::deque<T,Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
-		// todo
+		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::deque<T,Allocator>::pop_front()
 	{
-		// todo
+		deque_position new_start;
+		if (_start.offset == deque_chunk_size - 1)
+		{
+			new_start.map_index = _start.map_index + 1;
+			new_start.offset = 0;
+			_allocator.destroy(_map[_start.map_index] + _start.offset);
+			_allocator.deallocate(_map[_start.map_index], deque_chunk_size);
+			_map[_start.map_index] = NULL;
+		}
+		else
+		{
+			new_start.map_index = _start.map_index;
+			new_start.offset = _start.offset + 1;
+			_allocator.destroy(_map[_start.map_index] + _start.offset);
+		}
+		_start = new_start;
+		--_size;
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::deque<T,Allocator>::pop_back()
 	{
-		// todo
+		deque_position pos;
+		if (_end.offset == 0)
+		{
+			pos.map_index = _end.map_index - 1;
+			pos.offset = deque_chunk_size - 1;
+			_allocator.destroy(_map[pos.map_index] + pos.offset);
+			_allocator.deallocate(_map[_end.map_index], deque_chunk_size);
+			_map[_end.map_index] = NULL;
+		}
+		else
+		{
+			pos.map_index = _end.map_index;
+			pos.offset = _end.offset - 1;
+			_allocator.destroy(_map[pos.map_index] + pos.offset);
+		}
+		_end = pos;
+		--_size;
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::erase(iterator position)
 	{
-		return begin();// todo
+		return erase(position, position + 1);
 	}
 
 	template <class T, class Allocator>
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::erase(iterator first, iterator last)
 	{
-		return begin();// todo
+		iterator ret = first;
+		for (iterator it = last; it != end(); ++it, ++first)
+			*first = *it;
+		_end = first.base();
+		for (iterator it = first; it != end(); ++it)
+			_allocator.destroy(&*it);
+		_size -= (last - ret);
+		for (ft::size_t i = _end.map_index + 1; i < _map.size(); ++i)
+		{
+			_allocator.deallocate(_map[i], deque_chunk_size);
+			_map[i] = NULL;
+		}
+		return ret;
 	}
 
 	template <class T, class Allocator>
@@ -422,7 +482,10 @@ namespace ft
 	ft::deque<T,Allocator>::throw_out_of_range(size_type n) const
 	{
 		throw ft::out_of_range(
-			"TODO"	
+			std::string("deque::range_check: n (which is "
+				+ ft::to_string(n)
+				+ ") >= this->size() (which is "
+				+ ft::to_string(this->size()) + ")")
 		);
 	}
 
@@ -438,6 +501,25 @@ namespace ft
 		_end.map_index = _start.map_index;
 		_start.offset = deque_chunk_size / 2;
 		_end.offset = _start.offset;
+	}
+
+	template <class T, class Allocator>
+	template <class InputIt>
+	void
+	ft::deque<T,Allocator>::insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag)
+	{
+		vector<T, Allocator> tmp;
+		for (; first != last; ++first)
+			tmp.push_back(*first);
+		insert_dispatch(pos, tmp.begin(), tmp.end(), forward_iterator_tag());
+	}
+	
+	template <class T, class Allocator>
+	template <class ForwardIt>
+	void
+	ft::deque<T,Allocator>::insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag)
+	{
+		// todo
 	}
 
 	template <class T, class Allocator>
@@ -478,41 +560,54 @@ namespace ft
 	bool
 	operator==(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
-		return false; // todo
+		if (x.size() != y.size())
+			return false;
+		typedef typename vector<T,Allocator>::const_iterator const_iterator;
+		const_iterator itx = x.begin();
+		const_iterator ity = y.begin();
+		const_iterator x_end = x.end();
+		const_iterator y_end = y.end();
+		for (; itx != x_end && ity != y_end; ++itx, ++ity)
+		{
+			if (!(*itx == *ity))
+				return false;
+		}
+		return true;
+	}
+
+	template <class T, class Allocator>
+	bool
+	operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
+	{
+		return !(x == y);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator< (const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
-		return false; // todo
-	}
-	template <class T, class Allocator>
-	bool
-	operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
-	{
-		 return false;// todo
+		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator> (const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
-		return false;// todo
+		return (y < x);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator>=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
-		return false;// todo
+		return !(x < y);
 	}
 
 	template <class T, class Allocator>
 	bool
 	operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
-		return false;// todo
+		return !(y < x);
 	}
 
 	// ======================
@@ -523,7 +618,7 @@ namespace ft
 	void
 	swap(deque<T,Allocator>& x, deque<T,Allocator>& y)
 	{
-		// todo
+		x.swap(y);
 	}
 }
 

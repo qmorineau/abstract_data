@@ -2,15 +2,13 @@
 
 void test()
 {
-	ft::deque<int> t = fill_n<ft::deque<int> >(10);
-
-	typename ft::deque<int>::iterator it = t.begin();
-	for (; it != t.end(); ++it)
-		std::cout << *it << std::endl;
+	
 }
 
 int main()
 {
+	test();
+	return 1;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
@@ -18,7 +16,7 @@ int main()
 	<< "Generic Test" << std::endl
 	<< "=======================================" << std::endl << std::endl;
 	// test_exceptions();
-	test_iterators();
+	// test_iterators();
 	// test_helpers();
 	// test_sequence_container<ns::vector>("vector");
 	// test_sequence_container<ns::deque>("deque");

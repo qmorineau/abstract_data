@@ -351,16 +351,16 @@ static void test_all_iterators(C c)
 {
 	typedef typename C::iterator iterator;
 	typedef typename C::const_iterator const_iterator;
-	// typedef typename C::reverse_iterator reverse_iterator;
-	// typedef typename C::const_reverse_iterator const_reverse_iterator;
+	typedef typename C::reverse_iterator reverse_iterator;
+	typedef typename C::const_reverse_iterator const_reverse_iterator;
 
 	Func<iterator>::run(c.begin(), c.end());
-	// Func<reverse_iterator>::run(c.rbegin(), c.rend());
+	Func<reverse_iterator>::run(c.rbegin(), c.rend());
 
 	const C& cc = c;
 
 	Func<const_iterator>::run(cc.begin(), cc.end());
-	// Func<const_reverse_iterator>::run(cc.rbegin(), cc.rend());
+	Func<const_reverse_iterator>::run(cc.rbegin(), cc.rend());
 }
 
 template <class C>
