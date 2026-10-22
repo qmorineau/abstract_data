@@ -10,12 +10,15 @@ namespace ft
 	template <class T, class Allocator>
 	ft::vector<T, Allocator>::vector(const Allocator& alloc)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
-	{}
+	{
+		// Complexity: O(1);
+	}
 
 	template <class T, class Allocator>
 	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
+		// Complexity: O(n);
 		try
 		{
 			assign(n, value);
@@ -32,6 +35,11 @@ namespace ft
 	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
+		/*
+			N = distance(first, last)
+			InputIt => copy constructor of T: O(N), reallocation: O(log N);
+			ForwardIt => copy constructor of T called N times, no reallocation
+		*/
 		try
 		{
 			assign(first, last);
@@ -47,6 +55,7 @@ namespace ft
 	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x)
 		: _data(0), _size(0), _allocator(x._allocator), _capacity(0)
 	{
+		// Complexity: O(x.size())
 		try
 		{
 			assign(x.begin(), x.end());
@@ -61,6 +70,7 @@ namespace ft
 	template <class T, class Allocator>
 	ft::vector<T, Allocator>::~vector()
 	{
+		// Complexity: O(size())
 		destroy_all();
 	}
 
@@ -72,6 +82,7 @@ namespace ft
 	vector<T,Allocator>&
 	ft::vector<T, Allocator>::operator=(const vector<T,Allocator>& x)
 	{
+		// Complexity: O(size())
 		if (this != &x)
 		{
 			assign(x.begin(), x.end());
@@ -84,12 +95,14 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// Complexity: O(distance(first, last))
 		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 	template <class T, class Allocator>
 	void
 	ft::vector<T, Allocator>::assign(size_type n, const T& u)
 	{
+		// Complexity: O(n)
 		T value = u;
 		clear();
 		if (n > _capacity)
@@ -105,6 +118,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::allocator_type
 	ft::vector<T, Allocator>::get_allocator() const
 	{
+		// Complexity: O(1)
 		return _allocator;
 	}
 
@@ -116,6 +130,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::begin()
 	{
+		// Complexity: O(1)
 		return iterator(_data);
 	}
 
@@ -123,6 +138,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::begin() const
 	{
+		// Complexity: O(1)
 		return const_iterator(_data);
 	}
 
@@ -130,6 +146,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::end()
 	{
+		// Complexity: O(1)
 		return iterator(_data + _size);
 	}
 
@@ -137,6 +154,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_iterator
 	ft::vector<T, Allocator>::end() const
 	{
+		// Complexity: O(1)
 		return const_iterator(_data + _size);
 	}
 
@@ -144,6 +162,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rbegin()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(end());
 	}
 
@@ -151,6 +170,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rbegin() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(end());
 	}
 
@@ -158,6 +178,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reverse_iterator
 	ft::vector<T, Allocator>::rend()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(begin());
 	}
 
@@ -165,6 +186,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reverse_iterator
 	ft::vector<T, Allocator>::rend() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(begin());
 	}
 
@@ -176,6 +198,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::size_type 
 	ft::vector<T, Allocator>::size() const
 	{
+		// Complexity: O(1)
 		return _size;
 	}
 
@@ -183,6 +206,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::size_type
 	ft::vector<T, Allocator>::max_size() const
 	{
+		// Complexity: O(1)
 		return _allocator.max_size();
 	}
 
@@ -190,6 +214,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::resize(size_type sz, T c)
 	{
+		// Complexity: O(abs(size - sz)) or more if reallocation (capacity is less than sz)
 		if (sz > _capacity)
 			reserve(sz);
 		if (sz > _size)
@@ -212,6 +237,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::size_type
 	ft::vector<T, Allocator>::capacity() const
 	{
+		// Complexity: O(1)
 		return _capacity;
 	}
 
@@ -219,6 +245,7 @@ namespace ft
 	bool
 	ft::vector<T, Allocator>::empty() const
 	{
+		// Complexity: O(1)
 		return _size == 0;
 	}
 
@@ -226,6 +253,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::reserve(size_type n)
 	{
+		// Complexity: at most O(size())
 		if (n > max_size())
 			throw ft::length_error("vector::reserve");
 		if (n > _capacity)
@@ -261,6 +289,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::operator[](size_type n)
 	{
+		// Complexity: O(1)
 		return *(_data + n);
 	}
 
@@ -268,6 +297,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::operator[](size_type n) const
 	{
+		// Complexity: O(1)
 		return *(_data + n);
 	}
 
@@ -275,6 +305,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::at(size_type n) const
 	{
+		// Complexity: O(1)
 		range_check(n);
 		return *(_data + n);
 	}
@@ -283,6 +314,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::at(size_type n)
 	{
+		// Complexity: O(1)
 		range_check(n);
 		return *(_data + n);
 	}
@@ -291,6 +323,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::front()
 	{
+		// Complexity: O(1)
 		return *_data;
 	}
 
@@ -298,6 +331,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::front() const
 	{
+		// Complexity: O(1)
 		return *_data;
 	}
 
@@ -305,6 +339,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::reference
 	ft::vector<T, Allocator>::back()
 	{
+		// Complexity: O(1)
 		return *(_data + _size - 1);
 	}
 
@@ -312,6 +347,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::const_reference
 	ft::vector<T, Allocator>::back() const
 	{
+		// Complexity: O(1)
 		return *(_data + _size - 1);
 	}
 
@@ -319,6 +355,7 @@ namespace ft
 	T*
 	ft::vector<T, Allocator>::data()
 	{
+		// Complexity: O(1)
 		return _data;
 	}
 	
@@ -326,6 +363,7 @@ namespace ft
 	const T*
 	ft::vector<T, Allocator>::data() const
 	{
+		// Complexity: O(1)
 		return _data;
 	}
 
@@ -337,6 +375,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::push_back(const T& x)
 	{
+		// Complexity: amortized O(1)
 		T value = x;
 		if (_capacity <= _size)
 		{
@@ -355,6 +394,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::pop_back()
 	{
+		// Complexity: O(1)
 		if (_size)
 			_allocator.destroy(_data + --_size);
 	}
@@ -363,6 +403,7 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::insert(iterator position, const T& x)
 	{
+		// Complexity: O(1 + (end() - pos))
 		size_type pos = static_cast<size_type>(position - begin());
 		insert(begin() + pos, 1, x);
 		return begin() + pos;
@@ -372,6 +413,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::insert(iterator position, size_type n, const T& x)
 	{
+		// Complexity: O(n + (end() - pos))
 		if (!n)
 			return ;
 		size_type old_size = _size;
@@ -412,6 +454,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// Complexity: O(distance(first, last) + (end() - pos))
 		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 
@@ -419,6 +462,13 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::erase(iterator position)
 	{
+		/*
+			n1 = element to erase
+			n2 = element after the erased elements
+			Complexity:
+				destructor: O(n1)
+				assignement: O(n2)
+		*/
 		return erase(position, position + 1);
 	}
 
@@ -426,6 +476,13 @@ namespace ft
 	typename ft::vector<T, Allocator>::iterator
 	ft::vector<T, Allocator>::erase(iterator first, iterator last)
 	{
+		/*
+			n1 = element to erase
+			n2 = element after the erased elements
+			Complexity:
+				destructor: O(n1)
+				assignement: O(n2)
+		*/
 		iterator ret = first;
 		for (iterator it = last; it != end(); ++it, ++first)
 			*first = *it;
@@ -439,6 +496,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::swap(vector<T,Allocator>& other)
 	{
+		// Complexity: O(1)
 		if (this != &other)
 		{
 			ft::swap(_data, other._data);
@@ -452,6 +510,7 @@ namespace ft
 	void
 	ft::vector<T, Allocator>::clear()
 	{
+		// Complexity: O(size())
 		for (size_type i = 0; i < _size; i++)
 			_allocator.destroy(_data + i);
 		_size = 0;
@@ -614,6 +673,11 @@ namespace ft
 	bool
 	operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		if (x.size() != y.size())
 			return false;
 		typedef typename vector<T,Allocator>::const_iterator const_iterator;
@@ -633,6 +697,11 @@ namespace ft
 	bool
 	operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		return !(x == y);
 	}
 
@@ -640,6 +709,7 @@ namespace ft
 	bool
 	operator<(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
@@ -647,6 +717,7 @@ namespace ft
 	bool
 	operator>(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return (y < x);
 	}
 
@@ -654,6 +725,7 @@ namespace ft
 	bool
 	operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(x < y);
 	}
 	
@@ -661,6 +733,7 @@ namespace ft
 	bool
 	operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(y < x);
 	}
 	
@@ -672,6 +745,7 @@ namespace ft
 	void
 	swap(vector<T,Allocator>& x, vector<T,Allocator>& y)
 	{
+		// Complexity: O(1)
 		x.swap(y);
 	}
 }
