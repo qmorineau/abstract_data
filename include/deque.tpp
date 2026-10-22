@@ -8,7 +8,7 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::deque<T, Allocator>::deque(const Allocator& alloc)
+	ft::deque<T,Allocator>::deque(const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
 		// Complexity: O(1)
@@ -24,7 +24,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::deque<T, Allocator>::deque(size_type n, const T& value, const Allocator& alloc)
+	ft::deque<T,Allocator>::deque(size_type n, const T& value, const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
 		// Complexity: O(n)
@@ -42,7 +42,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::deque<T, Allocator>::deque(InputIterator first, InputIterator last, const Allocator& alloc)
+	ft::deque<T,Allocator>::deque(InputIterator first, InputIterator last, const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
 		// Complexity: O(distance(first, last))
@@ -59,7 +59,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::deque<T, Allocator>::deque(const deque<T,Allocator>& x)
+	ft::deque<T,Allocator>::deque(const deque<T,Allocator>& x)
 		: _allocator(x._allocator), _size(0)
 	{
 		// Complexity: O(x.size())
@@ -76,7 +76,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::deque<T, Allocator>::~deque()
+	ft::deque<T,Allocator>::~deque()
 	{
 		// Complexity: O(size())
 		destroy_all();
@@ -526,6 +526,20 @@ namespace ft
 	// =====================
 
 	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::center_map()
+	{
+		size_type start_free = _start.map_index;
+		size_type end_free = _map.size() - _end.map_index;
+		size_type diff = ft::abs(end_free - start_free);
+		if (diff > 1)
+		{
+			for (size_type tmp = (start_free + end_free) / 2; tmp <= _end.map_index; ++tmp)
+				ft::swap(_map[tmp], _map[tmp + diff]);
+		}
+	}
+
+	template <class T, class Allocator>
 	T*
 	ft::deque<T,Allocator>::create_chunk()
 	{
@@ -563,7 +577,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag)
 	{
-		vector<T, Allocator> tmp;
+		vector<T,Allocator> tmp;
 		for (; first != last; ++first)
 			tmp.push_back(*first);
 		insert_dispatch(pos, tmp.begin(), tmp.end(), forward_iterator_tag());
@@ -582,7 +596,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::assign_dispatch(InputIt first, InputIt last, input_iterator_tag)
 	{
-		ft::vector<T, Allocator> tmp;
+		ft::vector<T,Allocator> tmp;
 		for (; first != last; ++first)
 			tmp.push_back(*first);
 		assign_dispatch(tmp.begin(), tmp.end(), forward_iterator_tag());

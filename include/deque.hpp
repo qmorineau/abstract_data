@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "cstddef.hpp"
+#include "cstdlib.hpp"
 #include "deque_constants.hpp"
 #include "deque_position.hpp"
 #include "deque_iterator.hpp"
@@ -96,6 +97,7 @@ namespace ft
 			void destroy_all();
 			void throw_out_of_range(size_type n) const;
 			void init_deque();
+			void center_map();
 			T* create_chunk();
 	};
 	// operator
