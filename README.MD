@@ -8,9 +8,9 @@ The goal is to match the behavior and interface of the standard containers while
 
 | Component        | Implementation | Tests | Performance |
 |------------------|----------------|-------|-------------|
-| `vector`         | done           | done  | in progress |
+| `vector`         | done           | done  | done        |
 | `list`           | done           | done  | todo        |
-| `deque`          | in progress    | -     | -           |
+| `deque`          | almost done    | -     | -           |
 | `map`            | todo           | -     | -           |
 | `set`            | todo           | -     | -           |
 | `multimap`       | todo           | -     | -           |

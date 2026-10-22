@@ -11,6 +11,7 @@ namespace ft
 	ft::list<T, Allocator>::list(const Allocator& alloc)
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
+		// Complexity: O(1)
 		init_sentinel();
 	}
 
@@ -18,6 +19,7 @@ namespace ft
 	ft::list<T, Allocator>::list(size_type n, const T& value, const Allocator& alloc)
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
+		// Complexity: O(n)
 		init_sentinel();
 		try
 		{
@@ -36,6 +38,7 @@ namespace ft
 	ft::list<T, Allocator>::list(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 		: _allocator(alloc), _node_alloc(alloc), _size(0)
 	{
+		// Complexity: O(distance(first, last))
 		init_sentinel();
 		try
 		{
@@ -56,6 +59,7 @@ namespace ft
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::list(const list<T,Allocator>& x) : _allocator(x._allocator), _node_alloc(x._node_alloc), _size(0)
 	{
+		// Complexity: O(x.size())
 		init_sentinel();
 		try
 		{
@@ -73,6 +77,7 @@ namespace ft
 	template <class T, class Allocator>
 	ft::list<T, Allocator>::~list()
 	{
+		// Complexity: O(size())
 		clear();
 		_node_alloc.deallocate(_sentinel, 1);
 	}
@@ -85,6 +90,11 @@ namespace ft
 	list<T,Allocator>&
 	ft::list<T, Allocator>::operator=(const list<T,Allocator>& x)
 	{
+		/*
+			Complexity:
+			this: O(size())
+			x: O(x.size())
+		*/
 		if (this != &x)
 		{
 			clear();
@@ -98,6 +108,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// Complexity: O(distance(first, last))
 		clear();
 		insert(begin(), first, last);
 	}
@@ -106,6 +117,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::assign(size_type n, const T& t)
 	{
+		// Complexity: O(n)
 		clear();
 		for (size_type i = 0; i < n; ++i)
 			push_back(t);
@@ -115,6 +127,7 @@ namespace ft
 	typename ft::list<T, Allocator>::allocator_type
 	ft::list<T, Allocator>::get_allocator() const
 	{
+		// Complexity: O(1)
 		return _allocator;
 	}
 
@@ -126,6 +139,7 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::begin()
 	{
+		// Complexity: O(1)
 		return iterator(_sentinel->next);
 	}
 
@@ -133,6 +147,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::begin() const
 	{
+		// Complexity: O(1)
 		return const_iterator(_sentinel->next);
 	}
 
@@ -140,6 +155,7 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::end()
 	{
+		// Complexity: O(1)
 		return iterator(_sentinel);
 	}
 
@@ -147,6 +163,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_iterator
 	ft::list<T, Allocator>::end() const
 	{
+		// Complexity: O(1)
 		return const_iterator(_sentinel);
 	}
 
@@ -154,6 +171,7 @@ namespace ft
 	typename ft::list<T, Allocator>::reverse_iterator
 	ft::list<T, Allocator>::rbegin()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(end());
 	}
 
@@ -161,6 +179,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_reverse_iterator
 	ft::list<T, Allocator>::rbegin() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(end());
 	}
 
@@ -168,6 +187,7 @@ namespace ft
 	typename ft::list<T, Allocator>::reverse_iterator
 	ft::list<T, Allocator>::rend()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(begin());
 	}
 
@@ -175,6 +195,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_reverse_iterator
 	ft::list<T, Allocator>::rend() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(begin());
 	}
 
@@ -186,6 +207,7 @@ namespace ft
 	bool
 	ft::list<T, Allocator>::empty() const
 	{
+		// Complexity: O(1)
 		return _size == 0;
 	}
 
@@ -193,6 +215,7 @@ namespace ft
 	typename ft::list<T, Allocator>::size_type
 	ft::list<T, Allocator>::size() const
 	{
+		// Complexity: O(1) or O(size())
 		return _size;
 	}
 
@@ -200,6 +223,7 @@ namespace ft
 	typename ft::list<T, Allocator>::size_type
 	ft::list<T, Allocator>::max_size() const
 	{
+		// Complexity: O(1)
 		return _node_alloc.max_size();
 	}
 
@@ -207,6 +231,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::resize(size_type sz, T c)
 	{
+		// Complexity: O(size() - sz)
 		if (sz < _size)
 		{
 			while (sz < _size)
@@ -227,6 +252,7 @@ namespace ft
 	typename ft::list<T, Allocator>::reference
 	ft::list<T, Allocator>::front()
 	{
+		// Complexity: O(1)
 		return *begin();
 	}
 
@@ -234,6 +260,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_reference
 	ft::list<T, Allocator>::front() const
 	{
+		// Complexity: O(1)
 		return *begin();
 	}
 
@@ -241,6 +268,7 @@ namespace ft
 	typename ft::list<T, Allocator>::reference
 	ft::list<T, Allocator>::back()
 	{
+		// Complexity: O(1)
 		return *(--end());
 	}
 
@@ -248,6 +276,7 @@ namespace ft
 	typename ft::list<T, Allocator>::const_reference
 	ft::list<T, Allocator>::back() const
 	{
+		// Complexity: O(1)
 		return *(--end());
 	}
 
@@ -259,6 +288,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::push_front(const T& x)
 	{
+		// Complexity: O(1)
 		insert(begin(), x);
 	}
 
@@ -266,6 +296,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::pop_front()
 	{
+		// Complexity: O(1)
 		erase(begin());
 	}
 
@@ -273,6 +304,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::push_back(const T& x)
 	{
+		// Complexity: O(1)
 		insert(end(), x);
 	}
 
@@ -280,6 +312,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::pop_back()
 	{
+		// Complexity: O(1)
 		erase(--end());
 	}
 
@@ -287,6 +320,7 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::insert(iterator position, const T& x)
 	{
+		// Complexity: O(1)
 		Node<T>* prev = position.base()->prev;
 		Node<T>* next = position.base();
 		Node<T>* new_node = _node_alloc.allocate(1);
@@ -311,6 +345,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::insert(iterator position, size_type n, const T& x)
 	{
+		// Complexity: O(n)
 		for (size_type i = 0; i < n; ++i)
 			insert(position, x);
 	}
@@ -320,6 +355,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// Complexity: O(distance(first, last))
 		while (first != last)
 		{
 			insert(position, *first);
@@ -331,6 +367,7 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::erase(iterator position)
 	{
+		// Complexity: O(1)
 		Node<T>* to_destroy = position.base();
 		iterator ret = iterator(to_destroy->next);
 		to_destroy->next->prev = to_destroy->prev;
@@ -345,6 +382,7 @@ namespace ft
 	typename ft::list<T, Allocator>::iterator
 	ft::list<T, Allocator>::erase(iterator position, iterator last)
 	{
+		// Complexity: O(distance(pos, last))
 		while (position != last)
 			erase(position++);
 		return last;
@@ -354,6 +392,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::swap(list<T,Allocator>& other)
 	{
+		// Complexity: O(1)
 		ft::swap(_allocator, other._allocator);
 		ft::swap(_node_alloc, other._node_alloc);
 		ft::swap(_size, other._size);
@@ -364,6 +403,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::clear()
 	{
+		// Complexity: O(size())
 		iterator it = begin();
 		while (it != end())
 		{
@@ -384,6 +424,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x)
 	{
+		// Complexity: O(1)
 		while (!x.empty())
 		{
 			iterator it = --x.end();
@@ -396,6 +437,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator it)
 	{
+		// Complexity: O(1) 
 		if (position == it)
 			return ;
 		Node<T>* to_insert = it.base();
@@ -414,13 +456,26 @@ namespace ft
 	void
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x, iterator first, iterator last)
 	{
-		--first;
-		--last;
-		while (first != last)
+		/*
+			Complexity:
+				x == *this: O(1)
+				else: O(distance(first, last))
+		*/
+		if (this == &x)
 		{
-			iterator it = last--;
-			splice(position, x, it);
-			--position;
+			// todo
+		}
+		else
+		{
+			--first;
+			--last;
+			while (first != last)
+			{
+				// transfer all plage at once
+				iterator it = last--;
+				splice(position, x, it);
+				--position;
+			}
 		}
 	}
 
@@ -428,6 +483,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove(const T& value)
 	{
+		// Complexity: comparaison: O(distance(begin(), end()) 
 		ft::list<T, Allocator> to_remove;
 		iterator it = begin();
 		while (it != end())
@@ -445,6 +501,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::remove_if(Predicate pred)
 	{
+		// Complexity: predicate use: O(distance(begin(), end()) 
 		ft::list<T, Allocator> to_remove;
 		iterator it = begin();
 		while (it != end())
@@ -461,6 +518,12 @@ namespace ft
 	void
 	ft::list<T, Allocator>::unique()
 	{
+		/*
+			N = distance(begin(), end())
+			Complexity:
+				empty: no comparison
+				comparaison==: exactly O(N)
+		*/
 		unique(ft::equal_to<T>());
 	}
 
@@ -469,6 +532,12 @@ namespace ft
 	void
 	ft::list<T, Allocator>::unique(BinaryPredicate binary_pred)
 	{
+		/*
+			N = distance(begin(), end())
+			Complexity:
+				empty: no comparison
+				predicate: exactly O(N)
+		*/
 		if (empty())
 			return ;
 		iterator it = begin();
@@ -487,6 +556,11 @@ namespace ft
 	void
 	ft::list<T, Allocator>::merge(list<T,Allocator>& x)
 	{
+		/*
+			Complexicity:
+				x == *this: no comparaison
+				else: comparison < : at most 0(distance(begin(), end()) + distance(x.begin(), x.end()) - 1)
+		*/
 		merge(x, ft::less<T>());
 	}
 
@@ -495,6 +569,11 @@ namespace ft
 	void
 	ft::list<T, Allocator>::merge(list<T,Allocator>& x, Compare comp)
 	{
+		/*
+			Complexicity:
+				x == *this: no comparaison
+				else: comparison comp: at most 0(distance(begin(), end()) + distance(x.begin(), x.end()) - 1)
+		*/
 		if (this != &x)
 		{
 			iterator it = begin();
@@ -516,6 +595,8 @@ namespace ft
 	void
 	ft::list<T, Allocator>::sort()
 	{
+		// Complexity: N = size() 
+		//		comparaison: approximately N⋅log(N)
 		mergeSort(*this, ft::less<T>());
 	}
 
@@ -524,6 +605,8 @@ namespace ft
 	void
 	ft::list<T, Allocator>::sort(Compare comp)
 	{
+		// Complexity: N = size() 
+		//		comparaison comp: approximately N⋅log(N)
 		mergeSort(*this, comp);
 	}
 
@@ -531,6 +614,7 @@ namespace ft
 	void
 	ft::list<T, Allocator>::reverse()
 	{
+		// Complexity: O(size())
 		Node<T>* current = _sentinel;
 		do
 		{
@@ -578,6 +662,11 @@ namespace ft
 	bool
 	operator==(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		if (x.size() != y.size())
 			return false;
 		typedef typename list<T,Allocator>::const_iterator const_iterator;
@@ -595,6 +684,11 @@ namespace ft
 	bool
 	operator!=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		return !(x == y);
 	}
 
@@ -602,6 +696,7 @@ namespace ft
 	bool
 	operator< (const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
@@ -609,6 +704,7 @@ namespace ft
 	bool
 	operator> (const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return (y < x);
 	}
 
@@ -616,6 +712,7 @@ namespace ft
 	bool
 	operator>=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(x < y);
 	}
 
@@ -623,6 +720,7 @@ namespace ft
 	bool
 	operator<=(const list<T,Allocator>& x, const list<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(y < x);
 	}
 
@@ -634,6 +732,7 @@ namespace ft
 	void
 	swap(list<T,Allocator>& x, list<T,Allocator>& y)
 	{
+		// Complexity: O(1)
 		x.swap(y);
 	}
 }
