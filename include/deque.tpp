@@ -11,6 +11,7 @@ namespace ft
 	ft::deque<T, Allocator>::deque(const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
+		// Complexity: O(1)
 		try
 		{
 			init_deque();
@@ -26,6 +27,7 @@ namespace ft
 	ft::deque<T, Allocator>::deque(size_type n, const T& value, const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
+		// Complexity: O(n)
 		try
 		{
 			init_deque();
@@ -43,6 +45,7 @@ namespace ft
 	ft::deque<T, Allocator>::deque(InputIterator first, InputIterator last, const Allocator& alloc)
 		: _allocator(alloc), _size(0)
 	{
+		// Complexity: O(distance(first, last))
 		try
 		{
 			init_deque();
@@ -59,6 +62,7 @@ namespace ft
 	ft::deque<T, Allocator>::deque(const deque<T,Allocator>& x)
 		: _allocator(x._allocator), _size(0)
 	{
+		// Complexity: O(x.size())
 		try
 		{
 			init_deque();
@@ -74,6 +78,7 @@ namespace ft
 	template <class T, class Allocator>
 	ft::deque<T, Allocator>::~deque()
 	{
+		// Complexity: O(size())
 		destroy_all();
 	}
 
@@ -85,6 +90,7 @@ namespace ft
 	deque<T,Allocator>&
 	ft::deque<T,Allocator>::operator=(const deque<T,Allocator>& x)
 	{
+		// Complexity: O(size()) and O(x.size())
 		if (this != &x)
 		{
 			assign(x.begin(), x.end());
@@ -97,6 +103,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// Complexity: O(distance(first, last))
 		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 
@@ -104,6 +111,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::assign(size_type n, const T& t)
 	{
+		// Complexity: O(n)
 		// to do -> not clear, put assign each chunk, then delete like in optimisation in vector
 		clear();
 		for (size_type i = 0; i < n; ++i)
@@ -114,6 +122,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::allocator_type
 	ft::deque<T,Allocator>::get_allocator() const
 	{
+		// Complexity: O(1)
 		return _allocator;
 	}
 
@@ -125,6 +134,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::begin()
 	{
+		// Complexity: O(1)
 		return iterator(&_map, _start.map_index, _start.offset);
 	}
 
@@ -132,6 +142,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_iterator
 	ft::deque<T,Allocator>::begin() const
 	{
+		// Complexity: O(1)
 		return const_iterator(&_map, _start.map_index, _start.offset);
 	}
 
@@ -139,6 +150,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::end()
 	{
+		// Complexity: O(1)
 		return iterator(&_map, _end.map_index, _end.offset);
 	}
 
@@ -146,6 +158,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_iterator
 	ft::deque<T,Allocator>::end() const
 	{
+		// Complexity: O(1)
 		return const_iterator(&_map, _end.map_index, _end.offset);
 	}
 
@@ -153,6 +166,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reverse_iterator
 	ft::deque<T,Allocator>::rbegin()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(end());
 	}
 
@@ -160,6 +174,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reverse_iterator
 	ft::deque<T,Allocator>::rbegin() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(end());
 	}
 
@@ -167,6 +182,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reverse_iterator
 	ft::deque<T,Allocator>::rend()
 	{
+		// Complexity: O(1)
 		return reverse_iterator(begin());
 	}
 
@@ -174,6 +190,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reverse_iterator
 	ft::deque<T,Allocator>::rend() const
 	{
+		// Complexity: O(1)
 		return const_reverse_iterator(begin());
 	}
 
@@ -185,6 +202,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::size_type
 	ft::deque<T,Allocator>::size() const
 	{
+		// Complexity: O(1)
 		return _size;
 	}
 
@@ -192,6 +210,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::size_type
 	ft::deque<T,Allocator>::max_size() const
 	{
+		// Complexity: O(1)
 		return _allocator.max_size();
 	}
 
@@ -199,6 +218,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::resize(size_type sz, T c)
 	{
+		// Complexity: O(abs(size() - sz))
 		if (_size < sz)
 		{
 			for (size_type i = _size; i <= sz; ++i)
@@ -216,6 +236,7 @@ namespace ft
 	bool
 	ft::deque<T,Allocator>::empty() const
 	{
+		// Complexity: O(1)
 		return _size == 0;
 	}
 
@@ -227,6 +248,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::operator[](size_type n)
 	{
+		// Complexity: O(1)
 		iterator it = begin();
 		it += n;
 		return *it;
@@ -236,6 +258,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::operator[](size_type n) const
 	{
+		// Complexity: O(1)
 		const_iterator it = begin();
 		it += n;
 		return *it;
@@ -245,6 +268,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::at(size_type n)
 	{
+		// Complexity: O(1)
 		if (n > _size)
 			throw_out_of_range(n);
 		iterator it = begin();
@@ -256,6 +280,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::at(size_type n) const
 	{
+		// Complexity: O(1)
 		if (n > _size)
 			throw_out_of_range(n);
 		const_iterator it = begin();
@@ -267,6 +292,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::front()
 	{
+		// Complexity: O(1)
 		return _map[_start.map_index][_start.offset];
 	}
 
@@ -274,6 +300,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::front() const
 	{
+		// Complexity: O(1)
 		return _map[_start.map_index][_start.offset];
 	}
 
@@ -281,6 +308,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::reference
 	ft::deque<T,Allocator>::back()
 	{
+		// Complexity: O(1)
 		if (_end.offset == 0)
 			_map[_end.map_index - 1][deque_chunk_size - 1];
 		return _map[_end.map_index][_end.offset - 1];
@@ -290,6 +318,7 @@ namespace ft
 	typename ft::deque<T,Allocator>::const_reference
 	ft::deque<T,Allocator>::back() const
 	{
+		// Complexity: O(1)
 		if (_end.offset == 0)
 			_map[_end.map_index - 1][deque_chunk_size - 1];
 		return _map[_end.map_index][_end.offset - 1];
@@ -303,6 +332,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::push_front(const T& x)
 	{
+		// Complexity: O(1)
 		// todo
 	}
 
@@ -310,6 +340,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::push_back(const T& x)
 	{
+		// Complexity: O(1)
 		if (_end.offset == deque_chunk_size - 1)
 		{
 			if (_map.size() == _end.map_index + 1)
@@ -330,6 +361,8 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::insert(iterator position, const T& x)
 	{
+		// n = lesser distances betzeen pos and either of the ends of container
+		// Complexity: O(1 + n)
 		size_type pos = static_cast<size_type>(position - begin());
 		insert(begin() + pos, 1, x);
 		return begin() + pos;
@@ -339,6 +372,8 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::insert(iterator position, size_type n, const T& x)
 	{
+		// dist = lesser distances betzeen pos and either of the ends of container
+		// Complexity: O(n + dist)
 		// todo
 	}
 
@@ -347,6 +382,8 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
+		// dist = lesser distances between pos and either of the ends of container
+		// Complexity: O(distance(first, last) + dist)
 		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 
@@ -354,6 +391,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::pop_front()
 	{
+		// Complexity: O(1)
 		deque_position new_start;
 		if (_start.offset == deque_chunk_size - 1)
 		{
@@ -377,6 +415,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::pop_back()
 	{
+		// Complexity: O(1)
 		deque_position pos;
 		if (_end.offset == 0)
 		{
@@ -400,6 +439,13 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::erase(iterator position)
 	{
+		/*
+			n1 = element to erase
+			n2 = lesser number of elements before erased elements or after erased elements
+			Complexity:
+				destructor: O(n1)
+				assignement: O(n2)
+		*/
 		return erase(position, position + 1);
 	}
 
@@ -407,6 +453,13 @@ namespace ft
 	typename ft::deque<T,Allocator>::iterator
 	ft::deque<T,Allocator>::erase(iterator first, iterator last)
 	{
+		/*
+			n1 = element to erase
+			n2 = lesser number of elements before erased elements or after erased elements
+			Complexity:
+				destructor: O(n1)
+				assignement: O(n2)
+		*/
 		iterator ret = first;
 		for (iterator it = last; it != end(); ++it, ++first)
 			*first = *it;
@@ -426,6 +479,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::swap(deque<T,Allocator>& other)
 	{
+		// Complexity: O(1)
 		if (this != &other)
 		{
 			ft::swap(_allocator, other._allocator);
@@ -441,6 +495,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::clear()
 	{
+		// Complexity: O(size())
 		if (_size > 0)
 		{
 			for (ft::size_t map_idx = _start.map_index; map_idx != _end.map_index + 1; ++map_idx)
@@ -560,6 +615,11 @@ namespace ft
 	bool
 	operator==(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		if (x.size() != y.size())
 			return false;
 		typedef typename vector<T,Allocator>::const_iterator const_iterator;
@@ -579,6 +639,11 @@ namespace ft
 	bool
 	operator!=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		/*
+			Complexity:
+				x.size() != y.size(): O(1)
+				else: O(size())
+		*/
 		return !(x == y);
 	}
 
@@ -586,6 +651,7 @@ namespace ft
 	bool
 	operator< (const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return ft::lexicographical_compare(x.begin(), x.end(), y.begin(), y.end());
 	}
 
@@ -593,6 +659,7 @@ namespace ft
 	bool
 	operator> (const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return (y < x);
 	}
 
@@ -600,6 +667,7 @@ namespace ft
 	bool
 	operator>=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(x < y);
 	}
 
@@ -607,6 +675,7 @@ namespace ft
 	bool
 	operator<=(const deque<T,Allocator>& x, const deque<T,Allocator>& y)
 	{
+		// Complexity: O(size())
 		return !(y < x);
 	}
 
@@ -618,6 +687,7 @@ namespace ft
 	void
 	swap(deque<T,Allocator>& x, deque<T,Allocator>& y)
 	{
+		// Complexity: O(1)
 		x.swap(y);
 	}
 }
