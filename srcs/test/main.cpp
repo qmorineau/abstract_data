@@ -7,8 +7,6 @@ void test()
 
 int main()
 {
-	test();
-	return 1;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
@@ -20,7 +18,7 @@ int main()
 	// test_helpers();
 	// test_sequence_container<ns::vector>("vector");
 	// test_sequence_container<ns::deque>("deque");
-	// test_sequence_container<ns::list>("list");
+	test_sequence_container<ns::list>("list");
 
 	// test_associative_container<ns::map>();
 	// test_associative_container<ns::set>();

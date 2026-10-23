@@ -62,6 +62,14 @@ struct container_traits_default
 		has_push_back = 0,
 		has_pop_back = 0,
 		has_swap = 0,
+		// operations
+		has_splice = 0,
+		has_merge = 0,
+		has_remove = 0,
+		has_remove_if = 0,
+		has_reverse = 0,
+		has_unique = 0,
+		has_sort = 0,
 		// non member
 		has_is_equal_operator = 0,
 		has_is_different_operator = 0,
@@ -193,6 +201,14 @@ struct container_traits<ns::list<T, Alloc> > : container_traits_default
 		has_pop_front = 1,
 		has_resize = 1,
 		has_swap = 1,
+		// operations
+		has_splice = 1,
+		has_merge = 1,
+		has_remove = 1,
+		has_remove_if = 1,
+		has_reverse = 1,
+		has_unique = 1,
+		has_sort = 1,
 		// non member
 		has_is_equal_operator = 1,
 		has_is_different_operator = 1,

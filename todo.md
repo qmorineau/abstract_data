@@ -11,7 +11,7 @@
 - stack
 
 ## Tests
-- add test for list
+- do operations_func test
 - splice test with different list and same list
 - use inputiterator for some test (iterator that are consume when value retrieved)
 

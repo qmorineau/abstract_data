@@ -463,7 +463,18 @@ namespace ft
 		*/
 		if (this == &x)
 		{
-			// todo
+			Node<T>* node1 = first.base();
+			Node<T>* node2 = last.base();
+			Node<T>* node3 = position.base();
+
+			node1->prev->next = node2->next;
+			node2->next->prev = node1->prev;
+
+			node1->prev = node3->prev;
+			node2->next = node3;
+
+			node3->prev->next = node1;
+			node3->prev = node2;
 		}
 		else
 		{

@@ -531,7 +531,7 @@ namespace ft
 	{
 		size_type start_free = _start.map_index;
 		size_type end_free = _map.size() - _end.map_index;
-		size_type diff = ft::abs(end_free - start_free);
+		size_type diff = ft::max(start_free, end_free) - ft::min(start_free, end_free);
 		if (diff > 1)
 		{
 			for (size_type tmp = (start_free + end_free) / 2; tmp <= _end.map_index; ++tmp)

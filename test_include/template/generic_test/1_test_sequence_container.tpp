@@ -14,6 +14,7 @@ static void test_sequence_container_type(std::string type)
 	test_iterators_func<Container>();
 	test_capacity_func<Container>();
 	test_modifiers_func<Container>();
+	test_operations_func<Container>();
 	test_non_member_func<Container>();
 }
 

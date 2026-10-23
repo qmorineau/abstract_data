@@ -68,6 +68,8 @@ void test_capacity_func();
 template <typename Container>
 void test_modifiers_func();
 template <typename Container>
+void test_operations_func();
+template <typename Container>
 void test_non_member_func();
 
 // Helper
@@ -85,6 +87,7 @@ void print(Container c);
 #include "template/generic_test/2_test_element_access_func.tpp"
 #include "template/generic_test/2_test_iterators_func.tpp"
 #include "template/generic_test/2_test_modifiers_func.tpp"
+#include "template/generic_test/2_test_operations_func.tpp"
 #include "template/generic_test/2_test_non_member_func.tpp"
 
 #include "template/generic_test/1_test_sequence_container.tpp"
