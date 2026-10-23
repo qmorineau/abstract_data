@@ -96,10 +96,7 @@ namespace ft
 			x: O(x.size())
 		*/
 		if (this != &x)
-		{
-			clear();
-			insert(end(), x.begin(), x.end());
-		}
+			assign(x.begin(), x.end());
 		return *this;
 	}
 
@@ -109,8 +106,19 @@ namespace ft
 	ft::list<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
 	{
 		// Complexity: O(distance(first, last))
-		clear();
-		insert(begin(), first, last);
+		iterator it = begin();
+
+		while (it != end() && first != last)
+		{
+			*it = *first;
+			++it;
+			++first;
+		}
+
+		if (first == last)
+			erase(it, end());
+		else
+			insert(end(), first, last);
 	}
 
 	template <class T, class Allocator>
@@ -118,9 +126,14 @@ namespace ft
 	ft::list<T, Allocator>::assign(size_type n, const T& t)
 	{
 		// Complexity: O(n)
-		clear();
-		for (size_type i = 0; i < n; ++i)
-			push_back(t);
+		iterator it = begin();
+
+		for (;it != end() && n > 0; ++it, --n)
+			*it = t;
+		if (n == 0)
+			erase(it, end());
+		else
+			insert(end(), n, t);
 	}
 
 	template <class T, class Allocator>
@@ -425,12 +438,9 @@ namespace ft
 	ft::list<T, Allocator>::splice(iterator position, list<T,Allocator>& x)
 	{
 		// Complexity: O(1)
-		while (!x.empty())
-		{
-			iterator it = --x.end();
-			splice(position, x, it);
-			--position;
-		}
+		if (x.empty())
+			return ;
+		splice(position, x.begin(), x.end());
 	}
 
 	template <class T, class Allocator>
@@ -461,32 +471,27 @@ namespace ft
 				x == *this: O(1)
 				else: O(distance(first, last))
 		*/
-		if (this == &x)
+		if (first == last)
+			return ;
+		size_type n;
+		if (this != &x)
+			n = ft::distance(first, last);
+		Node<T>* first_node = first.base();
+		Node<T>* last_node = last.base()->prev;
+		Node<T>* pos = position.base();
+
+		first_node->prev->next = last.base();
+		last.base()->prev = first_node->prev;
+
+		first_node->prev = pos->prev;
+		last_node->next = pos;
+		pos->prev->next = first_node;
+		pos->prev = last_node;
+
+		if (this != &x)
 		{
-			Node<T>* node1 = first.base();
-			Node<T>* node2 = last.base();
-			Node<T>* node3 = position.base();
-
-			node1->prev->next = node2->next;
-			node2->next->prev = node1->prev;
-
-			node1->prev = node3->prev;
-			node2->next = node3;
-
-			node3->prev->next = node1;
-			node3->prev = node2;
-		}
-		else
-		{
-			--first;
-			--last;
-			while (first != last)
-			{
-				// transfer all plage at once
-				iterator it = last--;
-				splice(position, x, it);
-				--position;
-			}
+			x._size -= n;
+			_size += n;
 		}
 	}
 

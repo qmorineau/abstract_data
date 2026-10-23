@@ -17,6 +17,4 @@
 
 ## Optimization
 - vector::operator=()
-- list assign => not clear + push back but assign value to node that already exist
-- list splice it => transfer all plage once, not one by one
 - std::swap specialization
