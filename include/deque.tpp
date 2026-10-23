@@ -333,7 +333,26 @@ namespace ft
 	ft::deque<T,Allocator>::push_front(const T& x)
 	{
 		// Complexity: O(1)
-		// todo
+		if (_start.offset == 0)
+		{
+			if (_start.map_index == 0)
+			{
+				_map.insert(_map.begin(), NULL);
+				++_start.map_index;
+				++_end.map_index;
+			}
+			deque_position new_pos(_start.map_index - 1, deque_chunk_size - 1);
+			_map[new_pos.map_index] = create_chunk();
+			_allocator.construct(_map[new_pos.map_index] +  new_pos.offset, x);
+			_start = new_pos;
+		}
+		else
+		{
+			_allocator.construct(_map[_start.map_index] + (_start.offset - 1), x);
+			--_start.offset;
+		}
+		++_size;
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -355,6 +374,7 @@ namespace ft
 			++_end.map_index;
 			_end.offset = 0;
 		}
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -365,6 +385,7 @@ namespace ft
 		// Complexity: O(1 + n)
 		size_type pos = static_cast<size_type>(position - begin());
 		insert(begin() + pos, 1, x);
+		center_map();
 		return begin() + pos;
 	}
 
@@ -375,6 +396,7 @@ namespace ft
 		// dist = lesser distances betzeen pos and either of the ends of container
 		// Complexity: O(n + dist)
 		// todo
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -385,6 +407,7 @@ namespace ft
 		// dist = lesser distances between pos and either of the ends of container
 		// Complexity: O(distance(first, last) + dist)
 		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -409,6 +432,7 @@ namespace ft
 		}
 		_start = new_start;
 		--_size;
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -433,6 +457,7 @@ namespace ft
 		}
 		_end = pos;
 		--_size;
+		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -472,6 +497,7 @@ namespace ft
 			_allocator.deallocate(_map[i], deque_chunk_size);
 			_map[i] = NULL;
 		}
+		center_map();
 		return ret;
 	}
 
@@ -518,6 +544,7 @@ namespace ft
 			_start.offset = deque_chunk_size / 2;
 			_end.map_index = _start.map_index;
 			_end.offset = _start.offset;
+			center_map();
 		}
 	}
 
@@ -531,11 +558,23 @@ namespace ft
 	{
 		size_type start_free = _start.map_index;
 		size_type end_free = _map.size() - _end.map_index;
-		size_type diff = ft::max(start_free, end_free) - ft::min(start_free, end_free);
-		if (diff > 1)
+		size_type free_chunks = start_free + end_free;
+
+		size_type new_begin = free_chunks / 2;
+		if (start_free != new_begin)
 		{
-			for (size_type tmp = (start_free + end_free) / 2; tmp <= _end.map_index; ++tmp)
-				ft::swap(_map[tmp], _map[tmp + diff]);
+			if (new_begin < start_free)
+			{
+				for (size_type i = 0; i <= _end.map_index - start_free; ++i)
+					ft::swap(_map[start_free + i], _map[new_begin + i]);
+			}
+			else
+			{
+				for (size_type i = _end.map_index - start_free; i <= _end.map_index - start_free ; --i)
+					ft::swap(_map[new_begin + i], _map[start_free + i]);
+			}
+			_start.map_index = new_begin;
+			_end.map_index = new_begin + (_end.map_index - start_free);
 		}
 	}
 
