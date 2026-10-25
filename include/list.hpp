@@ -7,6 +7,7 @@
 #include "functional.hpp"
 #include "cstddef.hpp"
 #include "type_traits.hpp"
+#include "guards.hpp"
 #include "list_iterator.hpp"
 #include "list_node.hpp"
 

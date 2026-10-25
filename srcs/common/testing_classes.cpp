@@ -2,12 +2,12 @@
 
 std::ostream& operator<<(std::ostream& out_stream, const Foo& f)
 {
-	(void) f;
 	out_stream << "Foo" << f.data();
 	return out_stream;
 }
 
-bool operator==(const Foo& x, const Foo& y)
+std::ostream& operator<<(std::ostream& out_stream, const Throwing& t)
 {
-	return x.data() == y.data();
+	out_stream << "Throwing" << t.data();
+	return out_stream;
 }

@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "testing_classes.hpp"
+
 template <typename T>
 struct value_generator
 {
@@ -26,6 +28,8 @@ template <typename Container>
 Container fill_n(size_t n)
 {
 	typedef typename Container::value_type value_type;
+	NoThrowScope guard;
+
 	std::vector<value_type> v;
 	for (std::size_t i = 0; i < n; ++i)
 		v.push_back(value_generator<value_type>::make(static_cast<int>(i * 10)));
@@ -36,11 +40,13 @@ template <typename Container>
 typename Container::value_type generate_value(size_t n)
 {
 	typedef typename Container::value_type value_type;
+	NoThrowScope guard;
+
 	return value_generator<value_type>::make(static_cast<int>(n));
 }
 
 template <typename Container>
-void print(Container c)
+void print(Container& c)
 {
 	typename Container::iterator it = c.begin();
 	for (; it != c.end(); ++it)

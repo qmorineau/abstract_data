@@ -1,12 +1,35 @@
 #include "test.hpp"
 
-void test()
+void test(int i)
 {
-	
+	ns::vector<Throwing> d = fill_n<ns::vector<Throwing> >(10);
+	ns::vector<Throwing> d2 = fill_n<ns::vector<Throwing> >(5);
+	print<ns::vector<Throwing> >(d);
+	std::cout << d.size() << std::endl;
+	typename ns::vector<Throwing>::iterator begin = d.begin();
+	begin += 8;
+	try
+	{
+		ThrowingCounter::reset(i);
+		d.insert(begin, d2.begin(), d2.end());
+		d.size();
+	}
+	catch(...)
+	{
+	}
+	print<ns::vector<Throwing> >(d);
+	std::cout << d.size() << std::endl;
 }
+
+std::size_t ThrowingCounter::count = 0;
+std::size_t ThrowingCounter::limit = 10;
+bool		ThrowingCounter::enabled = true;
 
 int main()
 {
+	// for (int i = 0; i < 25; ++i)
+	// 	test(i);
+	// return 1;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
@@ -16,7 +39,7 @@ int main()
 	// test_exceptions();
 	// test_iterators();
 	// test_helpers();
-	// test_sequence_container<ns::vector>("vector");
+	test_sequence_container<ns::vector>("vector");
 	// test_sequence_container<ns::deque>("deque");
 	test_sequence_container<ns::list>("list");
 

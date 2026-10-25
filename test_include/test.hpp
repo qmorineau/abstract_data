@@ -26,10 +26,42 @@
 	# define NAMESPACE_NAME "ft"
 #endif
 
+template <typename T>	struct is_throwing				{static const bool value = false;};
+template <>				struct is_throwing<Throwing>	{static const bool value = true;};
+
+template <typename Runner, bool Sweep>
+struct sweep_runner
+{
+	static void run() {Runner::run();}
+};
+
+template <typename Runner>
+struct sweep_runner<Runner, true>
+{
+	static void run()
+	{
+		SilenceScope mute;
+		for (std::size_t k = 0; k < 100; ++k)
+		{
+			ThrowingCounter::reset(k);
+			try
+			{
+				Runner::run();			
+			}
+			catch(const ThrowingException&)
+			{
+			}
+		}
+	}
+};
+
 template <bool Enabled, template <typename> class Test, typename C>
 struct run_if
 {
-    static void run() { Test<C>::run(); }
+    static void run()
+	{
+		sweep_runner<Test<C>, is_throwing<typename C::value_type>::value>::run(); 
+	}
 };
 
 template <template <typename> class Test, typename C>
@@ -78,7 +110,7 @@ Container fill_n(size_t n);
 template <typename Container>
 typename Container::value_type generate_value(size_t n);
 template <typename Container>
-void print(Container c);
+void print(Container& c);
 
 
 

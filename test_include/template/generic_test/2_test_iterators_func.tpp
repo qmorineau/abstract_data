@@ -18,8 +18,9 @@ struct test_begin
 		typedef typename Container::iterator iterator;
 		typedef typename Container::const_iterator const_iterator;
 		Container c;
+		const Container cc;
 		iterator it = c.begin();
-		const_iterator cit = c.begin();
+		const_iterator cit = cc.begin();
 		(void) it; (void) cit;
 	}
 };
@@ -33,8 +34,9 @@ struct test_rbegin
 		typedef typename Container::reverse_iterator reverse_iterator;
 		typedef typename Container::const_reverse_iterator const_reverse_iterator;
 		Container c;
+		const Container cc;
 		reverse_iterator it = c.rbegin();
-		const_reverse_iterator cit = c.rbegin();
+		const_reverse_iterator cit = cc.rbegin();
 		(void) it; (void) cit;
 	}
 };
@@ -48,8 +50,9 @@ struct test_end
 		typedef typename Container::iterator iterator;
 		typedef typename Container::const_iterator const_iterator;
 		Container c;
+		const Container cc;
 		iterator it = c.end();
-		const_iterator cit = c.end();
+		const_iterator cit = cc.end();
 		(void) it; (void) cit;
 	}
 };
@@ -63,8 +66,9 @@ struct test_rend
 		typedef typename Container::reverse_iterator reverse_iterator;
 		typedef typename Container::const_reverse_iterator const_reverse_iterator;
 		Container c;
+		const Container cc;
 		reverse_iterator it = c.rend();
-		const_reverse_iterator cit = c.rend();
+		const_reverse_iterator cit = cc.rend();
 		(void) it; (void) cit;
 	}
 };

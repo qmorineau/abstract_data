@@ -337,15 +337,9 @@ namespace ft
 		Node<T>* prev = position.base()->prev;
 		Node<T>* next = position.base();
 		Node<T>* new_node = _node_alloc.allocate(1);
-		try
-		{
-			_allocator.construct(&new_node->value, x);
-		}
-		catch(...)
-		{
-			_node_alloc.deallocate(new_node, 1);
-			throw ;
-		}
+		detail::MemoryGuard<Node<T>, node_allocator> guard(_node_alloc, new_node, 1);
+		_allocator.construct(&new_node->value, x);
+		guard.release();
 		new_node->prev = prev;
 		new_node->next = next;
 		next->prev = new_node;
@@ -440,7 +434,7 @@ namespace ft
 		// Complexity: O(1)
 		if (x.empty())
 			return ;
-		splice(position, x.begin(), x.end());
+		splice(position, x, x.begin(), x.end());
 	}
 
 	template <class T, class Allocator>

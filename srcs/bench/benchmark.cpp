@@ -18,8 +18,13 @@ void benchmark_type(std::string name)
 	std::cout << std::endl;
 }
 
+std::size_t ThrowingCounter::count = 0;
+std::size_t ThrowingCounter::limit = 0;
+bool		ThrowingCounter::enabled = true;
+
 int main()
 {
 	benchmark_type<ns::vector>("vector");
 	benchmark_type<ns::list>("list");
+	benchmark_type<ns::deque>("deque");
 }

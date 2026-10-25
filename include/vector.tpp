@@ -258,20 +258,18 @@ namespace ft
 			throw ft::length_error("vector::reserve");
 		if (n > _capacity)
 		{
+
 			T* tmp = _allocator.allocate(n);
-			size_type i = 0;
-			try
+			detail::MemoryGuard<T, Allocator>				mg(_allocator, tmp, n);
+			detail::ConstructGuard<T, Allocator, iterator>	cg(_allocator, iterator(tmp));
+			for (size_type i = 0; i < _size; ++i)
 			{
-				for (; i < _size; ++i)
-					_allocator.construct(tmp + i, _data[i]);
+				_allocator.construct(tmp + i, _data[i]);
+				cg.push();
 			}
-			catch(...)
-			{
-				for (size_type j = 0; j < i; ++j)
-					_allocator.destroy(tmp + j);
-				_allocator.deallocate(tmp, n);
-				throw;
-			}
+			cg.release();
+			mg.release();
+
 			for (size_type j = 0; j < _size; ++j)
 				_allocator.destroy(_data + j);
 			if (_capacity)
@@ -420,32 +418,25 @@ namespace ft
 		T value = x;
 		size_type pos = static_cast<size_type>(position - begin());
 		if (_capacity < _size + n)
-		{
-			if (_capacity * 2 < _size + n)
-				reserve(_size + n);
-			else
-				reserve(_capacity * 2);
-		}
+			reserve(_capacity * 2 < _size + n ? _size + n : _capacity * 2);
+		detail::ConstructGuard<T, Allocator, reverse_iterator>
+			tail(_allocator, reverse_iterator(_data + old_size + n));
 		for (size_type i = old_size; i > pos; --i)
 		{
 			_allocator.construct(_data + i - 1 + n, _data[i - 1]);
+			tail.push();
 			_allocator.destroy(_data + i - 1);
+			--_size;
 		}
-		_size = pos;
-		size_type i = 0;
-		try
+		detail::ConstructGuard<T, Allocator, iterator>
+			fill(_allocator, iterator(_data + pos));
+		for (size_type i = 0; i < n; ++i)
 		{
-			for (; i < n; ++i)
-				_allocator.construct(_data + pos + i, value);
+			_allocator.construct(_data + pos + i, value);
+			fill.push();
 		}
-		catch(...)
-		{
-			for (size_type j = 0; j < i; ++j)
-				_allocator.destroy(_data + pos + j);
-			for (size_type k = pos + n; k < old_size + n; ++k)
-				_allocator.destroy(_data + k);
-			throw ;
-		}
+		fill.release();
+		tail.release();
 		_size = old_size + n;
 	}
 
@@ -568,26 +559,24 @@ namespace ft
 			else
 				reserve(_capacity * 2);
 		}
+		detail::ConstructGuard<T, Allocator, reverse_iterator>
+			tail(_allocator, reverse_iterator(_data + old_size + n));
 		for (size_type i = _size; i > dist; --i)
 		{
 			_allocator.construct(_data + i - 1 + n, _data[i - 1]);
+			tail.push();
 			_allocator.destroy(_data + i - 1);
+			--_size;
 		}
-		_size = dist;
-		size_type i = 0;
-		try
+		detail::ConstructGuard<T, Allocator, iterator>
+			fill(_allocator, iterator(_data + dist));
+		for (size_type i = 0; i < n; ++i, ++first)
 		{
-			for (; i < n; ++i, ++first)
-				_allocator.construct(_data + dist + i, *first);
+			_allocator.construct(_data + dist + i, *first);
+			fill.push();
 		}
-		catch(...)
-		{
-			for (size_type j = 0; j < i; ++j)
-				_allocator.destroy(_data + dist + j);
-			for (size_type k = dist + n; k < old_size + n; ++k)
-				_allocator.destroy(_data + k);
-			throw ;
-		}
+		fill.release();
+		tail.release();
 		_size = old_size + n;
 	}
 
@@ -613,19 +602,15 @@ namespace ft
 			if (new_size > max_size())
 				throw ft::length_error("vector::assign");
 			T* tmp = _allocator.allocate(new_size);
-			size_type i = 0;
-			try
-	        {
-	            for (; i < new_size; ++i, ++first)
-	                _allocator.construct(tmp + i, *first);
-	        }
-	        catch (...)
-	        {
-	            for (size_type j = 0; j < i; ++j)
-	                _allocator.destroy(tmp + j);
-	            _allocator.deallocate(tmp, new_size);
-	            throw;
-	        }
+			detail::MemoryGuard<T, Allocator>				mg(_allocator, tmp, new_size);
+			detail::ConstructGuard<T, Allocator, iterator>	cg(_allocator, iterator(tmp));
+			for (size_type i = 0; i < new_size; ++i, ++first)
+			{
+				_allocator.construct(tmp + i, *first);
+				cg.push();
+			}
+			cg.release();
+			mg.release();
 			destroy_all();
 			_capacity = new_size;
 			_data = tmp;

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "stdexcept.hpp"
+#include "guards.hpp"
 #include "string.hpp"
 #include "algorithm.hpp"
 #include "cstddef.hpp"
