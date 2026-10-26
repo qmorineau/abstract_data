@@ -4,10 +4,12 @@
 #include <memory>
 
 #include "cstddef.hpp"
+#include "guards.hpp"
 #include "deque_constants.hpp"
 #include "deque_position.hpp"
 #include "deque_iterator.hpp"
 #include "vector.hpp"
+
 
 namespace ft
 {
@@ -85,6 +87,10 @@ namespace ft
 
 			ft::size_t	_size;
 
+			void reserve_front(size_type n);
+			void reserve_back(size_type n);
+			void insert_front(size_type index, size_type n, const T& x);
+			void insert_back(size_type index, size_type n, const T& x);
 			template <class InputIt>
 			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>
@@ -93,11 +99,23 @@ namespace ft
 			void assign_dispatch(InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>
 			void assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
-			void destroy_all();
 			void throw_out_of_range(size_type n) const;
 			void init_deque();
+			void destroy_all();
 			void center_map();
 			T* create_chunk();
+
+			void print() const
+			{
+				std::cout << "print:" << std::endl;
+				for (typename ft::vector<T*>::const_iterator it = _map.begin(); it != _map.end(); ++it)
+					std::cout << *it << std::endl;
+				std::cout << std::endl;
+			}
+			void print_pos(deque_position p)
+			{
+				std::cout << "[" << p.map_index << "][" << p.offset << "]" << std::endl;
+			}
 	};
 	// operator
 	template <class T, class Allocator>

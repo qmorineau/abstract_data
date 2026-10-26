@@ -337,7 +337,8 @@ namespace ft
 		Node<T>* prev = position.base()->prev;
 		Node<T>* next = position.base();
 		Node<T>* new_node = _node_alloc.allocate(1);
-		detail::MemoryGuard<Node<T>, node_allocator> guard(_node_alloc, new_node, 1);
+		detail::MemoryGuard<Node<T>, node_allocator> guard(_node_alloc);
+		guard.push(new_node, 1);
 		_allocator.construct(&new_node->value, x);
 		guard.release();
 		new_node->prev = prev;

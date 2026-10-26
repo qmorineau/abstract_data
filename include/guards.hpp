@@ -13,13 +13,14 @@ namespace ft
 			public:
 				typedef ft::size_t size_type;
 
-				MemoryGuard(Allocator& a, T* p, size_type memory_size);
+				MemoryGuard(Allocator& a);
 				~MemoryGuard();
+				void push(T* p, size_type size);
 				void release();
 			private:
 				Allocator&		_allocator;
 				T*				_pointer;
-				const size_type	_size;
+				size_type	_size;
 				bool			_active;
 
 				MemoryGuard(const MemoryGuard&);

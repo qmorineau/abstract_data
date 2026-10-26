@@ -4,8 +4,8 @@
 // MemoryGuard
 
 template <typename T, typename Allocator>
-ft::detail::MemoryGuard<T, Allocator>::MemoryGuard(Allocator& a, T* p, size_type memory_size)
-	: _allocator(a), _pointer(p), _size(memory_size), _active(true)
+ft::detail::MemoryGuard<T, Allocator>::MemoryGuard(Allocator& a)
+	: _allocator(a), _pointer(static_cast<T*>(0)), _size(0), _active(false)
 {}
 
 template <typename T, typename Allocator>
@@ -18,9 +18,21 @@ ft::detail::MemoryGuard<T, Allocator>::~MemoryGuard()
 
 template <typename T, typename Allocator>
 void
+ft::detail::MemoryGuard<T, Allocator>::push(T* p, size_type size)
+{
+	_active = true;
+	_pointer = p;
+	_size = size;
+}
+
+
+template <typename T, typename Allocator>
+void
 ft::detail::MemoryGuard<T, Allocator>::release()
 {
 	_active = false;
+	_pointer = static_cast<T*>(0);
+	_size = 0;
 }
 
 // ChunkGuard
@@ -38,7 +50,7 @@ ft::detail::ChunkGuard<T, Allocator, ForwardIterator>::~ChunkGuard()
 	for (size_type i = 0; i < _allocated; ++i, ++_iterator)
 	{
 		_allocator.deallocate(*_iterator, _size);
-		*_iterator = NULL;
+		*_iterator = static_cast<T>(0);
 	}
 }
 

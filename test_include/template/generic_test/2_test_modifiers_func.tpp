@@ -56,18 +56,30 @@ struct test_insert_n_value
 		typedef typename Container::size_type size_type;
 		typedef typename Container::iterator iterator;
 		size_type n = 22;
-		Container c = fill_n<Container>(150);
 		typename Container::value_type value = generate_value<Container>(6767);
-		c.insert(c.begin(), n, value);
-		print(c);
-		n = 19;
-		c.insert(c.end(), n, value);
-		print(c);
-		n = 12;
-		iterator it = c.begin();
-		std::advance(it, 42);
-		c.insert(it, n, value);
-		print(c);
+		{
+			Container c = fill_n<Container>(150);
+			c.insert(c.begin(), n, value);
+			print(c);
+			n = 19;
+			c.insert(c.end(), n, value);
+			print(c);
+			n = 12;
+			iterator it = c.begin();
+			std::advance(it, 42);
+			c.insert(it, n, value);
+			print(c);
+		}
+		{
+			Container c = fill_n<Container>(1);
+			c.insert(c.begin(), n, value);
+			print(c);
+		}
+		{
+			Container c = fill_n<Container>(1);
+			c.insert(c.end(), n, value);
+			print(c);
+		}
 	}
 };
 

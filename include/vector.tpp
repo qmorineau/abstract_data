@@ -260,7 +260,8 @@ namespace ft
 		{
 
 			T* tmp = _allocator.allocate(n);
-			detail::MemoryGuard<T, Allocator>				mg(_allocator, tmp, n);
+			detail::MemoryGuard<T, Allocator>				mg(_allocator);
+			mg.push(tmp, n);
 			detail::ConstructGuard<T, Allocator, iterator>	cg(_allocator, iterator(tmp));
 			for (size_type i = 0; i < _size; ++i)
 			{
@@ -602,7 +603,8 @@ namespace ft
 			if (new_size > max_size())
 				throw ft::length_error("vector::assign");
 			T* tmp = _allocator.allocate(new_size);
-			detail::MemoryGuard<T, Allocator>				mg(_allocator, tmp, new_size);
+			detail::MemoryGuard<T, Allocator>				mg(_allocator);
+			mg.push(tmp, new_size);
 			detail::ConstructGuard<T, Allocator, iterator>	cg(_allocator, iterator(tmp));
 			for (size_type i = 0; i < new_size; ++i, ++first)
 			{

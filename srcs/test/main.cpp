@@ -2,23 +2,29 @@
 
 void test(int i)
 {
-	ns::vector<Throwing> d = fill_n<ns::vector<Throwing> >(10);
-	ns::vector<Throwing> d2 = fill_n<ns::vector<Throwing> >(5);
-	print<ns::vector<Throwing> >(d);
-	std::cout << d.size() << std::endl;
-	typename ns::vector<Throwing>::iterator begin = d.begin();
-	begin += 8;
-	try
-	{
-		ThrowingCounter::reset(i);
-		d.insert(begin, d2.begin(), d2.end());
-		d.size();
-	}
-	catch(...)
-	{
-	}
-	print<ns::vector<Throwing> >(d);
-	std::cout << d.size() << std::endl;
+	(void) i;
+	// SilenceScope mute;
+	// ns::deque<Throwing> d = fill_n<ns::deque<Throwing> >(15);
+	// ns::deque<Throwing> d2 = fill_n<ns::deque<Throwing> >(5);
+	// print<ns::deque<Throwing> >(d);
+	// std::cout << d.size() << std::endl;
+	// typename ns::deque<Throwing>::iterator begin = d.begin();
+	// begin += 5;
+	// try
+	// {
+	// 	ThrowingCounter::reset(i);
+	// 	d.insert(begin, 5, Throwing(67));
+	// 	d.size();
+	// }
+	// catch(...)
+	// {
+	// 	std::cout << "la";
+	// 	d.print();
+	// }
+	// std::cout << "ICI";
+	// 	d.print();
+	// print<ns::deque<Throwing> >(d);
+	// std::cout << d.size() << std::endl;
 }
 
 std::size_t ThrowingCounter::count = 0;
@@ -27,8 +33,8 @@ bool		ThrowingCounter::enabled = true;
 
 int main()
 {
-	// for (int i = 0; i < 25; ++i)
-	// 	test(i);
+	// for (int i = 0; i < 15; ++i)
+	// 	test(12);
 	// return 1;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
@@ -39,9 +45,9 @@ int main()
 	// test_exceptions();
 	// test_iterators();
 	// test_helpers();
-	test_sequence_container<ns::vector>("vector");
-	// test_sequence_container<ns::deque>("deque");
-	test_sequence_container<ns::list>("list");
+	// test_sequence_container<ns::vector>("vector");
+	test_sequence_container<ns::deque>("deque");
+	// test_sequence_container<ns::list>("list");
 
 	// test_associative_container<ns::map>();
 	// test_associative_container<ns::set>();
