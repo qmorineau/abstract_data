@@ -86,7 +86,7 @@ void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
 void test_associative_container();
 template <template <typename, typename> class Container>
-void test_container_adaptor();
+void test_container_adaptor(std::string name);
 
 // Category of generic test
 template <typename Container>

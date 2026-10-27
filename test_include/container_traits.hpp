@@ -15,6 +15,8 @@
 #include "deque.hpp"
 #include "list.hpp"
 
+#include "stack.hpp"
+
 #ifdef STD
 	namespace ns = std;
 	# define NAMESPACE_NAME "std"
@@ -40,6 +42,7 @@ struct container_traits_default
 		has_front = 0,
 		has_back = 0,
 		has_data = 0,
+		has_top = 0,
 		// iterators
 		has_begin = 0,
 		has_rbegin = 0,
@@ -62,6 +65,8 @@ struct container_traits_default
 		has_push_back = 0,
 		has_pop_back = 0,
 		has_swap = 0,
+		has_push = 0,
+		has_pop = 0,
 		// operations
 		has_splice = 0,
 		has_merge = 0,
@@ -217,6 +222,29 @@ struct container_traits<ns::list<T, Alloc> > : container_traits_default
 		has_is_lesser_equal_operator = 1,
 		has_is_greater_equal_operator = 1,
 		has_swap_specialization = 1
+	};
+};
+
+template <typename T, typename Alloc>
+struct container_traits<ns::stack<T, Alloc> > : container_traits_default
+{
+	enum
+	{
+		// element access
+		has_top = 1,
+		// capacity
+		has_size = 1,
+		has_empty = 1,
+		// modifier
+		has_push = 1,
+		has_pop = 1,
+		// non member
+		has_is_equal_operator = 1,
+		has_is_different_operator = 1,
+		has_is_lesser_operator = 1,
+		has_is_greater_operator = 1,
+		has_is_lesser_equal_operator = 1,
+		has_is_greater_equal_operator = 1
 	};
 };
 

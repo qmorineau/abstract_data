@@ -87,7 +87,7 @@ namespace ft
 	// =====================
 
 	template <class T, class Allocator>
-	deque<T,Allocator>&
+	ft::deque<T,Allocator>&
 	ft::deque<T,Allocator>::operator=(const deque<T,Allocator>& x)
 	{
 		// Complexity: O(size()) and O(x.size())

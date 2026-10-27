@@ -128,6 +128,16 @@ struct test_data
 };
 
 template <typename Container>
+struct test_top
+{
+	static void run()
+	{
+		std::cout << "===== Test: top() =====" << std::endl;
+		// todo
+	}
+};
+
+template <typename Container>
 void test_element_access_func()
 {
 	std::cout << "=======================================" << std::endl 
@@ -138,6 +148,7 @@ void test_element_access_func()
 	RUN_IF(has_front, test_front, Container);
 	RUN_IF(has_back, test_back, Container);
 	RUN_IF(has_data, test_data, Container);
+	RUN_IF(has_top, test_top, Container);
 }
 
 #endif

@@ -233,6 +233,26 @@ struct test_swap
 };
 
 template <typename Container>
+struct test_push
+{
+	static void run()
+	{
+		std::cout << "===== Test: push() =====" << std::endl;
+		// to do
+	}
+};
+
+template <typename Container>
+struct test_pop
+{
+	static void run()
+	{
+		std::cout << "===== Test: pop() =====" << std::endl;
+		// todo
+	}
+};
+
+template <typename Container>
 void test_modifiers_func()
 {
 	std::cout << "=======================================" << std::endl 
@@ -248,6 +268,8 @@ void test_modifiers_func()
 	RUN_IF(has_push_back, test_push_back, Container);
 	RUN_IF(has_pop_back, test_pop_back, Container);
 	RUN_IF(has_swap, test_swap, Container);
+	RUN_IF(has_push, test_push, Container);
+	RUN_IF(has_pop, test_pop, Container);
 }
 
 #endif

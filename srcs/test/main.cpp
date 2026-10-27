@@ -46,7 +46,7 @@ int main()
 	// test_iterators();
 	// test_helpers();
 	// test_sequence_container<ns::vector>("vector");
-	test_sequence_container<ns::deque>("deque");
+	// test_sequence_container<ns::deque>("deque");
 	// test_sequence_container<ns::list>("list");
 
 	// test_associative_container<ns::map>();
@@ -54,9 +54,9 @@ int main()
 	// test_associative_container<ns::multimap>();
 	// test_associative_container<ns::multiset>();
 
-	// test_container_adaptor<ns::stack>();
-	// test_container_adaptor<ns::queue>();
-	// test_container_adaptor<ns::priority_queue>();
+	test_container_adaptor<ns::stack>("stack");
+	// test_container_adaptor<ns::queue>("queue");
+	// test_container_adaptor<ns::priority_queue>("priority_queue");
 	std::cout << "=======================================" << std::endl 
 	<< "Specific Test" << std::endl
 	<< "=======================================" << std::endl << std::endl;

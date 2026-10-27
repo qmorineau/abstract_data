@@ -10,13 +10,13 @@
 template <typename T>
 struct value_generator
 {
-    static T make(int i) { return T(i); }
+	static T make(int i) { return T(i); }
 };
 
 template <>
 struct value_generator<std::string>
 {
-    static std::string make(int i)
+	static std::string make(int i)
 	{
 		std::ostringstream oss;
 		oss << "val" << i;
@@ -25,16 +25,40 @@ struct value_generator<std::string>
 };
 
 template <typename Container>
+struct fill_dispatch
+{
+	static Container fill(size_t n)
+	{
+		typedef typename Container::value_type value_type;
+		NoThrowScope guard;
+
+		std::vector<value_type> v;
+		for (std::size_t i = 0; i < n; ++i)
+			v.push_back(value_generator<value_type>::make(static_cast<int>(i * 10)));
+		return Container(v.begin(), v.end());
+	}
+};
+
+template <typename T, typename Container>
+struct fill_dispatch<ns::stack<T, Container> >
+{
+	static ns::stack<T, Container> fill(size_t n)
+	{
+		NoThrowScope guard;
+		ns::stack<T, Container> result;
+
+		for (std::size_t i = 0; i < n; ++i)
+			result.push(value_generator<T>::make(static_cast<int>(i * 10)));
+		return result;
+	}
+};
+
+template <typename Container>
 Container fill_n(size_t n)
 {
-	typedef typename Container::value_type value_type;
-	NoThrowScope guard;
-
-	std::vector<value_type> v;
-	for (std::size_t i = 0; i < n; ++i)
-		v.push_back(value_generator<value_type>::make(static_cast<int>(i * 10)));
-	return Container(v.begin(), v.end());
+	return fill_dispatch<Container>::fill(n);
 }
+
 
 template <typename Container>
 typename Container::value_type generate_value(size_t n)

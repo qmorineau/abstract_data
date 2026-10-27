@@ -10,15 +10,15 @@ The goal is to match the behavior and interface of the standard containers while
 |------------------|----------------|-------|-------------|
 | `vector`         | done           | done  | done        |
 | `list`           | done           | done  | todo        |
-| `deque`          | almost done    | -     | -           |
+| `deque`          | done           | todo  | todo        |
 | `map`            | todo           | -     | -           |
 | `set`            | todo           | -     | -           |
 | `multimap`       | todo           | -     | -           |
 | `multiset`       | todo           | -     | -           |
-| `stack`          | todo           | -     | -           |
+| `stack`          | done           | todo  | todo        |
 | `queue`          | todo           | -     | -           |
 | `priority_queue` | todo           | -     | -           |
-| Iterators        | done           | done  | -           |
+| Iterators        | done           | done  | /           |
 
 `vector`, `list` and the iterators are implemented and tested. Benchmarks have started with `vector`.
 
