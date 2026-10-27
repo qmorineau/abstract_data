@@ -59,10 +59,10 @@ struct test_insert_n_value
 		typename Container::value_type value = generate_value<Container>(6767);
 		{
 			Container c = fill_n<Container>(150);
-			c.insert(c.begin(), n, value);
+			c.insert(c.begin() + 3, n, value);
 			print(c);
 			n = 19;
-			c.insert(c.end(), n, value);
+			c.insert(c.end() - 3, n, value);
 			print(c);
 			n = 12;
 			iterator it = c.begin();

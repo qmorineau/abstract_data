@@ -38,8 +38,8 @@ ft::detail::MemoryGuard<T, Allocator>::release()
 // ChunkGuard
 
 template <typename T, typename Allocator, class ForwardIterator>
-ft::detail::ChunkGuard<T, Allocator, ForwardIterator>::ChunkGuard(Allocator& a, ForwardIterator begin, size_type memory_size)
-	: _allocator(a), _iterator(begin), _size(memory_size), _allocated(0), _active(true)
+ft::detail::ChunkGuard<T, Allocator, ForwardIterator>::ChunkGuard(Allocator& a, ForwardIterator begin, size_type chunk_size)
+	: _allocator(a), _iterator(begin), _chunk_size(chunk_size), _allocated(0), _active(true)
 {}
 
 template <typename T, typename Allocator, class ForwardIterator>
@@ -49,7 +49,7 @@ ft::detail::ChunkGuard<T, Allocator, ForwardIterator>::~ChunkGuard()
 		return;
 	for (size_type i = 0; i < _allocated; ++i, ++_iterator)
 	{
-		_allocator.deallocate(*_iterator, _size);
+		_allocator.deallocate(*_iterator, _chunk_size);
 		*_iterator = static_cast<T>(0);
 	}
 }

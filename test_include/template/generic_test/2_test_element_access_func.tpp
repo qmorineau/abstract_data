@@ -21,16 +21,28 @@ struct test_at
 		typedef typename Container::value_type value_type;
 		size_type size = 10;
 		Container c = fill_n<Container>(size);
+		for (size_type i = 0; i < size; ++i)
+		{
+			value_type v = c.at(i);
+			const value_type cv = c.at(i);
+			std::cout << "v&:"<< v << "| const v&:" << cv << "||";
+		}
+		std::cout << std::endl;
 		try
 		{
-			for (size_type i = 0; i < size; ++i)
-			{
-				value_type v = c.at(i);
-				const value_type cv = c.at(i);
-				std::cout << "v&:"<< v << "| const v&:" << cv << "||";
-			}
-			std::cout << std::endl;
 			c.at(-1);
+		}
+		catch(const ns::out_of_range& e)
+		{
+			std::cout << "Good exception" << '\n';
+		}
+		catch(...)
+		{
+			std::cout << "test_at(): wrong exception";
+		}
+		try
+		{
+			c.at(size);
 		}
 		catch(const ns::out_of_range& e)
 		{

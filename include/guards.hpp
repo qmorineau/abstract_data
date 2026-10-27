@@ -33,14 +33,14 @@ namespace ft
 			public:
 				typedef ft::size_t size_type;
 
-				ChunkGuard(Allocator& a, ForwardIterator begin, size_type memory_size);
+				ChunkGuard(Allocator& a, ForwardIterator begin, size_type chunk_size);
 				~ChunkGuard();
 				void push();
 				void release();
 			private:
 				Allocator&		_allocator;
 				ForwardIterator	_iterator;
-				const size_type	_size;
+				const size_type	_chunk_size;
 				size_type		_allocated;
 				bool			_active;
 

@@ -34,7 +34,7 @@ namespace ft
 			explicit deque(const Allocator& = Allocator());
 			explicit deque(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			deque(InputIterator first, InputIterator last, const Allocator& = Allocator());
+			deque(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			deque(const deque<T,Allocator>& x);
 			~deque();
 			deque<T,Allocator>& operator=(const deque<T,Allocator>& x);
@@ -82,40 +82,41 @@ namespace ft
 			allocator_type	_allocator;
 			ft::vector<T*>	_map;
 			
-			deque_position _start;
-			deque_position _end;
+			deque_position	_start;
+			deque_position	_end;
 
-			ft::size_t	_size;
+			ft::size_t		_size;
+			bool			_init;
 
-			void reserve_front(size_type n);
-			void reserve_back(size_type n);
+			// erase
+			void erase_front(iterator first, iterator last);
+			void erase_back(iterator first, iterator last);
+			// insert
+			void reserve_map_front(size_type nodes);
+			void reserve_map_back(size_type nodes);
+			size_type reserve_front(size_type n);
+			size_type reserve_back(size_type n);
 			void insert_front(size_type index, size_type n, const T& x);
 			void insert_back(size_type index, size_type n, const T& x);
 			template <class InputIt>
 			void insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>
 			void insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag);
+			template <class ForwardIt>
+			void insert_front_it(size_type index, ForwardIt& first, ForwardIt& last);
+			template <class ForwardIt>
+			void insert_back_it(size_type index, ForwardIt& first, ForwardIt& last);
+			// assign
 			template <class InputIt>
 			void assign_dispatch(InputIt first, InputIt last, input_iterator_tag);
 			template <class ForwardIt>
 			void assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
+			// utils
 			void throw_out_of_range(size_type n) const;
 			void init_deque();
 			void destroy_all();
 			void center_map();
 			T* create_chunk();
-
-			void print() const
-			{
-				std::cout << "print:" << std::endl;
-				for (typename ft::vector<T*>::const_iterator it = _map.begin(); it != _map.end(); ++it)
-					std::cout << *it << std::endl;
-				std::cout << std::endl;
-			}
-			void print_pos(deque_position p)
-			{
-				std::cout << "[" << p.map_index << "][" << p.offset << "]" << std::endl;
-			}
 	};
 	// operator
 	template <class T, class Allocator>

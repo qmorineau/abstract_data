@@ -9,7 +9,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	ft::deque<T,Allocator>::deque(const Allocator& alloc)
-		: _allocator(alloc), _size(0)
+		: _allocator(alloc), _size(0), _init(false)
 	{
 		// Complexity: O(1)
 		try
@@ -25,7 +25,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	ft::deque<T,Allocator>::deque(size_type n, const T& value, const Allocator& alloc)
-		: _allocator(alloc), _size(0)
+		: _allocator(alloc), _size(0), _init(false)
 	{
 		// Complexity: O(n)
 		try
@@ -42,8 +42,8 @@ namespace ft
 
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::deque<T,Allocator>::deque(InputIterator first, InputIterator last, const Allocator& alloc)
-		: _allocator(alloc), _size(0)
+	ft::deque<T,Allocator>::deque(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+		: _allocator(alloc), _size(0), _init(false)
 	{
 		// Complexity: O(distance(first, last))
 		try
@@ -60,7 +60,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	ft::deque<T,Allocator>::deque(const deque<T,Allocator>& x)
-		: _allocator(x._allocator), _size(0)
+		: _allocator(x._allocator), _size(0), _init(false)
 	{
 		// Complexity: O(x.size())
 		try
@@ -113,9 +113,16 @@ namespace ft
 	{
 		// Complexity: O(n)
 		// to do -> not clear, put assign each chunk, then delete like in optimisation in vector
-		clear();
-		for (size_type i = 0; i < n; ++i)
-			push_back(t);
+		const T value = t;
+		iterator it = begin();
+		size_type count = 0;
+		size_type to_assign = ft::min(n, _size);
+		for (; count < to_assign; ++count, ++it)
+			*it = value;
+		if (count < _size)
+			erase(begin() + n, end());
+		else if (count < n)
+			insert(end(), n - count, value);
 	}
 
 	template <class T, class Allocator>
@@ -221,13 +228,12 @@ namespace ft
 		// Complexity: O(abs(size() - sz))
 		if (_size < sz)
 		{
-			for (size_type i = _size; i <= sz; ++i)
+			while (_size < sz)
 				push_back(c);
 		}
 		else
 		{
-			iterator new_end = begin() + sz;
-			while (new_end != end())
+			while (_size > sz)
 				pop_back();
 		}
 	}
@@ -269,7 +275,7 @@ namespace ft
 	ft::deque<T,Allocator>::at(size_type n)
 	{
 		// Complexity: O(1)
-		if (n > _size)
+		if (n >= _size)
 			throw_out_of_range(n);
 		iterator it = begin();
 		it += n;
@@ -281,7 +287,7 @@ namespace ft
 	ft::deque<T,Allocator>::at(size_type n) const
 	{
 		// Complexity: O(1)
-		if (n > _size)
+		if (n >= _size)
 			throw_out_of_range(n);
 		const_iterator it = begin();
 		it += n;
@@ -320,7 +326,7 @@ namespace ft
 	{
 		// Complexity: O(1)
 		if (_end.offset == 0)
-			_map[_end.map_index - 1][deque_chunk_size - 1];
+			return _map[_end.map_index - 1][deque_chunk_size - 1];
 		return _map[_end.map_index][_end.offset - 1];
 	}
 
@@ -335,16 +341,15 @@ namespace ft
 		// Complexity: O(1)
 		if (_start.offset == 0)
 		{
-			if (_start.map_index == 0)
-			{
-				_map.insert(_map.begin(), NULL);
-				++_start.map_index;
-				++_end.map_index;
-			}
-			deque_position new_pos(_start.map_index - 1, deque_chunk_size - 1);
-			_map[new_pos.map_index] = create_chunk();
-			_allocator.construct(_map[new_pos.map_index] +  new_pos.offset, x);
-			_start = new_pos;
+			reserve_map_front(1);
+			T* tmp = create_chunk();
+			detail::MemoryGuard<T, Allocator> guard(_allocator);
+			guard.push(tmp, deque_chunk_size);
+			_allocator.construct(tmp + (deque_chunk_size - 1), x);
+			_map[_start.map_index - 1] = tmp;
+			guard.release();
+			--_start.map_index;
+			_start.offset = deque_chunk_size - 1;
 		}
 		else
 		{
@@ -352,7 +357,6 @@ namespace ft
 			--_start.offset;
 		}
 		++_size;
-		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -362,8 +366,7 @@ namespace ft
 		// Complexity: O(1)
 		if (_end.offset == deque_chunk_size - 1)
 		{
-			if (_map.size() == _end.map_index + 1)
-				_map.push_back(NULL);
+			reserve_map_back(1);
 			T* tmp = create_chunk();
 			detail::MemoryGuard<T, Allocator> guard(_allocator);
 			guard.push(tmp, deque_chunk_size);
@@ -380,7 +383,6 @@ namespace ft
 			++_end.map_index;
 			_end.offset = 0;
 		}
-		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -391,7 +393,6 @@ namespace ft
 		// Complexity: O(1 + n)
 		size_type pos = static_cast<size_type>(position - begin());
 		insert(begin() + pos, 1, x);
-		center_map();
 		return begin() + pos;
 	}
 
@@ -401,23 +402,17 @@ namespace ft
 	{
 		// dist = lesser distances between pos and either of the ends of container
 		// Complexity: O(n + dist)
-
-		// todo
+		if (n == 0)
+			return ;
 		deque_position base = position.base();
 		size_type pos = base.map_index * deque_chunk_size + base.offset;
 		size_type start = _start.map_index * deque_chunk_size + _start.offset;
 		size_type end = _end.map_index * deque_chunk_size + _end.offset;
-		(void) pos; (void) end; (void) start;
-		insert_front(position - begin(), n, x);
-		// if (pos - start < end - pos)
-		// {
-		// 	insert_front(position - begin(), n, x);
-		// }
-		// else
-		// {
-		// 	// insert_back();
-		// }
-		center_map();
+
+		if (pos - start < end - pos)
+			insert_front(position - begin(), n, x);
+		else
+			insert_back(position - begin(), n, x);
 	}
 
 	template <class T, class Allocator>
@@ -427,8 +422,9 @@ namespace ft
 	{
 		// dist = lesser distances between pos and either of the ends of container
 		// Complexity: O(distance(first, last) + dist)
+		if (first == last)
+			return;
 		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
-		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -453,7 +449,6 @@ namespace ft
 		}
 		_start = new_start;
 		--_size;
-		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -478,7 +473,6 @@ namespace ft
 		}
 		_end = pos;
 		--_size;
-		center_map();
 	}
 
 	template <class T, class Allocator>
@@ -506,23 +500,17 @@ namespace ft
 				destructor: O(n1)
 				assignement: O(n2)
 		*/
+		if (first == last)
+			return first;
+
 		size_type index = first - begin();
-		size_type count = last - first;
-		for (iterator it = last; it != end(); ++it, ++first)
-			*first = *it;
-		for (iterator it = first; it != end(); ++it)
-			_allocator.destroy(&*it);
-		_end = first.base();
-		_size -= count;
-		for (ft::size_t i = _end.map_index + 1; i < _map.size(); ++i)
-		{
-			if (_map[i])
-			{
-				_allocator.deallocate(_map[i], deque_chunk_size);
-				_map[i] = NULL;
-			}
-		}
-		center_map();
+		size_type before = index;
+		size_type after = _size - index - (last - first);
+
+		if (before < after)
+			erase_front(first, last);
+		else
+			erase_back(first, last);
 		return begin() + index;
 	}
 
@@ -534,11 +522,12 @@ namespace ft
 		if (this != &other)
 		{
 			ft::swap(_allocator, other._allocator);
-			ft::swap(_map, other._map);
+			_map.swap(other._map);
 
 			ft::swap(_start, other._start);
 			ft::swap(_end, other._end);
 			ft::swap(_size, other._size);
+			ft::swap(_init, other._init);
 		}
 	}
 
@@ -569,7 +558,6 @@ namespace ft
 			_start.offset = deque_chunk_size / 2;
 			_end.map_index = _start.map_index;
 			_end.offset = _start.offset;
-			center_map();
 		}
 	}
 
@@ -579,80 +567,200 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
+	ft::deque<T,Allocator>::erase_front(iterator first, iterator last)
+	{
+		size_type n = last - first;
+		iterator dst = first + n;
+		iterator src = first;
+		iterator b = begin();
+		// assign element
+		while (src != b)
+		{
+		    --dst;
+		    --src;
+		    *dst = *src;
+		}
+		// destroy element
+		for (size_type i = 0; i < n; ++i)
+			pop_front();
+	}
+
+	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::erase_back(iterator first, iterator last)
+	{
+		size_type n = last - first;
+		iterator dst = first;
+		iterator src = last;
+		// assign element
+		while (src != end())
+		{
+		    *dst = *src;
+		    ++dst;
+		    ++src;
+		}
+		// destroy element
+		for (size_type i = 0; i < n; ++i)
+			pop_back();
+	}
+
+	template <class T, class Allocator>
+	typename ft::deque<T,Allocator>::size_type
 	ft::deque<T,Allocator>::reserve_front(size_type n)
 	{
-		(void) n;
-	}
-
-	template <class T, class Allocator>
-	void
-	ft::deque<T,Allocator>::reserve_back(size_type n)
-	{
-		_map.insert(_map.end(), n, NULL);
-	}
-
-	template <class T, class Allocator>
-	void
-	ft::deque<T,Allocator>::insert_front(size_type index, size_type n, const T& x)
-	{
-		T value = x;
-		// calculate chunk to allocate
 		size_type chunks = 0;
 		if (n > _start.offset)
 		{
 			size_type space_need = n - _start.offset;
 			chunks = (space_need / deque_chunk_size) + (space_need % deque_chunk_size != 0);
 		}
-		// insert chunk at front
-		_map.insert(_map.begin(), chunks, static_cast<T*>(0));
-		_start.map_index += chunks;
-		_end.map_index += chunks;
+		if (chunks)
+			reserve_map_front(chunks);
+		return chunks;
+	}
+
+	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::reserve_map_front(size_type nodes)
+	{
+		if (_start.map_index >= nodes)
+			return;
+		size_type used = _end.map_index - _start.map_index + 1;
+		if (_map.size() > 2 * (used + nodes))
+			center_map();
+		else
+		{
+			size_type add = ft::max(nodes, _map.size());
+			_map.insert(_map.begin(), add, static_cast<T*>(0));
+			_start.map_index += add;
+			_end.map_index += add;
+		}
+	}
+
+	template <class T, class Allocator>
+	typename ft::deque<T,Allocator>::size_type
+	ft::deque<T,Allocator>::reserve_back(size_type n)
+	{
+		size_type chunks = (_end.offset + n) / deque_chunk_size;
+		if (chunks)
+			reserve_map_back(chunks);
+		return chunks;
+	}
+
+	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::reserve_map_back(size_type nodes)
+	{
+		if (_map.size() - 1 - _end.map_index >= nodes)
+			return;
+		size_type used = _end.map_index - _start.map_index + 1;
+		if (_map.size() > 2 * (used + nodes))
+			center_map();
+		else
+		{
+			size_type add = ft::max(nodes, _map.size());
+			_map.insert(_map.end(), add, static_cast<T*>(0));
+		}
+	}
+
+	template <class T, class Allocator>
+	void
+	ft::deque<T,Allocator>::insert_front(size_type index, size_type n, const T& x)
+	{
+		const T value = x;
 
 		typedef typename vector<T*>::reverse_iterator map_iterator;
+		size_type chunks = reserve_front(n);
 		detail::ChunkGuard<T*, Allocator, map_iterator>
 			chunk_guard(_allocator, map_iterator(_map.begin() + _start.map_index), deque_chunk_size);
+		// allocate new chunk
 		for (size_type i = 1; i <= chunks; ++i)
 		{
-			// print();
 			_map[_start.map_index - i] = create_chunk();
 			chunk_guard.push();
 		}
-		// print();
-		// construct between new begin and begin
+
 		iterator old_begin = begin();
 		iterator new_begin = begin() - n;
 		iterator dst(new_begin);
 		iterator src(old_begin);
+
 		detail::ConstructGuard<T, Allocator, iterator> construct_guard(_allocator, new_begin);
 
-		size_t moved = (index < n) ? index : n;
+		size_type moved = ft::min(n, index);
+		size_type to_create = n;
+		// move old value before pos to dest
 		for (size_type i = 0; i < moved; ++i, ++dst, ++src)
 		{
 			_allocator.construct(&*dst, *src);
 			construct_guard.push();
 		}
-		for (; dst < old_begin; ++dst, --n)
+		// construct value
+		for (; dst < old_begin; ++dst, --to_create)
 		{
 			_allocator.construct(&*dst, value);
 			construct_guard.push();
 		}
-		// assign between begin and pos
+		// assign old value before pos to dest
 		for (; src < old_begin + index; ++dst, ++src)
 			*dst = *src;
-		// assign n value between pos - 1 and pos
-		for (; n > 0; --n, ++dst)
+		// assign value
+		for (; to_create > 0; --to_create, ++dst)
 			*dst = value;
 		construct_guard.release();
 		chunk_guard.release();
 		_start = new_begin.base();
+		_size += n;
 	}
 
 	template <class T, class Allocator>
 	void
 	ft::deque<T,Allocator>::insert_back(size_type index, size_type n, const T& x)
 	{
-		(void) index; (void) n; (void) x;
-		// todo
+		const T value = x;
+
+		typedef typename vector<T*>::iterator map_iterator;
+		size_type chunks = reserve_back(n);
+		detail::ChunkGuard<T*, Allocator, map_iterator>
+			chunk_guard(_allocator, map_iterator(_map.begin() + _end.map_index + 1), deque_chunk_size);
+		// allocate new chunk
+		for (size_type i = 1; i <= chunks; ++i)
+		{
+			_map[_end.map_index + i] = create_chunk();
+			chunk_guard.push();
+		}
+
+		reverse_iterator old_end = rbegin();
+		reverse_iterator new_end = rbegin() - n;
+		reverse_iterator dst(new_end);
+		reverse_iterator src(old_end);
+
+		detail::ConstructGuard<T, Allocator, reverse_iterator> construct_guard(_allocator, dst);
+
+		size_type moved = ft::min(n, _size - index);
+		size_type to_create = n;
+		// move old value before pos to dest
+		for (size_type i = 0; i < moved; ++i, ++dst, ++src)
+		{
+			_allocator.construct(&*dst, *src);
+			construct_guard.push();
+		}
+		// construct value
+		for (; dst < old_end; ++dst, --to_create)
+		{
+			_allocator.construct(&*dst, value);
+			construct_guard.push();
+		}
+		// assign old value before pos to dest
+		for (; src < old_end + (_size - index); ++dst, ++src)
+			*dst = *src;
+		// assign value
+		for (; to_create > 0; --to_create, ++dst)
+			*dst = value;
+		construct_guard.release();
+		chunk_guard.release();
+		_end = new_end.base().base();
+		_size += n;
 	}
 
 	template <class T, class Allocator>
@@ -660,7 +768,7 @@ namespace ft
 	ft::deque<T,Allocator>::center_map()
 	{
 		size_type start_free = _start.map_index;
-		size_type end_free = _map.size() - _end.map_index;
+		size_type end_free = _map.size() - 1 - _end.map_index;
 		size_type free_chunks = start_free + end_free;
 
 		size_type new_begin = free_chunks / 2;
@@ -673,8 +781,12 @@ namespace ft
 			}
 			else
 			{
-				for (size_type i = _end.map_index - start_free; i <= _end.map_index - start_free ; --i)
-					ft::swap(_map[new_begin + i], _map[start_free + i]);
+				size_type count = _end.map_index - start_free + 1;
+				while (count > 0)
+				{
+					--count;
+					ft::swap(_map[new_begin + count], _map[start_free + count]);
+				}
 			}
 			_start.map_index = new_begin;
 			_end.map_index = new_begin + (_end.map_index - start_free);
@@ -705,13 +817,18 @@ namespace ft
 	ft::deque<T,Allocator>::init_deque()
 	{
 		_map.assign(5, NULL);
-		T* new_chunk = create_chunk();
 		_start.map_index = 2;
-		_map[_start.map_index] = new_chunk;
 
+		T* new_chunk = create_chunk();
+		detail::MemoryGuard<T, Allocator> guard(_allocator);
+		guard.push(new_chunk, deque_chunk_size);
+
+		_map[_start.map_index] = new_chunk;
+		guard.release();
 		_end.map_index = _start.map_index;
 		_start.offset = deque_chunk_size / 2;
 		_end.offset = _start.offset;
+		_init = true;
 	}
 
 	template <class T, class Allocator>
@@ -730,8 +847,117 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag)
 	{
-		// todo
-		(void) pos; (void) first; (void) last;
+		deque_position base = pos.base();
+		size_type position = base.map_index * deque_chunk_size + base.offset;
+		size_type start = _start.map_index * deque_chunk_size + _start.offset;
+		size_type end = _end.map_index * deque_chunk_size + _end.offset;
+
+		if (position - start < end - position)
+			insert_front_it(pos - begin(), first, last);
+		else
+			insert_back_it(pos - begin(), first, last);
+	}
+
+	template <class T, class Allocator>
+	template <class ForwardIt>
+	void
+	ft::deque<T,Allocator>::insert_front_it(size_type index, ForwardIt& first, ForwardIt& last)
+	{
+		size_type n = ft::distance(first, last);
+		typedef typename vector<T*>::reverse_iterator map_iterator;
+		size_type chunks = reserve_front(n);
+		detail::ChunkGuard<T*, Allocator, map_iterator>
+			chunk_guard(_allocator, map_iterator(_map.begin() + _start.map_index), deque_chunk_size);
+		// allocate new chunk
+		for (size_type i = 1; i <= chunks; ++i)
+		{
+			_map[_start.map_index - i] = create_chunk();
+			chunk_guard.push();
+		}
+
+		iterator old_begin = begin();
+		iterator new_begin = begin() - n;
+		iterator dst(new_begin);
+		iterator src(old_begin);
+
+		detail::ConstructGuard<T, Allocator, iterator> construct_guard(_allocator, new_begin);
+
+		size_type moved = ft::min(n, index);
+		size_type to_create = n;
+		// move old value before pos to dest
+		for (size_type i = 0; i < moved; ++i, ++dst, ++src)
+		{
+			_allocator.construct(&*dst, *src);
+			construct_guard.push();
+		}
+		// construct value
+		for (; dst < old_begin; ++dst, --to_create, ++first)
+		{
+			_allocator.construct(&*dst, *first);
+			construct_guard.push();
+		}
+		// assign old value before pos to dest
+		for (; src < old_begin + index; ++dst, ++src)
+			*dst = *src;
+		// assign value
+		for (; to_create > 0; --to_create, ++dst, ++first)
+			*dst = *first;
+		construct_guard.release();
+		chunk_guard.release();
+		_start = new_begin.base();
+		_size += n;
+	}
+
+	template <class T, class Allocator>
+	template <class ForwardIt>
+	void
+	ft::deque<T,Allocator>::insert_back_it(size_type index, ForwardIt& first, ForwardIt& last)
+	{
+		size_type n = ft::distance(first, last);
+		typedef typename vector<T*>::iterator map_iterator;
+		size_type chunks = reserve_back(n);
+		detail::ChunkGuard<T*, Allocator, map_iterator>
+			chunk_guard(_allocator, map_iterator(_map.begin() + _end.map_index + 1), deque_chunk_size);
+		// allocate new chunk
+		for (size_type i = 1; i <= chunks; ++i)
+		{
+			_map[_end.map_index + i] = create_chunk();
+			chunk_guard.push();
+		}
+
+		const size_type tail = _size - index;
+		const size_type moved = ft::min(n, tail);
+		iterator old_end = end();
+		iterator new_end = end() + n;
+
+		reverse_iterator dst(new_end);
+		reverse_iterator src(old_end);
+		detail::ConstructGuard<T, Allocator, reverse_iterator> tail_guard(_allocator, dst);
+		for (size_type i = 0; i < moved; ++i, ++dst, ++src)
+		{
+			_allocator.construct(&*dst, *src);
+			tail_guard.push();
+		}
+		for (size_type i = moved; i < tail; ++i, ++dst, ++src)
+			*dst = *src;
+
+		iterator pos = begin() + index;
+		size_type to_assign = ft::min(n, tail);
+		for (size_type i = 0; i < to_assign; ++i, ++pos, ++first)
+			*pos = *first;
+		
+		detail::ConstructGuard<T, Allocator, iterator> fill_guard(_allocator, old_end);
+		for (; first != last; ++first, ++pos)
+		{
+			_allocator.construct(&*pos, *first);
+			fill_guard.push();
+		}
+
+		fill_guard.release();
+		tail_guard.release();
+		chunk_guard.release();
+		_end = new_end.base();
+		_size += n;
 	}
 
 	template <class T, class Allocator>
@@ -750,7 +976,7 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
 	{
-		deque<T> tmp(_allocator);
+		deque<T, Allocator> tmp(_allocator);
 		for (; first != last; ++first)
 			tmp.push_back(*first);
 		swap(tmp);
@@ -760,8 +986,15 @@ namespace ft
 	void
 	ft::deque<T,Allocator>::destroy_all()
 	{
+		if (!_init)
+			return;
 		clear();
-		_allocator.deallocate(_map[_start.map_index], deque_chunk_size);
+		if (_map[_start.map_index])
+		{
+			_allocator.deallocate(_map[_start.map_index], deque_chunk_size);
+			_map[_start.map_index] = static_cast<T*>(0);
+		}
+		_init = false;
 	}
 
 	// =====================
