@@ -25,7 +25,7 @@ namespace ft
 			void push(const value_type& x);
 			void pop();
 
-			// non member
+			// friends
 			template <class U, class C>
 			friend bool operator==(const stack<U, C>& x, const stack<U, C>& y);
 			template <class U, class C>
@@ -39,6 +39,18 @@ namespace ft
 			template <class U, class C>
 			friend bool operator<=(const stack<U, C>& x, const stack<U, C>& y);
 	};
+	template <class T, class C>
+	bool operator==(const stack<T, C>& x, const stack<T, C>& y);
+	template <class T, class C>
+	bool operator< (const stack<T, C>& x, const stack<T, C>& y);
+	template <class T, class C>
+	bool operator!=(const stack<T, C>& x, const stack<T, C>& y);
+	template <class T, class C>
+	bool operator> (const stack<T, C>& x, const stack<T, C>& y);
+	template <class T, class C>
+	bool operator>=(const stack<T, C>& x, const stack<T, C>& y);
+	template <class T, class C>
+	bool operator<=(const stack<T, C>& x, const stack<T, C>& y);
 }
 
 #include "stack.tpp"

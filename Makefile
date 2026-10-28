@@ -3,7 +3,7 @@ CXX = c++
 
 # Flags
 CXXFLAGS = -Wall -Wextra -Werror -MMD -g -std=c++98 -pedantic -fsanitize=address,undefined
-CXXFLAGS_BENCH = -Wall -Wextra -Werror -MMD -g -std=c++98 -O2
+CXXFLAGS_BENCH = -Wall -Wextra -Werror -MMD -std=c++98 -O2
 MAKEFLAGS += -j$(shell nproc)
 
 # Project Paths

@@ -11,16 +11,14 @@ The goal is to match the behavior and interface of the standard containers while
 | `vector`         | done           | done  | done        |
 | `list`           | done           | done  | todo        |
 | `deque`          | done           | todo  | todo        |
-| `map`            | todo           | -     | -           |
-| `set`            | todo           | -     | -           |
-| `multimap`       | todo           | -     | -           |
-| `multiset`       | todo           | -     | -           |
+| `map`            | -              | -     | -           |
+| `set`            | -              | -     | -           |
+| `multimap`       | -              | -     | -           |
+| `multiset`       | -              | -     | -           |
 | `stack`          | done           | done  | done        |
-| `queue`          | todo           | -     | -           |
-| `priority_queue` | todo           | -     | -           |
+| `queue`          | WIP            | -     | -           |
+| `priority_queue` | -              | -     | -           |
 | Iterators        | done           | done  | /           |
-
-`vector`, `list` and the iterators are implemented and tested. Benchmarks have started with `vector`.
 
 ## Constraints
 
@@ -73,10 +71,10 @@ make re           fclean, then all
 
 `make diff` writes the outputs to `output.ft` and `output.std`. An empty diff means `ft` and `std` behave identically on the tests.
 
-`make benchmark` writes timings to `output.ft.time` and `output.std.time`, then compares them with `compare.awk`. `THRESHOLD` is the maximum allowed slowdown factor (time of `ft` / time of `std`). The default is 20.
+`make benchmark` writes timings to `output.ft.time` and `output.std.time`, then compares them with `compare.awk`.
 
 ```sh
-make benchmark THRESHOLD=2
+make benchmark
 ```
 
 > Note: the benchmark target is a first draft. It currently uses the debug flags (`-g`, sanitizers, no optimization), so timings are only indicative. A more thorough benchmark setup is planned.

@@ -53,6 +53,20 @@ struct fill_dispatch<ns::stack<T, Container> >
 	}
 };
 
+template <typename T, typename Container>
+struct fill_dispatch<ns::queue<T, Container> >
+{
+	static ns::queue<T, Container> fill(size_t n)
+	{
+		NoThrowScope guard;
+		ns::queue<T, Container> result;
+
+		for (std::size_t i = 0; i < n; ++i)
+			result.push(value_generator<T>::make(static_cast<int>(i * 10)));
+		return result;
+	}
+};
+
 template <typename Container>
 Container fill_n(size_t n)
 {

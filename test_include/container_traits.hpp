@@ -16,6 +16,7 @@
 #include "list.hpp"
 
 #include "stack.hpp"
+#include "queue.hpp"
 
 #ifdef STD
 	namespace ns = std;
@@ -24,6 +25,13 @@
 	namespace ns = ft;
 	# define NAMESPACE_NAME "ft"
 #endif
+
+enum container_adaptator
+{
+	STACK,
+	QUEUE,
+	PRIORITY_QUEUE
+};
 
 // container traits (func)
 struct container_traits_default
@@ -232,6 +240,30 @@ struct container_traits<ns::stack<T, Alloc> > : container_traits_default
 	{
 		// element access
 		has_top = 1,
+		// capacity
+		has_size = 1,
+		has_empty = 1,
+		// modifier
+		has_push = 1,
+		has_pop = 1,
+		// non member
+		has_is_equal_operator = 1,
+		has_is_different_operator = 1,
+		has_is_lesser_operator = 1,
+		has_is_greater_operator = 1,
+		has_is_lesser_equal_operator = 1,
+		has_is_greater_equal_operator = 1
+	};
+};
+
+template <typename T, typename Alloc>
+struct container_traits<ns::queue<T, Alloc> > : container_traits_default
+{
+	enum
+	{
+		// element access
+		has_front = 1,
+		has_back = 1,
 		// capacity
 		has_size = 1,
 		has_empty = 1,

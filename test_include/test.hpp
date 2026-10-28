@@ -80,6 +80,7 @@ void test_vector();
 void test_list();
 void test_deque();
 void test_stack();
+void test_queue();
 
 // Container Type
 template <template <typename, typename> class Container>
@@ -87,7 +88,7 @@ void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
 void test_associative_container();
 template <template <typename, typename> class Container>
-void test_container_adaptor(std::string name);
+void test_container_adaptor(std::string name, container_adaptator c);
 
 // Category of generic test
 template <typename Container>
@@ -112,8 +113,6 @@ template <typename Container>
 typename Container::value_type generate_value(size_t n);
 template <typename Container>
 void print(Container& c);
-
-
 
 #include "template/generic_test/2_test_common_func.tpp"
 #include "template/generic_test/2_test_capacity_func.tpp"

@@ -26,6 +26,7 @@
 - deque
 - list
 - stack
+- queue
 
 ## Critical Optimization
 - deque::operator=

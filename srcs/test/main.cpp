@@ -54,8 +54,8 @@ int main()
 	// test_associative_container<ns::multimap>();
 	// test_associative_container<ns::multiset>();
 
-	test_container_adaptor<ns::stack>("stack");
-	// test_container_adaptor<ns::queue>("queue");
+	test_container_adaptor<ns::stack>("stack", STACK);
+	test_container_adaptor<ns::queue>("queue", QUEUE);
 	// test_container_adaptor<ns::priority_queue>("priority_queue");
 	std::cout << "=======================================" << std::endl 
 	<< "Specific Test" << std::endl
@@ -70,7 +70,7 @@ int main()
 	// test_multiset();
 
 	test_stack();
-	// test_queue();
+	test_queue();
 	// test_priority_queue();
 	return (0);
 }
