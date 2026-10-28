@@ -1,6 +1,8 @@
 #ifndef ALGORITHM_HPP
 #define ALGORITHM_HPP
 
+#include "iterator.hpp"
+
 namespace ft
 {
 	template <class Input1, class Input2>
@@ -14,15 +16,20 @@ namespace ft
 
 	template <class T>
 	const T& min(const T& a, const T& b);
-
 	template <class T, class Compare>
 	const T& min(const T& a, const T& b, Compare comp);
 
 	template <class T>
 	const T& max(const T& a, const T& b);
-
 	template <class T, class Compare>
 	const T& max(const T& a, const T& b, Compare comp);
+
+	template <class RandomIt, class Compare>
+	void make_heap(RandomIt first, RandomIt last, Compare comp);
+	template <class RandomIt, class Compare>
+	void push_heap(RandomIt first, RandomIt last, Compare comp);
+	template <class RandomIt, class Compare>
+	void pop_heap(RandomIt first, RandomIt last, Compare comp);
 }
 
 #include "algorithm.tpp"

@@ -1,30 +1,18 @@
 #include "test.hpp"
 
-void test(int i)
+void test()
 {
-	(void) i;
-	// SilenceScope mute;
-	// ns::deque<Throwing> d = fill_n<ns::deque<Throwing> >(15);
-	// ns::deque<Throwing> d2 = fill_n<ns::deque<Throwing> >(5);
-	// print<ns::deque<Throwing> >(d);
-	// std::cout << d.size() << std::endl;
-	// typename ns::deque<Throwing>::iterator begin = d.begin();
-	// begin += 5;
-	// try
-	// {
-	// 	ThrowingCounter::reset(i);
-	// 	d.insert(begin, 5, Throwing(67));
-	// 	d.size();
-	// }
-	// catch(...)
-	// {
-	// 	std::cout << "la";
-	// 	d.print();
-	// }
-	// std::cout << "ICI";
-	// 	d.print();
-	// print<ns::deque<Throwing> >(d);
-	// std::cout << d.size() << std::endl;
+	std::vector<int> v = fill_n<std::vector<int> >(10);
+	ft::priority_queue<int, ns::vector<int>, ft::greater<int> > ft(v.begin(), v.end());
+	std::priority_queue<int, ns::vector<int>, ft::greater<int> > std(v.begin(), v.end());
+
+	while (!ft.empty() && !std.empty())
+	{
+		std::cout << ft.top() << " == " << std.top() << ", ";
+		ft.pop();
+		std.pop();
+		std::cout << "size: "<< ft.size() << " == " << std.size() << std::endl;
+	}
 }
 
 std::size_t ThrowingCounter::count = 0;
@@ -33,8 +21,7 @@ bool		ThrowingCounter::enabled = true;
 
 int main()
 {
-	// for (int i = 0; i < 15; ++i)
-	// 	test(12);
+	// test();
 	// return 1;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
@@ -56,7 +43,7 @@ int main()
 
 	test_container_adaptor<ns::stack>("stack", STACK);
 	test_container_adaptor<ns::queue>("queue", QUEUE);
-	// test_container_adaptor<ns::priority_queue>("priority_queue");
+
 	std::cout << "=======================================" << std::endl 
 	<< "Specific Test" << std::endl
 	<< "=======================================" << std::endl << std::endl;
@@ -71,6 +58,6 @@ int main()
 
 	test_stack();
 	test_queue();
-	// test_priority_queue();
+	test_priority_queue();
 	return (0);
 }

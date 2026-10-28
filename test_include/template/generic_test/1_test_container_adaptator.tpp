@@ -28,6 +28,12 @@ void test_container_adaptor(std::string name, container_adaptator c)
 		test_container_adaptator_type<Container<std::string, ns::deque<std::string> > >(name + "<std::string, " + container + "<std::string>>");
 		test_container_adaptator_type<Container<Foo, ns::deque<Foo> > >(name + "<Foo, " + container + "<Foo>>");
 		test_container_adaptator_type<Container<Throwing, ns::deque<Throwing> > >(name + "<Throwing, " + container + "<Throwing>>");
+
+		container = "list";
+		test_container_adaptator_type<Container<int, ns::list<int> > >(name + "<int, " + container + "<int>>");
+		test_container_adaptator_type<Container<std::string, ns::list<std::string> > >(name + "<std::string, " + container + "<std::string>>");
+		test_container_adaptator_type<Container<Foo, ns::list<Foo> > >(name + "<Foo, " + container + "<Foo>>");
+		test_container_adaptator_type<Container<Throwing, ns::list<Throwing> > >(name + "<Throwing, " + container + "<Throwing>>");
 	}
 	if (c == STACK)
 	{
@@ -36,14 +42,6 @@ void test_container_adaptor(std::string name, container_adaptator c)
 		test_container_adaptator_type<Container<std::string, ns::vector<std::string> > >(name + "<std::string, " + container + "<std::string>>");
 		test_container_adaptator_type<Container<Foo, ns::vector<Foo> > >(name + "<Foo, " + container + "<Foo>>");
 		test_container_adaptator_type<Container<Throwing, ns::vector<Throwing> > >(name + "<Throwing, " + container + "<Throwing>>");
-	}
-	if (c == STACK || c == QUEUE)
-	{
-		std::string container = "list";
-		test_container_adaptator_type<Container<int, ns::list<int> > >(name + "<int, " + container + "<int>>");
-		test_container_adaptator_type<Container<std::string, ns::list<std::string> > >(name + "<std::string, " + container + "<std::string>>");
-		test_container_adaptator_type<Container<Foo, ns::list<Foo> > >(name + "<Foo, " + container + "<Foo>>");
-		test_container_adaptator_type<Container<Throwing, ns::list<Throwing> > >(name + "<Throwing, " + container + "<Throwing>>");
 	}
 }
 

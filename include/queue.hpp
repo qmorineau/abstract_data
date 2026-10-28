@@ -2,8 +2,9 @@
 #define QUEUE_HPP
 
 #include "deque.hpp"
-// #include "vector.hpp"
-// #include "functional.hpp"
+#include "vector.hpp"
+#include "functional.hpp"
+#include "algorithm.hpp"
 
 namespace ft
 {
@@ -59,28 +60,30 @@ namespace ft
 
 	// Priority Queue
 
-	// template <class T, class Container = vector<T>, class Compare = ft::less<typename Container::value_type> >
-	// class priority_queue {
-	// 	public:
-	// 		typedef typename Container::value_type value_type;
-	// 		typedef typename Container::size_type size_type;
-	// 		typedef Container container_type;
-	// 	protected:
-	// 		Container c;
-	// 		Compare comp;
-	// 	public:
-	// 		explicit priority_queue(const Compare& x = Compare(), const Container& = Container());
-	// 		template <class InputIterator>
-	// 		priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container());
-	// 		bool empty() const { return c.empty(); }
-	// 		size_type size() const { return c.size(); }
-	// 		const value_type& top() const { return c.front(); }
-	// 		void push(const value_type& x);
-	// 		void pop();
-	// };
+	template <class T, class Container = vector<T>, class Compare = ft::less<typename Container::value_type> >
+	class priority_queue {
+		public:
+			typedef typename Container::value_type		value_type;
+			typedef typename Container::size_type		size_type;
+			typedef typename Container::reference		reference;
+			typedef typename Container::const_reference	const_reference;
+			typedef Container							container_type;
+		protected:
+			Container c;
+			Compare comp;
+		public:
+			explicit priority_queue(const Compare& x = Compare(), const Container& = Container());
+			template <class InputIterator>
+			priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container());
+			bool empty() const;
+			size_type size() const;
+			const_reference top() const;
+			void push(const value_type& x);
+			void pop();
+	};
 }
 
 #include "queue.tpp"
-// #include "priority_queue.tpp"
+#include "priority_queue.tpp"
 
 #endif

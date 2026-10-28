@@ -14,6 +14,8 @@
 ### list
 - do operations_func test
 - splice test with different list and same list
+### priority_queue
+- specific test with all fonction (no operator==, will be weird to adapt generic for this)
 ### others
 - use inputiterator for some test (iterator that are consume when value retrieved)
 
@@ -27,6 +29,7 @@
 - list
 - stack
 - queue
+- priority_queue
 
 ## Critical Optimization
 - deque::operator=

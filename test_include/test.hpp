@@ -81,6 +81,7 @@ void test_list();
 void test_deque();
 void test_stack();
 void test_queue();
+void test_priority_queue();
 
 // Container Type
 template <template <typename, typename> class Container>
