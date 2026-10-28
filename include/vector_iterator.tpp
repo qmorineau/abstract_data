@@ -32,7 +32,7 @@ namespace ft
 	vector_iterator<T, Pointer, Reference>&
 	vector_iterator<T, Pointer, Reference>::operator=(const vector_iterator& other)
 	{
-		_ptr = other._ptr;
+		_ptr = other.base();
 		return *this;
 	}
 
@@ -126,45 +126,10 @@ namespace ft
 	}
 
 	template <class T, class Pointer, class Reference>
-	typename vector_iterator<T, Pointer, Reference>::difference_type
-	vector_iterator<T, Pointer, Reference>::operator-(const vector_iterator& other) const
-	{
-		return _ptr - other._ptr;
-	}
-
-	template <class T, class Pointer, class Reference>
 	typename vector_iterator<T, Pointer, Reference>::reference
 	vector_iterator<T, Pointer, Reference>::operator[](difference_type n) const
 	{
 		return *(_ptr + n);
-	}
-
-	template <class T, class Pointer, class Reference>
-	bool
-	vector_iterator<T, Pointer, Reference>::operator<(const vector_iterator& other) const
-	{
-		return _ptr < other._ptr;
-	}
-
-	template <class T, class Pointer, class Reference>
-	bool
-	vector_iterator<T, Pointer, Reference>::operator>(const vector_iterator& other) const
-	{
-		return _ptr > other._ptr;
-	}
-
-	template <class T, class Pointer, class Reference>
-	bool
-	vector_iterator<T, Pointer, Reference>::operator<=(const vector_iterator& other) const
-	{
-		return _ptr <= other._ptr;
-	}
-
-	template <class T, class Pointer, class Reference>
-	bool
-	vector_iterator<T, Pointer, Reference>::operator>=(const vector_iterator& other) const
-	{
-		return _ptr >= other._ptr;
 	}
 
 	// ====== Non-Members ======
@@ -176,16 +141,45 @@ namespace ft
 	}
 
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator==(const vector_iterator<T, Pointer1, Reference1>& x,
-		const vector_iterator<T, Pointer2, Reference2>& y)
+	typename vector_iterator<T, Pointer1, Reference1>::difference_type
+	operator-(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
+	{
+		return x.base() - y.base();
+	}
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator==(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
 	{
 		return x.base() == y.base();
 	}
 	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator!=(const vector_iterator<T, Pointer1, Reference1>& x,
-		const vector_iterator<T, Pointer2, Reference2>& y)
+	bool operator!=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
 	{
 		return x.base() != y.base();
+	}
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator<(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
+	{
+		return x.base() < y.base();
+	}
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator>(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
+	{
+		return x.base() > y.base();
+	}
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator<=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
+	{
+		return x.base() <= y.base();
+	}
+
+	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+	bool operator>=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y)
+	{
+		return x.base() >= y.base();
 	}
 }
 

@@ -8,15 +8,25 @@
 - priority queue
 
 ## Tests
-- add all test for stack (push, top, pop)
+### deque
+- specific test deque
+- verify generic test for deque if all is covered
+### list
 - do operations_func test
 - splice test with different list and same list
+### others
 - use inputiterator for some test (iterator that are consume when value retrieved)
-- edge case test for deque
-- verify generic test for deque if all is covered
 
-## Optimization
-- vector::operator=()
-- std::swap specialization
+## Benchmark
+### Generic
+- capacity functions
+- iterator functions
+- operations functions
+### Specific
+- deque
+- list
+- stack
+
+## Critical Optimization
 - deque::operator=
 - deque::erase(it first, it last)

@@ -351,7 +351,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	T*
+	typename ft::vector<T, Allocator>::pointer
 	ft::vector<T, Allocator>::data()
 	{
 		// Complexity: O(1)
@@ -359,7 +359,7 @@ namespace ft
 	}
 	
 	template <class T, class Allocator>
-	const T*
+	typename ft::vector<T, Allocator>::const_pointer
 	ft::vector<T, Allocator>::data() const
 	{
 		// Complexity: O(1)

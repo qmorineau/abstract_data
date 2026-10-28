@@ -54,6 +54,9 @@ namespace ft
 			// base
 			deque_position base(void) const;
 		private:
+			template <typename, typename, typename>
+			friend class deque_iterator;
+
 			const vector<T*>*	_map;
 			ft::size_t			_map_idx;
 			ft::size_t			_offset;

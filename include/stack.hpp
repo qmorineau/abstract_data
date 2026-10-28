@@ -20,8 +20,8 @@ namespace ft
 			explicit stack(const Container& = Container());
 			bool empty() const;
 			size_type size() const;
-			value_type& top();
-			const value_type& top() const;
+			reference top();
+			const_reference top() const;
 			void push(const value_type& x);
 			void pop();
 

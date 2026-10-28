@@ -43,11 +43,11 @@ int main()
 	<< "Generic Test" << std::endl
 	<< "=======================================" << std::endl << std::endl;
 	// test_exceptions();
-	// test_iterators();
-	// test_helpers();
-	// test_sequence_container<ns::vector>("vector");
-	// test_sequence_container<ns::deque>("deque");
-	// test_sequence_container<ns::list>("list");
+	test_iterators();
+	test_helpers();
+	test_sequence_container<ns::vector>("vector");
+	test_sequence_container<ns::deque>("deque");
+	test_sequence_container<ns::list>("list");
 
 	// test_associative_container<ns::map>();
 	// test_associative_container<ns::set>();
@@ -60,16 +60,16 @@ int main()
 	std::cout << "=======================================" << std::endl 
 	<< "Specific Test" << std::endl
 	<< "=======================================" << std::endl << std::endl;
-	// test_vector();
-	// test_deque();
-	// test_list();
+	test_vector();
+	test_deque();
+	test_list();
 	
 	// test_map();
 	// test_set();
 	// test_multimap();
 	// test_multiset();
 
-	// test_stack();
+	test_stack();
 	// test_queue();
 	// test_priority_queue();
 	return (0);

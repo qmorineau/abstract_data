@@ -67,8 +67,8 @@ namespace ft
 			const_reference front() const;
 			reference back();
 			const_reference back() const;
-			T* data();
-			const T* data() const;
+			pointer data();
+			const_pointer data() const;
 			// modifiers
 			void push_back(const T& x);
 			void pop_back();
@@ -81,7 +81,7 @@ namespace ft
 			void swap(vector<T,Allocator>&);
 			void clear();
 		private:
-			T*				_data;
+			pointer			_data;
 			size_type		_size;
 			allocator_type	_allocator;
 			size_type		_capacity;

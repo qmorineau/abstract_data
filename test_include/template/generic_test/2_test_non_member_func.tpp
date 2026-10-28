@@ -160,7 +160,7 @@ struct test_swap_specialization
 		Container a(c1);
 		Container b(c2);
 		std::cout << (c1 == a) << "|" << (c2 == b) << "|";
-		std::swap(c1, c2);
+		ns::swap(c1, c2);
 		std::cout << (c1 == b) << "|" << (c2 == a) << std::endl;
 	}
 };

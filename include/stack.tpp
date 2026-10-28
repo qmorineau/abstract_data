@@ -27,7 +27,7 @@ namespace ft
 	}
 	
 	template <class T, class Container>
-	typename ft::stack<T, Container>::value_type&
+	typename ft::stack<T, Container>::reference
 	ft::stack<T, Container>::top()
 	{
 		// Complexity: O(1)
@@ -35,7 +35,7 @@ namespace ft
 	}
 	
 	template <class T, class Container>
-	const typename ft::stack<T, Container>::value_type&
+	typename ft::stack<T, Container>::const_reference
 	ft::stack<T, Container>::top() const
 	{
 		// Complexity: O(1)

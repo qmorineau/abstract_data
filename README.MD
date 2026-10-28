@@ -15,7 +15,7 @@ The goal is to match the behavior and interface of the standard containers while
 | `set`            | todo           | -     | -           |
 | `multimap`       | todo           | -     | -           |
 | `multiset`       | todo           | -     | -           |
-| `stack`          | done           | todo  | todo        |
+| `stack`          | done           | done  | done        |
 | `queue`          | todo           | -     | -           |
 | `priority_queue` | todo           | -     | -           |
 | Iterators        | done           | done  | /           |

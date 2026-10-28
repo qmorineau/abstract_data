@@ -321,7 +321,7 @@ struct test_it_greater
 	{
 		std::cout << "===== Iterator::operator>(it) =====" << std::endl;
 		for (Iterator it1 = first; it1 != last; ++it1)
-		{;
+		{
 			for (Iterator it2 = first; it2 != last; ++it2)
 				std::cout << (it1 > it2) << "|" << (it2 > it1) << "|";
 		}
@@ -396,6 +396,86 @@ static void test_iterator_dispatch(C& test, ns::random_access_iterator_tag)
 }
 
 template <class C>
+static void test_iterator_dispatch_conversion(C& test, ns::bidirectional_iterator_tag)
+{
+	typedef typename C::iterator iterator;
+	typedef typename C::const_iterator const_iterator;
+	typedef typename C::reverse_iterator reverse_iterator;
+	typedef typename C::const_reverse_iterator const_reverse_iterator;
+
+	{
+		iterator it = test.begin();
+		const_iterator cit = test.begin();
+		std::cout << (it == cit) << "|" << (cit == it) << "|";
+		std::cout << (it != cit) << "|" << (cit != it) << "|";
+	}
+	{
+		iterator it = test.end();
+		const_iterator cit = test.end();
+		std::cout << (it == cit) << "|" << (cit == it) << "|";
+		std::cout << (it != cit) << "|" << (cit != it) << std::endl;
+	}
+	{
+		reverse_iterator rit = test.rbegin();
+		const_reverse_iterator crit = test.rbegin();
+		std::cout << (rit == crit) << "|" << (crit == rit) << "|";
+		std::cout << (rit != crit) << "|" << (crit != rit) << "|";
+	}
+	{
+		reverse_iterator rit = test.rend();
+		const_reverse_iterator crit = test.rend();
+		std::cout << (rit == crit) << "|" << (crit == rit) << "|";
+		std::cout << (rit != crit) << "|" << (crit != rit) << std::endl;
+	}
+	// reverse
+}
+
+template <class C>
+static void test_iterator_dispatch_conversion(C& test, ns::random_access_iterator_tag)
+{
+	test_iterator_dispatch_conversion<C>(test, ns::bidirectional_iterator_tag());
+
+	typedef typename C::iterator iterator;
+	typedef typename C::const_iterator const_iterator;
+	typedef typename C::reverse_iterator reverse_iterator;
+	typedef typename C::const_reverse_iterator const_reverse_iterator;
+
+	{
+		iterator it = test.begin();
+		const_iterator cit = test.begin();
+		std::cout << (it < cit) << "|" << (cit < it) << "|";
+		std::cout << (it <= cit) << "|" << (cit <= it) << "|";
+		std::cout << (it > cit) << "|" << (cit > it) << "|";
+		std::cout << (it >= cit) << "|" << (cit >= it) << std::endl;
+	}
+	{
+		iterator it = test.end();
+		const_iterator cit = test.end();
+		std::cout << (it < cit) << "|" << (cit < it) << "|";
+		std::cout << (it <= cit) << "|" << (cit <= it) << "|";
+		std::cout << (it > cit) << "|" << (cit > it) << "|";
+		std::cout << (it >= cit) << "|" << (cit >= it) << std::endl;
+	}
+	// reverse
+	{
+		reverse_iterator rit = test.rbegin();
+		const_reverse_iterator crit = test.rbegin();
+		std::cout << (rit < crit) << "|" << (crit < rit) << "|";
+		std::cout << (rit <= crit) << "|" << (crit <= rit) << "|";
+		std::cout << (rit > crit) << "|" << (crit > rit) << "|";
+		std::cout << (rit >= crit) << "|" << (crit >= rit) << std::endl;
+	}
+	{
+		reverse_iterator rit = test.rend();
+		const_reverse_iterator crit = test.rend();
+		std::cout << (rit < crit) << "|" << (crit < rit) << "|";
+		std::cout << (rit <= crit) << "|" << (crit <= rit) << "|";
+		std::cout << (rit > crit) << "|" << (crit > rit) << "|";
+		std::cout << (rit >= crit) << "|" << (crit >= rit) << std::endl;
+	}
+}
+
+template <class C>
 static void test_it_container_type(std::string type)
 {
 	std::cout << "==================" << std::endl
@@ -412,6 +492,8 @@ static void test_it_container_type(std::string type)
 	test_iterator_dispatch<C>(c, category());
 	c = fill_n<C>(100);
 	test_iterator_dispatch<C>(c, category());
+
+	test_iterator_dispatch_conversion(c, category());
 }
 
 template <template <typename, typename> class Container>

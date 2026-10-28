@@ -77,8 +77,9 @@ void test_exceptions();
 void test_iterators();
 void test_helpers();
 void test_vector();
-void test_deque();
 void test_list();
+void test_deque();
+void test_stack();
 
 // Container Type
 template <template <typename, typename> class Container>
