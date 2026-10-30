@@ -20,6 +20,7 @@ class Foo
 		Foo(const Foo& other) : _allocated_ptr(NULL), _n(other._n)	{(void) other;_allocated_ptr = new Bar();}
 		Foo& operator=(const Foo& other)							{if (this != &other) {_n = other._n;} return *this;}
 		bool operator<(const Foo& other) const						{return _n < other._n;}
+		bool operator>(const Foo& other) const						{return _n > other._n;}
 		bool operator==(const Foo& other) const						{return _n == other._n;}
 		~Foo()														{if (_allocated_ptr) {delete _allocated_ptr;}}
 		int		data() const 										{return _n;}

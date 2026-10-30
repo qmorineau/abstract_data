@@ -1,13 +1,13 @@
 #include "test.hpp"
 
 template <class T>
-static void print_queue(ns::queue<T> s)
+static void print_queue(ns::queue<T> q)
 {
-	std::cout << "print_queue: size: " << s.size() << ": ";
-	while (!s.empty())
+	std::cout << "print_queue: size: " << q.size() << ": ";
+	while (!q.empty())
 	{
-		std::cout << s.front() << "|";
-		s.pop();
+		std::cout << q.front() << "|";
+		q.pop();
 	}
 	std::cout << std::endl;
 }

@@ -18,8 +18,12 @@ namespace ft
 
 	template <class T, class Container, class Compare>
 	template <class InputIterator>
-	ft::priority_queue<T,Container,Compare>::priority_queue(InputIterator first, InputIterator last, const Compare& x, const Container& y)
-		: c(y), comp(x)
+	ft::priority_queue<T,Container,Compare>::priority_queue(InputIterator first,
+		InputIterator last,
+		const Compare& x,
+		const Container& y,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+			: c(y), comp(x)
 	{
 		/*
 		N = size()

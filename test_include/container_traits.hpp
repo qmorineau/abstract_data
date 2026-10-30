@@ -280,22 +280,6 @@ struct container_traits<ns::queue<T, Alloc> > : container_traits_default
 	};
 };
 
-template <typename T, typename Alloc>
-struct container_traits<ns::priority_queue<T, Alloc> > : container_traits_default
-{
-	enum
-	{
-		// element access
-		has_top = 1,
-		// capacity
-		has_size = 1,
-		has_empty = 1,
-		// modifier
-		has_push = 1,
-		has_pop = 1
-	};
-};
-
 // define traits for each container
 // template <typename Key, typename T, typename Compare, typename Alloc>
 // struct container_traits<nm::map<Key, Compare, Alloc>

@@ -4,8 +4,7 @@
 - map
 - multimap
 - set
-- queue
-- priority queue
+- multiset
 
 ## Tests
 ### deque

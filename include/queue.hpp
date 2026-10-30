@@ -74,7 +74,7 @@ namespace ft
 		public:
 			explicit priority_queue(const Compare& x = Compare(), const Container& = Container());
 			template <class InputIterator>
-			priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container());
+			priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
 			bool empty() const;
 			size_type size() const;
 			const_reference top() const;
