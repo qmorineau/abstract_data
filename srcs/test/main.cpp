@@ -3,6 +3,8 @@
 #include <iostream>
 #include "red_black_tree.hpp"
 #include "testing_classes.hpp"
+#include "utility.hpp"
+
 void test()
 {
 	using namespace ft::detail;
