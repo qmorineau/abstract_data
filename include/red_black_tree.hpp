@@ -33,7 +33,7 @@ namespace ft
 		class red_black_tree
 		{
 			public:
-				red_black_tree(const Allocator& = Allocator(), const Compare& = ft::less<T>());
+				red_black_tree(const Allocator& = Allocator(), const Compare& = Compare());
 				~red_black_tree();
 				void insert(const T& value);
 			private:
@@ -41,7 +41,7 @@ namespace ft
 
 				Allocator			_alloc;
 				node_allocator		_node_alloc;
-				const Compare&		_comp;
+				Compare				_comp;
 
 				tree_node<T>* 		_root;
 				tree_node<T>* 		_sentinel;
@@ -62,6 +62,7 @@ namespace ft
 			public:
 				void print() const
 				{
+					std::cout << "is valid: " << (is_valid_tree() == true ? "true" : "false") << std::endl;
 					ft::queue<tree_node<T>*> q;
 					q.push(_root);
 					while (!q.empty())
@@ -72,7 +73,7 @@ namespace ft
 							tree_node<T>* n = q.front();
 							q.pop();
 							print_node(n);
-							if (n)
+							if (n != _sentinel)
 							{
 								q.push(n->left);
 								q.push(n->right);
@@ -81,10 +82,11 @@ namespace ft
 						}
 						std::cout << std::endl;
 					}
+					std::cout << std::endl;
 				}
 				void print_node(tree_node<T>* n) const
 				{
-					if (n)
+					if (n != _sentinel)
 						std::cout << (n->color == RED ? "R" : "B") << n->value;
 					else
 						std::cout << "null";

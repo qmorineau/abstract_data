@@ -10,9 +10,13 @@ void test()
 
 	T tree;
 	tree.insert(1);
+	tree.print();
 	tree.insert(3);
+	tree.print();
 	tree.insert(2);
+	tree.print();
 	tree.insert(4);
+	tree.print();
 	tree.insert(5);
 	tree.print();
 }

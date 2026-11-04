@@ -169,7 +169,7 @@ namespace ft
 					else
 					{
 						// Case 3: parent is red, uncle is black, and z is a left child
-						if (z == z->parent->right)
+						if (z == z->parent->left)
 						{
 							z = z->parent;
 							rotate_right(z);
@@ -285,7 +285,7 @@ namespace ft
 				{
 					// symmetric cases for when x is the right child
 					w = x->parent->left;
-						if (w->color == RED)
+					if (w->color == RED)
 					{
 						// Case 1: sibling is red
 						w->color = BLACK;
@@ -326,7 +326,7 @@ namespace ft
 		{
 			if (node == _sentinel || value)
 				return node;
-			if (_comp(value, node->data))
+			if (_comp(value, node->value))
 				return search(node->left, value);
 			return search(node->right, value);
 		}
@@ -408,8 +408,51 @@ namespace ft
 		bool
 		red_black_tree<T, Allocator, Compare>::is_valid_tree() const
 		{
-			return false;
-			// todo
+			ft::vector<ft::size_t> black_counts;
+			ft::queue<tree_node<T>*> q;
+			ft::queue<tree_node<T>*> leafs;
+			if (_sentinel->color != BLACK)
+				return false;
+			if (_root != _sentinel)
+				q.push(_root);
+			else
+				return true;
+			while (!q.empty())
+			{
+				tree_node<T>* node = q.front();
+				q.pop();
+				if (node->left != _sentinel)
+					q.push(node->left);
+				if (node->right != _sentinel)
+					q.push(node->right);
+				if (node->left == _sentinel || node->right == _sentinel)
+					leafs.push(node);
+			}
+			while (!leafs.empty())
+			{
+				tree_node<T>* node = leafs.front();
+				leafs.pop();
+				ft::size_t	black_node_count = 1;
+				while (true)
+				{
+					if (node->color == BLACK)
+						++black_node_count;
+					if (node == _root)
+					{
+						black_counts.push_back(black_node_count);
+						break;
+					}
+					if (node->color == RED && node->parent->color == RED)
+						return false;
+					node = node->parent;
+				}
+			}
+			for (ft::size_t i = 1; i < black_counts.size(); ++i)
+			{
+				if (black_counts[0] != black_counts[i])
+					return false;
+			}
+			return true;
 		}
 	}
 }
