@@ -9,57 +9,57 @@ namespace ft
 
 	// ====== Construct / Destruct ======
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>::reverse_iterator()
+	reverse_iterator<Iterator>::reverse_iterator()
 		: current()
 	{}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>::reverse_iterator(Iterator x)
+	reverse_iterator<Iterator>::reverse_iterator(Iterator x)
 		: current(x)
 	{}
 
 	template <class Iterator>
 	template <class U>
-	ft::reverse_iterator<Iterator>::reverse_iterator(const reverse_iterator<U>& u)
+	reverse_iterator<Iterator>::reverse_iterator(const reverse_iterator<U>& u)
 		: current(u.base())
 	{}
 
 	// ====== base() ======
 	template <class Iterator>
 	Iterator
-	ft::reverse_iterator<Iterator>::base() const
+	reverse_iterator<Iterator>::base() const
 	{
 		return current;
 	}
 
 	// ====== Dereference Operators ======
 	template <class Iterator>
-	typename ft::reverse_iterator<Iterator>::reference
-	ft::reverse_iterator<Iterator>::operator*(void) const
+	typename reverse_iterator<Iterator>::reference
+	reverse_iterator<Iterator>::operator*(void) const
 	{
 		Iterator tmp = current;
 		return *--tmp;
 	}
 
 	template <class Iterator>
-	typename ft::reverse_iterator<Iterator>::pointer
-	ft::reverse_iterator<Iterator>::operator->(void) const
+	typename reverse_iterator<Iterator>::pointer
+	reverse_iterator<Iterator>::operator->(void) const
 	{
 		return &(operator*());
 	}
 
 	// ====== Increment / Decrement ======
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>&
-	ft::reverse_iterator<Iterator>::operator++(void)
+	reverse_iterator<Iterator>&
+	reverse_iterator<Iterator>::operator++(void)
 	{
 		--current;
 		return *this;
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>
-	ft::reverse_iterator<Iterator>::operator++(int)
+	reverse_iterator<Iterator>
+	reverse_iterator<Iterator>::operator++(int)
 	{
 		reverse_iterator tmp = *this;
 		--current;
@@ -67,16 +67,16 @@ namespace ft
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>&
-	ft::reverse_iterator<Iterator>::operator--(void)
+	reverse_iterator<Iterator>&
+	reverse_iterator<Iterator>::operator--(void)
 	{
 		++current;
 		return *this;
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>
-	ft::reverse_iterator<Iterator>::operator--(int)
+	reverse_iterator<Iterator>
+	reverse_iterator<Iterator>::operator--(int)
 	{
 		reverse_iterator tmp = *this;
 		++current;
@@ -85,38 +85,38 @@ namespace ft
 
 	// ====== Random Access Arithmetic ======
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>&
-	ft::reverse_iterator<Iterator>::operator+=(difference_type n)
+	reverse_iterator<Iterator>&
+	reverse_iterator<Iterator>::operator+=(difference_type n)
 	{
 		current -= n;
 		return *this;
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>
-	ft::reverse_iterator<Iterator>::operator+(difference_type n) const
+	reverse_iterator<Iterator>
+	reverse_iterator<Iterator>::operator+(difference_type n) const
 	{
 		return reverse_iterator(current - n);
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>&
-	ft::reverse_iterator<Iterator>::operator-=(difference_type n)
+	reverse_iterator<Iterator>&
+	reverse_iterator<Iterator>::operator-=(difference_type n)
 	{
 		current += n;
 		return *this;
 	}
 
 	template <class Iterator>
-	ft::reverse_iterator<Iterator>
-	ft::reverse_iterator<Iterator>::operator-(difference_type n) const
+	reverse_iterator<Iterator>
+	reverse_iterator<Iterator>::operator-(difference_type n) const
 	{
 		return reverse_iterator(current + n);
 	}
 
 	template <class Iterator>
-	typename ft::reverse_iterator<Iterator>::reference
-	ft::reverse_iterator<Iterator>::operator[](difference_type n) const
+	typename reverse_iterator<Iterator>::reference
+	reverse_iterator<Iterator>::operator[](difference_type n) const
 	{
 		return *(*this + n);
 	}

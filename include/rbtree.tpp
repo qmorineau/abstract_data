@@ -481,7 +481,7 @@ namespace ft
 		void
 		rbtree<T, Allocator, Compare>::destroy_all()
 		{
-			ft::queue<node_pointer> q;
+			queue<node_pointer> q;
 			if (_root != _sentinel)
 				q.push(_root);
 			while (!q.empty())
@@ -511,9 +511,9 @@ namespace ft
 		bool
 		rbtree<T, Allocator, Compare>::is_valid_tree() const
 		{
-			ft::vector<ft::size_t> black_counts;
-			ft::queue<node_pointer> q;
-			ft::queue<node_pointer> leafs;
+			vector<size_t> black_counts;
+			queue<node_pointer> q;
+			queue<node_pointer> leafs;
 			if (_sentinel->color != BLACK)
 				return false;
 			if (_root != _sentinel)
@@ -535,7 +535,7 @@ namespace ft
 			{
 				node_pointer node = leafs.front();
 				leafs.pop();
-				ft::size_t	black_node_count = 1;
+				size_t	black_node_count = 1;
 				while (true)
 				{
 					if (node->color == BLACK)
@@ -550,7 +550,7 @@ namespace ft
 					node = node->parent;
 				}
 			}
-			for (ft::size_t i = 1; i < black_counts.size(); ++i)
+			for (size_t i = 1; i < black_counts.size(); ++i)
 			{
 				if (black_counts[0] != black_counts[i])
 					return false;

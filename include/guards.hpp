@@ -11,7 +11,7 @@ namespace ft
 		class MemoryGuard
 		{
 			public:
-				typedef ft::size_t size_type;
+				typedef size_t size_type;
 
 				MemoryGuard(Allocator& a);
 				~MemoryGuard();
@@ -31,7 +31,7 @@ namespace ft
 		class ChunkGuard
 		{
 			public:
-				typedef ft::size_t size_type;
+				typedef size_t size_type;
 
 				ChunkGuard(Allocator& a, ForwardIterator begin, size_type chunk_size);
 				~ChunkGuard();
@@ -52,7 +52,7 @@ namespace ft
 		class ConstructGuard
 		{
 			public:
-				typedef typename ft::size_t size_type;
+				typedef size_t size_type;
 				ConstructGuard(Allocator& a, ForwardIterator begin);
 				~ConstructGuard();
 				void push();

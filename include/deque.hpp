@@ -18,28 +18,28 @@ namespace ft
 	{
 		public:
 			// types:
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer 		const_pointer;
-			typedef T										value_type;
-			typedef ft::size_t								size_type;
-			typedef ft::ptrdiff_t							difference_type;
-			typedef Allocator								allocator_type;
-			typedef deque_iterator<T>						iterator;
-			typedef deque_iterator<T, const T*, const T&>	const_iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef typename Allocator::reference					reference;
+			typedef typename Allocator::const_reference				const_reference;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer 				const_pointer;
+			typedef T												value_type;
+			typedef size_t											size_type;
+			typedef ptrdiff_t										difference_type;
+			typedef Allocator										allocator_type;
+			typedef detail::deque_iterator<T>						iterator;
+			typedef detail::deque_iterator<T, const T*, const T&>	const_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			// construct/copy/destroy:
 			explicit deque(const Allocator& = Allocator());
 			explicit deque(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			deque(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			deque(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			deque(const deque<T,Allocator>& x);
 			~deque();
 			deque<T,Allocator>& operator=(const deque<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& t);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -71,7 +71,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert (iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void insert (iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			void pop_front();
 			void pop_back();
 			iterator erase(iterator position);
@@ -79,14 +79,17 @@ namespace ft
 			void swap(deque<T,Allocator>&);
 			void clear();
 		private:
-			allocator_type	_allocator;
-			ft::vector<T*>	_map;
-			
-			deque_position	_start;
-			deque_position	_end;
+			typedef typename detail::deque_position		deque_pos;
 
-			ft::size_t		_size;
+			allocator_type	_allocator;
+			vector<T*>		_map;
+			
+			deque_pos		_start;
+			deque_pos		_end;
+
+			size_t			_size;
 			bool			_init;
+			static const size_t chunk_size = detail::deque_chunk_size;
 
 			// erase
 			void erase_front(iterator first, iterator last);

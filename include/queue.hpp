@@ -60,7 +60,7 @@ namespace ft
 
 	// Priority Queue
 
-	template <class T, class Container = vector<T>, class Compare = ft::less<typename Container::value_type> >
+	template <class T, class Container = vector<T>, class Compare = less<typename Container::value_type> >
 	class priority_queue {
 		public:
 			typedef typename Container::value_type		value_type;
@@ -74,7 +74,7 @@ namespace ft
 		public:
 			explicit priority_queue(const Compare& x = Compare(), const Container& = Container());
 			template <class InputIterator>
-			priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			priority_queue(InputIterator first, InputIterator last, const Compare& x = Compare(), const Container& = Container(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			bool empty() const;
 			size_type size() const;
 			const_reference top() const;

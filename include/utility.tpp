@@ -4,25 +4,25 @@
 namespace ft
 {
 	template <class T1, class T2>
-	ft::pair<T1, T2>::pair()
+	pair<T1, T2>::pair()
 		: first(), second() 
 	{}
 
 	template <class T1, class T2>
-	ft::pair<T1, T2>::pair(const T1& x, const T2& y)
+	pair<T1, T2>::pair(const T1& x, const T2& y)
 		: first(x), second(y)
 	{}
 
 	template <class T1, class T2>
 	template <class U, class V>
-	ft::pair<T1, T2>::pair(const pair<U, V>& p)
+	pair<T1, T2>::pair(const pair<U, V>& p)
 		: first(p.first), second(p.second)
 	{}
 
 	template <class T1, class T2>
-	ft::pair<T1, T2> make_pair(T1 x, T2 y)
+	pair<T1, T2> make_pair(T1 x, T2 y)
 	{
-		return ft::pair<T1, T2>(x, y);
+		return pair<T1, T2>(x, y);
 	}
 
 	template <class T1, class T2>

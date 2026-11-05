@@ -9,16 +9,16 @@ namespace ft
 {
 	namespace detail
 	{
-		class msg_exception : public ft::exception
+		class msg_exception : public exception
 		{
 			public:
 				explicit msg_exception(const std::string& msg) : _msg(msg) {};
-				msg_exception(const msg_exception& other) : ft::exception(other), _msg(other._msg) {};
+				msg_exception(const msg_exception& other) : exception(other), _msg(other._msg) {};
 				msg_exception& operator=(const msg_exception& other)
 				{
 					if (this != &other)
 					{
-						ft::exception::operator=(other);
+						exception::operator=(other);
 						_msg = other._msg;
 					}
 					return *this;
@@ -30,28 +30,28 @@ namespace ft
 		};
 	}
 
-	class logic_error : public ft::detail::msg_exception
+	class logic_error : public detail::msg_exception
 	{
 		public:
-			explicit logic_error(const std::string& what_arg) : ft::detail::msg_exception(what_arg) {};
+			explicit logic_error(const std::string& what_arg) : detail::msg_exception(what_arg) {};
 	};
 
-	class runtime_error : public ft::detail::msg_exception
+	class runtime_error : public detail::msg_exception
 	{
 		public:
-			explicit runtime_error(const std::string& what_arg) : ft::detail::msg_exception(what_arg) {};
+			explicit runtime_error(const std::string& what_arg) : detail::msg_exception(what_arg) {};
 	};
 
-	class length_error : public ft::logic_error
+	class length_error : public logic_error
 	{
 		public:
-			explicit length_error(const std::string& what_arg) : ft::logic_error(what_arg) {};
+			explicit length_error(const std::string& what_arg) : logic_error(what_arg) {};
 	};
 
-	class out_of_range : public ft::logic_error
+	class out_of_range : public logic_error
 	{
 		public:
-			explicit out_of_range(const std::string& what_arg) : ft::logic_error(what_arg) {};
+			explicit out_of_range(const std::string& what_arg) : logic_error(what_arg) {};
 	};
 }
 

@@ -5,7 +5,10 @@
 
 namespace ft
 {
-	const ft::size_t deque_chunk_size = 64;
+	namespace detail
+	{
+		const size_t deque_chunk_size = 64;
+	}
 }
 
 #endif

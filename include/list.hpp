@@ -8,8 +8,8 @@
 #include "cstddef.hpp"
 #include "type_traits.hpp"
 #include "guards.hpp"
-#include "list_iterator.hpp"
 #include "list_node.hpp"
+#include "list_iterator.hpp"
 
 namespace ft
 {
@@ -18,28 +18,28 @@ namespace ft
 	{
 		public:
 			// types:
-			typedef typename Allocator::reference							reference;
-			typedef typename Allocator::const_reference						const_reference;
-			typedef typename Allocator::pointer								pointer;
-			typedef typename Allocator::const_pointer						const_pointer;
-			typedef T														value_type;
-			typedef ft::size_t												size_type;
-			typedef ft::ptrdiff_t											difference_type;
-			typedef Allocator												allocator_type;
-			typedef list_iterator<T>										iterator;
-			typedef list_iterator<T, const T*, const T&>					const_iterator;
-			typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef typename Allocator::reference					reference;
+			typedef typename Allocator::const_reference				const_reference;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
+			typedef T												value_type;
+			typedef size_t											size_type;
+			typedef ptrdiff_t										difference_type;
+			typedef Allocator										allocator_type;
+			typedef detail::list_iterator<T>						iterator;
+			typedef detail::list_iterator<T, const T*, const T&>	const_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			// construct/copy/destroy:
 			explicit list(const Allocator& = Allocator());
 			explicit list(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			list(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			list(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			list(const list<T,Allocator>& x);
 			~list();
 			list<T,Allocator>& operator=(const list<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& t);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -69,7 +69,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			iterator erase(iterator position);
 			iterator erase(iterator position, iterator last);
 			void swap(list<T,Allocator>&);
@@ -92,12 +92,14 @@ namespace ft
 			void sort(Compare comp);
 			void reverse();
 		private:
-			typedef typename Allocator::template rebind<list_node<T> >::other	node_allocator;
+			typedef detail::list_node<T>									node_type;
+			typedef node_type*												node_pointer;
+			typedef typename Allocator::template rebind<node_type>::other	node_allocator;
 
 			allocator_type	_allocator;
 			node_allocator	_node_alloc;
+			node_pointer		_sentinel;
 			size_type		_size;
-			list_node<T>*		_sentinel;
 
 			void init_sentinel();
 			template <class Compare>

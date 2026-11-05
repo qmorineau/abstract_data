@@ -5,7 +5,7 @@
 
 namespace ft
 {
-	template <class T, class Container = ft::deque<T> >
+	template <class T, class Container = deque<T> >
 	class stack
 	{
 		public:

@@ -23,8 +23,8 @@ namespace ft
 				typedef typename Allocator::pointer				pointer;
 				typedef typename Allocator::const_pointer		const_pointer;
 				typedef T										value_type;
-				typedef ft::size_t								size_type;
-				typedef ft::ptrdiff_t							difference_type;
+				typedef size_t									size_type;
+				typedef ptrdiff_t								difference_type;
 				typedef Allocator								allocator_type;
 				typedef rbtree_node<T>*							node_pointer;
 				typedef rbtree_iterator<T>						iterator;
@@ -46,7 +46,7 @@ namespace ft
 				reverse_iterator rend();
 				const_reverse_iterator rend() const;
 				// capacity:
-				ft::size_t	size() const;
+				size_t	size() const;
 				// modifier:
 				void insert(const T& value);
 			private:
@@ -78,7 +78,7 @@ namespace ft
 				void print() const
 				{
 					std::cout << "is valid: " << (is_valid_tree() == true ? "true" : "false") << std::endl;
-					ft::queue<node_pointer> q;
+					queue<node_pointer> q;
 					q.push(_root);
 					while (!q.empty())
 					{

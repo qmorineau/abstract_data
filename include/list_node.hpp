@@ -3,13 +3,16 @@
 
 namespace ft
 {
-	template<typename T>
-	struct list_node
+	namespace detail
 	{
-		T		value;
-		list_node	*next;
-		list_node	*prev;
-	};
+		template<typename T>
+		struct list_node
+		{
+			T		value;
+			list_node	*next;
+			list_node	*prev;
+		};
+	}
 }
 
 #endif

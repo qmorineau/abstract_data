@@ -4,7 +4,7 @@
 namespace ft
 {
 	template <class T, class Container, class Compare>
-	ft::priority_queue<T,Container,Compare>::priority_queue(const Compare& x, const Container& y)
+	priority_queue<T,Container,Compare>::priority_queue(const Compare& x, const Container& y)
 		: c(y), comp(x)
 	{
 		/*
@@ -18,11 +18,11 @@ namespace ft
 
 	template <class T, class Container, class Compare>
 	template <class InputIterator>
-	ft::priority_queue<T,Container,Compare>::priority_queue(InputIterator first,
+	priority_queue<T,Container,Compare>::priority_queue(InputIterator first,
 		InputIterator last,
 		const Compare& x,
 		const Container& y,
-		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+		typename enable_if<!is_integral<InputIterator>::value>::type*)
 			: c(y), comp(x)
 	{
 		/*
@@ -38,23 +38,23 @@ namespace ft
 
 	template <class T, class Container, class Compare>
 	bool
-	ft::priority_queue<T,Container,Compare>::empty() const
+	priority_queue<T,Container,Compare>::empty() const
 	{
 		// Complexity: O(1)
 		return c.empty();
 	}
 
 	template <class T, class Container, class Compare>
-	typename ft::priority_queue<T,Container,Compare>::size_type
-	ft::priority_queue<T,Container,Compare>::size() const
+	typename priority_queue<T,Container,Compare>::size_type
+	priority_queue<T,Container,Compare>::size() const
 	{
 		// Complexity: O(1)
 		return c.size();
 	}
 
 	template <class T, class Container, class Compare>
-	typename ft::priority_queue<T,Container,Compare>::const_reference
-	ft::priority_queue<T,Container,Compare>::top() const
+	typename priority_queue<T,Container,Compare>::const_reference
+	priority_queue<T,Container,Compare>::top() const
 	{
 		// Complexity: O(1)
 		return c.front();
@@ -62,7 +62,7 @@ namespace ft
 
 	template <class T, class Container, class Compare>
 	void
-	ft::priority_queue<T,Container,Compare>::push(const value_type& x)
+	priority_queue<T,Container,Compare>::push(const value_type& x)
 	{
 		// Complexity: O(log(size()) + Container::push_back complexity
 		c.push_back(x);
@@ -71,7 +71,7 @@ namespace ft
 
 	template <class T, class Container, class Compare>
 	void
-	ft::priority_queue<T,Container,Compare>::pop()
+	priority_queue<T,Container,Compare>::pop()
 	{
 		// Complexity: O(log(size()) + Container::pop_back complexity
 		if (empty())

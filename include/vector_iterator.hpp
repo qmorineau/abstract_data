@@ -6,74 +6,77 @@
 
 namespace ft
 {
-	template <class T, class Pointer = T*, class Reference = T&>
-	class vector_iterator : public iterator<ft::random_access_iterator_tag, T, ft::ptrdiff_t, Pointer, Reference>
+	namespace detail
 	{
-		public:
-			typedef Pointer								pointer;
-			typedef Reference							reference;
-			typedef T 									value_type;
-			typedef ft::ptrdiff_t						difference_type;
-			typedef ft::random_access_iterator_tag		iterator_category;
+		template <class T, class Pointer = T*, class Reference = T&>
+		class vector_iterator : public iterator<random_access_iterator_tag, T, ptrdiff_t, Pointer, Reference>
+		{
+			public:
+				typedef Pointer						pointer;
+				typedef Reference					reference;
+				typedef T 							value_type;
+				typedef ptrdiff_t					difference_type;
+				typedef random_access_iterator_tag	iterator_category;
 
-			// construct / destruct / copy
-			vector_iterator(void);
-			vector_iterator(pointer p);
-			template <class T2, class Pointer2, class Reference2>
-			vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other);
-			~vector_iterator();
-			vector_iterator& operator=(const vector_iterator& other);
+				// construct / destruct / copy
+				vector_iterator(void);
+				vector_iterator(pointer p);
+				template <class T2, class Pointer2, class Reference2>
+				vector_iterator(const vector_iterator<T2, Pointer2, Reference2>& other);
+				~vector_iterator();
+				vector_iterator& operator=(const vector_iterator& other);
 
-			// input_iterator (== && !=)
-			reference operator*(void) const;
-			pointer operator->(void) const;
-	
-			// forward_iterator (default constructor)
+				// input_iterator (== && !=)
+				reference operator*(void) const;
+				pointer operator->(void) const;
+		
+				// forward_iterator (default constructor)
 
-			// bidirectional_iterator
-			vector_iterator& operator++(void);
-			vector_iterator operator++(int);
-			vector_iterator& operator--(void);
-			vector_iterator operator--(int);
+				// bidirectional_iterator
+				vector_iterator& operator++(void);
+				vector_iterator operator++(int);
+				vector_iterator& operator--(void);
+				vector_iterator operator--(int);
 
-			// random_access_iterator
-			vector_iterator& operator+=(difference_type n);
-			vector_iterator operator+(difference_type n) const;
-			vector_iterator& operator-=(difference_type n);
-			vector_iterator operator-(difference_type n) const;
-			reference operator[](difference_type n) const;
+				// random_access_iterator
+				vector_iterator& operator+=(difference_type n);
+				vector_iterator operator+(difference_type n) const;
+				vector_iterator& operator-=(difference_type n);
+				vector_iterator operator-(difference_type n) const;
+				reference operator[](difference_type n) const;
 
-			// getter
-			pointer base(void) const;
-		private:
-			pointer	_ptr;
-	};
-	// non-members
-	template <class T, class Pointer, class Reference>
-	vector_iterator<T, Pointer, Reference>
-	operator+(typename vector_iterator<T, Pointer, Reference>::difference_type n, const vector_iterator<T, Pointer, Reference>& it);
-	
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	typename vector_iterator<T, Pointer1, Reference1>::difference_type
-	operator-(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+				// getter
+				pointer base(void) const;
+			private:
+				pointer	_ptr;
+		};
+		// non-members
+		template <class T, class Pointer, class Reference>
+		vector_iterator<T, Pointer, Reference>
+		operator+(typename vector_iterator<T, Pointer, Reference>::difference_type n, const vector_iterator<T, Pointer, Reference>& it);
+		
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		typename vector_iterator<T, Pointer1, Reference1>::difference_type
+		operator-(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
 
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator==(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
-	
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator!=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator==(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator!=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
 
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator<(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator<(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
 
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator>(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator>(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
 
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator<=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator<=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
 
-	template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
-	bool operator>=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+		template <class T, class Pointer1, class Reference1, class Pointer2, class Reference2>
+		bool operator>=(const vector_iterator<T, Pointer1, Reference1>& x, const vector_iterator<T, Pointer2, Reference2>& y);
+	}
 }
 
 #include "vector_iterator.tpp"

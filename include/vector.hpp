@@ -18,28 +18,28 @@ namespace ft
 	{
 		public:
 			// types
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
-			typedef T										value_type;
-			typedef ft::size_t								size_type;
-			typedef ft::ptrdiff_t							difference_type;
-			typedef Allocator								allocator_type;
-			typedef vector_iterator<T>						iterator;
-			typedef vector_iterator<T, const T*, const T&>	const_iterator;
-			typedef ft::reverse_iterator<iterator>			reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef typename Allocator::reference					reference;
+			typedef typename Allocator::const_reference				const_reference;
+			typedef typename Allocator::pointer						pointer;
+			typedef typename Allocator::const_pointer				const_pointer;
+			typedef T												value_type;
+			typedef size_t											size_type;
+			typedef ptrdiff_t										difference_type;
+			typedef Allocator										allocator_type;
+			typedef detail::vector_iterator<T>						iterator;
+			typedef detail::vector_iterator<T, const T*, const T&>	const_iterator;
+			typedef ft::reverse_iterator<iterator>					reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>			const_reverse_iterator;
 			// construct / copy / destroy
 			explicit vector(const Allocator& = Allocator());
 			explicit vector(size_type n, const T& value = T(), const Allocator& = Allocator());
 			template <class InputIterator>
-			vector(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			vector(InputIterator first, InputIterator last, const Allocator& = Allocator(), typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			vector(const vector<T,Allocator>& x);
 			~vector();
 			vector<T,Allocator>& operator=(const vector<T,Allocator>& x);
 			template <class InputIterator>
-			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			void assign(size_type n, const T& u);
 			allocator_type get_allocator() const;
 			// iterators:
@@ -75,7 +75,7 @@ namespace ft
 			iterator insert(iterator position, const T& x);
 			void insert(iterator position, size_type n, const T& x);
 			template <class InputIterator>
-			void insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0);
+			void insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
 			iterator erase(iterator position);
 			iterator erase(iterator first, iterator last);
 			void swap(vector<T,Allocator>&);
@@ -100,20 +100,20 @@ namespace ft
 	};
 	// operator
 	template <class T, class Allocator>
-	bool operator==(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator==(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator< (const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator< (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator!=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator!=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator> (const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator> (const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator>=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator>=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	template <class T, class Allocator>
-	bool operator<=(const ft::vector<T,Allocator>& x, const ft::vector<T,Allocator>& y);
+	bool operator<=(const vector<T,Allocator>& x, const vector<T,Allocator>& y);
 	// specialized algorithms:
 	template <class T, class Allocator>
-	void swap(ft::vector<T,Allocator>& x, ft::vector<T,Allocator>& y);
+	void swap(vector<T,Allocator>& x, vector<T,Allocator>& y);
 }
 
 #include "vector.tpp"

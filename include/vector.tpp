@@ -8,14 +8,14 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const Allocator& alloc)
+	vector<T, Allocator>::vector(const Allocator& alloc)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
 		// Complexity: O(1);
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
+	vector<T, Allocator>::vector(size_type n, const T& value, const Allocator& alloc)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
 		// Complexity: O(n);
@@ -32,7 +32,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	template <class InputIterator>
-	ft::vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+	vector<T, Allocator>::vector(InputIterator first, InputIterator last, const Allocator& alloc, typename enable_if<!is_integral<InputIterator>::value>::type*)
 		: _data(0), _size(0), _allocator(alloc), _capacity(0)
 	{
 		/*
@@ -52,7 +52,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::vector(const vector<T,Allocator>& x)
+	vector<T, Allocator>::vector(const vector<T,Allocator>& x)
 		: _data(0), _size(0), _allocator(x._allocator), _capacity(0)
 	{
 		// Complexity: O(x.size())
@@ -68,7 +68,7 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	ft::vector<T, Allocator>::~vector()
+	vector<T, Allocator>::~vector()
 	{
 		// Complexity: O(size())
 		destroy_all();
@@ -80,7 +80,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	vector<T,Allocator>&
-	ft::vector<T, Allocator>::operator=(const vector<T,Allocator>& x)
+	vector<T, Allocator>::operator=(const vector<T,Allocator>& x)
 	{
 		// Complexity: O(size())
 		if (this != &x)
@@ -93,14 +93,14 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+	vector<T, Allocator>::assign(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type*)
 	{
 		// Complexity: O(distance(first, last))
 		assign_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::assign(size_type n, const T& u)
+	vector<T, Allocator>::assign(size_type n, const T& u)
 	{
 		// Complexity: O(n)
 		T value = u;
@@ -115,8 +115,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::allocator_type
-	ft::vector<T, Allocator>::get_allocator() const
+	typename vector<T, Allocator>::allocator_type
+	vector<T, Allocator>::get_allocator() const
 	{
 		// Complexity: O(1)
 		return _allocator;
@@ -127,64 +127,64 @@ namespace ft
 	// =====================
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::iterator
-	ft::vector<T, Allocator>::begin()
+	typename vector<T, Allocator>::iterator
+	vector<T, Allocator>::begin()
 	{
 		// Complexity: O(1)
 		return iterator(_data);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_iterator
-	ft::vector<T, Allocator>::begin() const
+	typename vector<T, Allocator>::const_iterator
+	vector<T, Allocator>::begin() const
 	{
 		// Complexity: O(1)
 		return const_iterator(_data);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::iterator
-	ft::vector<T, Allocator>::end()
+	typename vector<T, Allocator>::iterator
+	vector<T, Allocator>::end()
 	{
 		// Complexity: O(1)
 		return iterator(_data + _size);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_iterator
-	ft::vector<T, Allocator>::end() const
+	typename vector<T, Allocator>::const_iterator
+	vector<T, Allocator>::end() const
 	{
 		// Complexity: O(1)
 		return const_iterator(_data + _size);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reverse_iterator
-	ft::vector<T, Allocator>::rbegin()
+	typename vector<T, Allocator>::reverse_iterator
+	vector<T, Allocator>::rbegin()
 	{
 		// Complexity: O(1)
 		return reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reverse_iterator
-	ft::vector<T, Allocator>::rbegin() const
+	typename vector<T, Allocator>::const_reverse_iterator
+	vector<T, Allocator>::rbegin() const
 	{
 		// Complexity: O(1)
 		return const_reverse_iterator(end());
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reverse_iterator
-	ft::vector<T, Allocator>::rend()
+	typename vector<T, Allocator>::reverse_iterator
+	vector<T, Allocator>::rend()
 	{
 		// Complexity: O(1)
 		return reverse_iterator(begin());
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reverse_iterator
-	ft::vector<T, Allocator>::rend() const
+	typename vector<T, Allocator>::const_reverse_iterator
+	vector<T, Allocator>::rend() const
 	{
 		// Complexity: O(1)
 		return const_reverse_iterator(begin());
@@ -195,16 +195,16 @@ namespace ft
 	// ====================
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::size_type 
-	ft::vector<T, Allocator>::size() const
+	typename vector<T, Allocator>::size_type 
+	vector<T, Allocator>::size() const
 	{
 		// Complexity: O(1)
 		return _size;
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::size_type
-	ft::vector<T, Allocator>::max_size() const
+	typename vector<T, Allocator>::size_type
+	vector<T, Allocator>::max_size() const
 	{
 		// Complexity: O(1)
 		return _allocator.max_size();
@@ -212,7 +212,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::resize(size_type sz, T c)
+	vector<T, Allocator>::resize(size_type sz, T c)
 	{
 		// Complexity: O(abs(size - sz)) or more if reallocation (capacity is less than sz)
 		if (sz > _capacity)
@@ -234,8 +234,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::size_type
-	ft::vector<T, Allocator>::capacity() const
+	typename vector<T, Allocator>::size_type
+	vector<T, Allocator>::capacity() const
 	{
 		// Complexity: O(1)
 		return _capacity;
@@ -243,7 +243,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	bool
-	ft::vector<T, Allocator>::empty() const
+	vector<T, Allocator>::empty() const
 	{
 		// Complexity: O(1)
 		return _size == 0;
@@ -251,11 +251,11 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::reserve(size_type n)
+	vector<T, Allocator>::reserve(size_type n)
 	{
 		// Complexity: at most O(size())
 		if (n > max_size())
-			throw ft::length_error("vector::reserve");
+			throw length_error("vector::reserve");
 		if (n > _capacity)
 		{
 
@@ -285,24 +285,24 @@ namespace ft
 	// ======================
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reference
-	ft::vector<T, Allocator>::operator[](size_type n)
+	typename vector<T, Allocator>::reference
+	vector<T, Allocator>::operator[](size_type n)
 	{
 		// Complexity: O(1)
 		return *(_data + n);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reference
-	ft::vector<T, Allocator>::operator[](size_type n) const
+	typename vector<T, Allocator>::const_reference
+	vector<T, Allocator>::operator[](size_type n) const
 	{
 		// Complexity: O(1)
 		return *(_data + n);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reference
-	ft::vector<T, Allocator>::at(size_type n) const
+	typename vector<T, Allocator>::const_reference
+	vector<T, Allocator>::at(size_type n) const
 	{
 		// Complexity: O(1)
 		range_check(n);
@@ -310,8 +310,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reference
-	ft::vector<T, Allocator>::at(size_type n)
+	typename vector<T, Allocator>::reference
+	vector<T, Allocator>::at(size_type n)
 	{
 		// Complexity: O(1)
 		range_check(n);
@@ -319,48 +319,48 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reference
-	ft::vector<T, Allocator>::front()
+	typename vector<T, Allocator>::reference
+	vector<T, Allocator>::front()
 	{
 		// Complexity: O(1)
 		return *_data;
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reference
-	ft::vector<T, Allocator>::front() const
+	typename vector<T, Allocator>::const_reference
+	vector<T, Allocator>::front() const
 	{
 		// Complexity: O(1)
 		return *_data;
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::reference
-	ft::vector<T, Allocator>::back()
+	typename vector<T, Allocator>::reference
+	vector<T, Allocator>::back()
 	{
 		// Complexity: O(1)
 		return *(_data + _size - 1);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_reference
-	ft::vector<T, Allocator>::back() const
+	typename vector<T, Allocator>::const_reference
+	vector<T, Allocator>::back() const
 	{
 		// Complexity: O(1)
 		return *(_data + _size - 1);
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::pointer
-	ft::vector<T, Allocator>::data()
+	typename vector<T, Allocator>::pointer
+	vector<T, Allocator>::data()
 	{
 		// Complexity: O(1)
 		return _data;
 	}
 	
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::const_pointer
-	ft::vector<T, Allocator>::data() const
+	typename vector<T, Allocator>::const_pointer
+	vector<T, Allocator>::data() const
 	{
 		// Complexity: O(1)
 		return _data;
@@ -372,7 +372,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::push_back(const T& x)
+	vector<T, Allocator>::push_back(const T& x)
 	{
 		// Complexity: amortized O(1)
 		T value = x;
@@ -391,7 +391,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::pop_back()
+	vector<T, Allocator>::pop_back()
 	{
 		// Complexity: O(1)
 		if (_size)
@@ -399,8 +399,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::iterator
-	ft::vector<T, Allocator>::insert(iterator position, const T& x)
+	typename vector<T, Allocator>::iterator
+	vector<T, Allocator>::insert(iterator position, const T& x)
 	{
 		// Complexity: O(1 + (end() - pos))
 		size_type pos = static_cast<size_type>(position - begin());
@@ -410,7 +410,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::insert(iterator position, size_type n, const T& x)
+	vector<T, Allocator>::insert(iterator position, size_type n, const T& x)
 	{
 		// Complexity: O(n + (end() - pos))
 		if (!n)
@@ -444,15 +444,15 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIterator>
 	void
-	ft::vector<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type*)
+	vector<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type*)
 	{
 		// Complexity: O(distance(first, last) + (end() - pos))
 		insert_dispatch(position, first, last, typename iterator_traits<InputIterator>::iterator_category());
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::iterator
-	ft::vector<T, Allocator>::erase(iterator position)
+	typename vector<T, Allocator>::iterator
+	vector<T, Allocator>::erase(iterator position)
 	{
 		/*
 			n1 = element to erase
@@ -465,8 +465,8 @@ namespace ft
 	}
 
 	template <class T, class Allocator>
-	typename ft::vector<T, Allocator>::iterator
-	ft::vector<T, Allocator>::erase(iterator first, iterator last)
+	typename vector<T, Allocator>::iterator
+	vector<T, Allocator>::erase(iterator first, iterator last)
 	{
 		/*
 			n1 = element to erase
@@ -486,7 +486,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::swap(vector<T,Allocator>& other)
+	vector<T, Allocator>::swap(vector<T,Allocator>& other)
 	{
 		// Complexity: O(1)
 		if (this != &other)
@@ -500,7 +500,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::clear()
+	vector<T, Allocator>::clear()
 	{
 		// Complexity: O(size())
 		for (size_type i = 0; i < _size; i++)
@@ -514,7 +514,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::range_check(size_type n) const
+	vector<T, Allocator>::range_check(size_type n) const
 	{
 		if (n >= this->size())
 			throw_out_of_range(n);
@@ -522,20 +522,20 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::throw_out_of_range(size_type n) const
+	vector<T, Allocator>::throw_out_of_range(size_type n) const
 	{
-		throw ft::out_of_range(
+		throw out_of_range(
 			std::string("vector::range_check: n (which is "
-			+ ft::to_string(n)
+			+ to_string(n)
 			+ ") >= this->size() (which is "
-			+ ft::to_string(this->size()) + ")")
+			+ to_string(this->size()) + ")")
 		);
 	}
 
 	template <class T, class Allocator>
 	template <class InputIt>
 	void
-	ft::vector<T, Allocator>::insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag)
+	vector<T, Allocator>::insert_dispatch(iterator pos, InputIt first, InputIt last, input_iterator_tag)
 	{
 		vector<T, Allocator> tmp;
 		for (; first != last; ++first)
@@ -546,7 +546,7 @@ namespace ft
 	template <class T, class Allocator>
 	template <class ForwardIt>
 	void
-	ft::vector<T, Allocator>::insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag)
+	vector<T, Allocator>::insert_dispatch(iterator pos, ForwardIt first, ForwardIt last, forward_iterator_tag)
 	{
 		size_type n = ft::distance(first, last);
 		if (!n)
@@ -584,7 +584,7 @@ namespace ft
 	template <class T, class Allocator>
 	template <class InputIt>
 	void
-	ft::vector<T, Allocator>::assign_dispatch(InputIt first, InputIt last, input_iterator_tag)
+	vector<T, Allocator>::assign_dispatch(InputIt first, InputIt last, input_iterator_tag)
 	{
 		vector<T, Allocator> tmp;
 		for (; first != last; ++first)
@@ -595,13 +595,13 @@ namespace ft
 	template <class T, class Allocator>
 	template <class ForwardIt>
 	void
-	ft::vector<T, Allocator>::assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
+	vector<T, Allocator>::assign_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
 	{
 		size_type new_size = ft::distance(first, last);
 		if (_capacity < new_size)
 		{
 			if (new_size > max_size())
-				throw ft::length_error("vector::assign");
+				throw length_error("vector::assign");
 			T* tmp = _allocator.allocate(new_size);
 			detail::MemoryGuard<T, Allocator>				mg(_allocator);
 			mg.push(tmp, new_size);
@@ -641,7 +641,7 @@ namespace ft
 
 	template <class T, class Allocator>
 	void
-	ft::vector<T, Allocator>::destroy_all()
+	vector<T, Allocator>::destroy_all()
 	{
 		clear();
 		if (_capacity)

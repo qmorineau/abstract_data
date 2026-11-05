@@ -85,7 +85,7 @@ namespace ft
 					largest = right_child;
 				if (curr == largest)
 					break;
-				ft::swap(first[curr], first[largest]);
+				swap(first[curr], first[largest]);
 				curr = largest;
 			}
 		}
@@ -105,7 +105,7 @@ namespace ft
 			diff_t parent = (curr - 1) / 2;
 			if (!comp(first[parent], first[curr]))
 				break;
-			ft::swap(first[parent], first[curr]);
+			swap(first[parent], first[curr]);
 			curr = parent;
 		}
 	}
@@ -120,7 +120,7 @@ namespace ft
 			return;
 		diff_t size = n - 1;
 		diff_t curr = 0;
-		ft::swap(first[0], first[size]);
+		swap(first[0], first[size]);
 		while (true)
 		{
 			diff_t largest = curr;
@@ -132,7 +132,7 @@ namespace ft
 				largest = right_child;
 			if (largest == curr)
 				break;
-			ft::swap(first[curr], first[largest]);
+			swap(first[curr], first[largest]);
 			curr = largest;
 		}
 	}
