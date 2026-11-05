@@ -5,6 +5,9 @@
 #include "testing_classes.hpp"
 #include "utility.hpp"
 
+#include "map.hpp"
+#include "set.hpp"
+
 void test()
 {
 	using namespace ft::detail;
