@@ -1,14 +1,14 @@
 // #include "test.hpp"
 
 #include <iostream>
-#include "red_black_tree.hpp"
+#include "rbtree.hpp"
 #include "testing_classes.hpp"
 #include "utility.hpp"
 
 void test()
 {
 	using namespace ft::detail;
-	typedef red_black_tree<int> T;
+	typedef rbtree<int> T;
 
 	T tree;
 	tree.insert(1);

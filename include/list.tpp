@@ -334,10 +334,10 @@ namespace ft
 	ft::list<T, Allocator>::insert(iterator position, const T& x)
 	{
 		// Complexity: O(1)
-		Node<T>* prev = position.base()->prev;
-		Node<T>* next = position.base();
-		Node<T>* new_node = _node_alloc.allocate(1);
-		detail::MemoryGuard<Node<T>, node_allocator> guard(_node_alloc);
+		list_node<T>* prev = position.base()->prev;
+		list_node<T>* next = position.base();
+		list_node<T>* new_node = _node_alloc.allocate(1);
+		detail::MemoryGuard<list_node<T>, node_allocator> guard(_node_alloc);
 		guard.push(new_node, 1);
 		_allocator.construct(&new_node->value, x);
 		guard.release();
@@ -376,7 +376,7 @@ namespace ft
 	ft::list<T, Allocator>::erase(iterator position)
 	{
 		// Complexity: O(1)
-		Node<T>* to_destroy = position.base();
+		list_node<T>* to_destroy = position.base();
 		iterator ret = iterator(to_destroy->next);
 		to_destroy->next->prev = to_destroy->prev;
 		to_destroy->prev->next = to_destroy->next;
@@ -415,7 +415,7 @@ namespace ft
 		iterator it = begin();
 		while (it != end())
 		{
-			Node<T>* to_destroy = (it++).base();
+			list_node<T>* to_destroy = (it++).base();
 			_allocator.destroy(&to_destroy->value);
 			_node_alloc.deallocate(to_destroy, 1);
 			--_size;
@@ -445,10 +445,10 @@ namespace ft
 		// Complexity: O(1) 
 		if (position == it)
 			return ;
-		Node<T>* to_insert = it.base();
+		list_node<T>* to_insert = it.base();
 		to_insert->prev->next = to_insert->next;
 		to_insert->next->prev = to_insert->prev;
-		Node<T>* pos = position.base();
+		list_node<T>* pos = position.base();
 		to_insert->prev = pos->prev;
 		to_insert->next = pos;
 		to_insert->prev->next = to_insert;
@@ -471,9 +471,9 @@ namespace ft
 		size_type n;
 		if (this != &x)
 			n = ft::distance(first, last);
-		Node<T>* first_node = first.base();
-		Node<T>* last_node = last.base()->prev;
-		Node<T>* pos = position.base();
+		list_node<T>* first_node = first.base();
+		list_node<T>* last_node = last.base()->prev;
+		list_node<T>* pos = position.base();
 
 		first_node->prev->next = last.base();
 		last.base()->prev = first_node->prev;
@@ -626,7 +626,7 @@ namespace ft
 	ft::list<T, Allocator>::reverse()
 	{
 		// Complexity: O(size())
-		Node<T>* current = _sentinel;
+		list_node<T>* current = _sentinel;
 		do
 		{
 			ft::swap(current->prev, current->next);

@@ -15,7 +15,7 @@ namespace ft
 	{}
 
 	template <class T, class Pointer, class Reference>
-	list_iterator<T, Pointer, Reference>::list_iterator(Node<T>* n)
+	list_iterator<T, Pointer, Reference>::list_iterator(list_node<T>* n)
 		: _current(n)
 	{}
 
@@ -40,7 +40,7 @@ namespace ft
 
 	// ====== base() ======
 	template <class T, class Pointer, class Reference>
-	Node<T>*
+	list_node<T>*
 	list_iterator<T, Pointer, Reference>::base(void) const
 	{
 		return _current;

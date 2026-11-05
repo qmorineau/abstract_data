@@ -19,7 +19,7 @@ namespace ft
 
 			// construct / destruct / copy
 			list_iterator(void);
-			list_iterator(Node<T>* p);
+			list_iterator(list_node<T>* p);
 			template <class T2, class Pointer2, class Reference2>
 			list_iterator(const list_iterator<T2, Pointer2, Reference2>& other);
 			~list_iterator();
@@ -38,9 +38,9 @@ namespace ft
 			list_iterator operator--(int);
 
 			// getter
-			Node<T>* base(void) const;
+			list_node<T>* base(void) const;
 		private:
-			Node<T>* _current;
+			list_node<T>* _current;
 	};
 	// non-members
 

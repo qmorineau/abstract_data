@@ -92,12 +92,12 @@ namespace ft
 			void sort(Compare comp);
 			void reverse();
 		private:
-			typedef typename Allocator::template rebind<Node<T> >::other	node_allocator;
+			typedef typename Allocator::template rebind<list_node<T> >::other	node_allocator;
 
 			allocator_type	_allocator;
 			node_allocator	_node_alloc;
 			size_type		_size;
-			Node<T>*		_sentinel;
+			list_node<T>*		_sentinel;
 
 			void init_sentinel();
 			template <class Compare>
