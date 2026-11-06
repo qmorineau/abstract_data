@@ -1,12 +1,4 @@
-// #include "test.hpp"
-
-#include <iostream>
-#include "rbtree.hpp"
-#include "testing_classes.hpp"
-#include "utility.hpp"
-
-#include "map.hpp"
-#include "set.hpp"
+#include "test.hpp"
 
 void test()
 {
@@ -25,8 +17,20 @@ void test()
 	// tree.insert(5);
 	// tree.print();
 
-	ft::map<int, int> m;
+	int count = 0;
 
+	ft::map<int, int> m;
+	for (int i = 0; i < 15; ++i)
+	{
+		ft::pair<int, int> p(i, ++count);
+		m.insert(p);
+	}
+	for (int i = -2; i > -20; --i)
+	{
+		ft::pair<int, int> p(i, ++count);
+		m.insert(p);
+	}
+	print(m);
 }
 
 std::size_t ThrowingCounter::count = 0;

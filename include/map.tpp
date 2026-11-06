@@ -195,7 +195,10 @@ namespace ft
 	map<Key,T,Compare,Allocator>::insert(const value_type& x)
 	{
 		// Complexity: O(log(size()))
-		return _tree.insert(x);
+		iterator ret = _tree.insert(x);
+		if (ret == end())
+			return pair<iterator, bool>(ret, false);
+		return pair<iterator, bool>(ret, true);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

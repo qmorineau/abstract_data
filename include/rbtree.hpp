@@ -54,7 +54,7 @@ namespace ft
 				size_t		size() const;
 				size_type	max_size() const;
 				// modifier:
-				void		insert(const T& value);
+				iterator	insert(const T& value);
 				iterator	insert(iterator pos, const T& value);
 				template <class InputIterator>
 				void		insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
@@ -90,7 +90,7 @@ namespace ft
 				void insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
 				void			destroy_all();
 				void			clear_sub_tree(node_pointer subtree);
-				void			update_sentinelle(node_pointer new_node);
+				void			update_sentinel(node_pointer new_node);
 				node_pointer	new_node(const T& value);
 				void			init_sentinel();
 				bool			is_valid_tree() const;
@@ -122,7 +122,7 @@ namespace ft
 				void print_node(node_pointer n) const
 				{
 					if (n != _sentinel)
-						std::cout << (n->color == RED ? "R" : "B") << n->value;
+						std::cout << (n->color == RED ? "R" : "B") << n->value.first << ":" << n->value.second;
 					else
 						std::cout << "null";
 				}

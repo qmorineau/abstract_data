@@ -18,6 +18,8 @@
 #include "stack.hpp"
 #include "queue.hpp"
 
+#include "map.hpp"
+
 #ifdef STD
 	namespace ns = std;
 	# define NAMESPACE_NAME "std"

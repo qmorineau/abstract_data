@@ -196,7 +196,7 @@ namespace ft
 		}
 
 		template <class T, class Compare, class Allocator>
-		void 
+		typename rbtree<T,Compare,Allocator>::iterator
 		rbtree<T,Compare,Allocator>::insert(const T& value)
 		{
 			node_pointer node = new_node(value);
@@ -222,7 +222,9 @@ namespace ft
 				parent->right = node;
 			++_size;
 			fix_insert(node);
-			update_sentinelle(node);
+			update_sentinel(node);
+			print();
+			return iterator(node, _sentinel);
 		}
 
 		template <class T, class Compare, class Allocator>
@@ -551,17 +553,23 @@ namespace ft
 
 		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T,Compare,Allocator>::update_sentinelle(node_pointer new_node)
+		rbtree<T,Compare,Allocator>::update_sentinel(node_pointer new_node)
 		{
 			if (_size == 1)
 			{
 				_sentinel->left = new_node;
 				_sentinel->right = new_node;
+				// _root->parent = _sentinel;
 			}
 			else if (_comp(new_node->value, _sentinel->left->value))
 				_sentinel->left = new_node;
 			else if (_comp(_sentinel->right->value, new_node->value))
 				_sentinel->right = new_node;
+			else if (_size == 0)
+			{
+				_sentinel->left = _sentinel;
+				_sentinel->right = _sentinel;
+			}
 		}
 
 		template <class T, class Compare, class Allocator>
@@ -585,8 +593,8 @@ namespace ft
 		rbtree<T,Compare,Allocator>::init_sentinel()
 		{
 			node_pointer tmp = _node_alloc.allocate(1);
-			tmp->left = 0;
-			tmp->right = 0;
+			tmp->left = tmp;
+			tmp->right = tmp;
 			tmp->parent = 0;
 			tmp->color = BLACK;
 			_sentinel = tmp;

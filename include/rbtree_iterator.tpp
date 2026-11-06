@@ -83,11 +83,13 @@ namespace ft
 			{
 				rbtree_node<T>*	old = _current;
 				_current = _current->parent;
-				while (_current->right == old)
+				while (_current && _current->right == old)
 				{
 					old = _current;
 					_current = _current->parent;
 				}
+				if (!_current)
+					_current = _null;
 			}
 			return *this;
 		}
@@ -115,11 +117,13 @@ namespace ft
 			{
 				rbtree_node<T>*	old = _current;
 				_current = _current->parent;
-				while (_current->left == old)
+				while (_current && _current->left == old)
 				{
 					old = _current;
 					_current = _current->parent;
 				}
+				if (!_current)
+					_current = _null;
 			}
 			return *this;
 		}

@@ -83,12 +83,33 @@ typename Container::value_type generate_value(size_t n)
 	return value_generator<value_type>::make(static_cast<int>(n));
 }
 
+template <typename T>
+struct dispatch_print
+{
+	static void print(const T& value)
+	{
+		std::cout << value;
+	}
+};
+
+template <typename T1, typename T2>
+struct dispatch_print<ns::pair<T1, T2> >
+{
+	static void print(const ns::pair<T1, T2>& value)
+	{
+		std::cout << "[" << value.first << "]->[" << value.second << "] ";
+	}
+};
+
 template <typename Container>
 void print(Container& c)
 {
 	typename Container::iterator it = c.begin();
 	for (; it != c.end(); ++it)
-		std::cout << *it << "|";
+	{
+		dispatch_print<typename Container::value_type>::print(*it);
+		std::cout << "|";
+	}
 	std::cout << std::endl;
 }
 
