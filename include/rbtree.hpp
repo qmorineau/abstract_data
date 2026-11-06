@@ -7,48 +7,63 @@
 #include "rbtree_node.hpp"
 #include "guards.hpp"
 #include "functional.hpp"
+#include "vector.hpp"
 #include "queue.hpp"
 
 namespace ft
 {
 	namespace detail
 	{
-		template <class T, class Allocator = std::allocator<T>, class Compare = less<T> >
+		template <class T, class Compare = less<T>, class Allocator = std::allocator<T> >
 		class rbtree
 		{
 			public:
 				// types
+				typedef T					value_type;
+				typedef size_t				size_type;
+				typedef ptrdiff_t			difference_type;
+				typedef Allocator			allocator_type;
+				typedef rbtree_node<T>*		node_pointer;
+
 				typedef typename Allocator::reference			reference;
 				typedef typename Allocator::const_reference		const_reference;
 				typedef typename Allocator::pointer				pointer;
 				typedef typename Allocator::const_pointer		const_pointer;
-				typedef T										value_type;
-				typedef size_t									size_type;
-				typedef ptrdiff_t								difference_type;
-				typedef Allocator								allocator_type;
-				typedef rbtree_node<T>*							node_pointer;
+
 				typedef rbtree_iterator<T>						iterator;
 				typedef rbtree_iterator<T, const T*, const T&>	const_iterator;
 				typedef ft::reverse_iterator<iterator>			reverse_iterator;
 				typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 				// construct/copy/destroy:
 				rbtree(const Allocator& = Allocator(), const Compare& = Compare());
-				rbtree(const rbtree<T, Allocator, Compare>& x);
+				rbtree(const rbtree& x);
 				~rbtree();
-				rbtree<T, Allocator, Compare>& operator=(const rbtree& x);
+				rbtree& operator=(const rbtree& x);
+				allocator_type get_allocator() const;
 				// iterators:
-				iterator begin();
-				const_iterator begin() const;
-				iterator end();
-				const_iterator end() const;
-				reverse_iterator rbegin();
-				const_reverse_iterator rbegin() const;
-				reverse_iterator rend();
-				const_reverse_iterator rend() const;
+				iterator				begin();
+				const_iterator			begin() const;
+				iterator				end();
+				const_iterator			end() const;
+				reverse_iterator		rbegin();
+				const_reverse_iterator	rbegin() const;
+				reverse_iterator 		rend();
+				const_reverse_iterator	rend() const;
 				// capacity:
-				size_t	size() const;
+				bool		empty() const;
+				size_t		size() const;
+				size_type	max_size() const;
 				// modifier:
-				void insert(const T& value);
+				void		insert(const T& value);
+				iterator	insert(iterator pos, const T& value);
+				template <class InputIterator>
+				void		insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
+				void clear();
+				// operations
+				iterator		lower_bound(const value_type& x);
+				const_iterator	lower_bound(const value_type& x) const;
+				iterator		upper_bound(const value_type& x);
+				const_iterator	upper_bound(const value_type& x) const;
 			private:
 				typedef typename Allocator::template rebind<rbtree_node<T> >::other	node_allocator;
 
@@ -58,7 +73,7 @@ namespace ft
 
 				node_pointer 		_root;
 				node_pointer 		_sentinel;
-				size_type				_size;
+				size_type			_size;
 
 				void rotate_left(node_pointer x);
 				void rotate_right(node_pointer y);
@@ -69,9 +84,14 @@ namespace ft
 				node_pointer search(node_pointer node, T value);
 				node_pointer minimum(node_pointer node);
 				// utils
+				template <class InputIt>
+				void insert_dispatch(InputIt first, InputIt last, input_iterator_tag);
+				template <class ForwardIt>
+				void insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
+				void			destroy_all();
+				void			clear_sub_tree(node_pointer subtree);
 				void			update_sentinelle(node_pointer new_node);
 				node_pointer	new_node(const T& value);
-				void			destroy_all();
 				void			init_sentinel();
 				bool			is_valid_tree() const;
 			public:

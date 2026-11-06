@@ -9,27 +9,38 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	map<Key,T,Compare,Allocator>::map(const Compare& comp, const Allocator& alloc)
+		:	_key_comp(comp),
+			_value_comp(comp),
+			_tree(alloc, _value_comp)
 	{
-		// todo
+		// Complexity: O(1);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	template <class InputIterator>
 	map<Key,T,Compare,Allocator>::map(InputIterator first, InputIterator last, const Compare& comp, const Allocator& alloc)
+		:	_key_comp(comp),
+			_value_comp(comp),
+			_tree(alloc, _value_comp)
 	{
-		// todo
+		// N = distance(first, last)
+		// Complexity: O(N * log(N));
+		_tree.insert(first, last);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	map<Key,T,Compare,Allocator>::map(const map& x)
+		:	_key_comp(x._key_comp),
+			_value_comp(x._value_comp),
+			_tree(x._tree)
 	{
-		// todo
+		// Complexity: O(x.size());
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	map<Key,T,Compare,Allocator>::~map()
 	{
-		// todo
+		// Complexity: O(size());
 	}
 
 	// =====================
@@ -40,7 +51,9 @@ namespace ft
 	map<Key,T,Compare,Allocator>&
 	map<Key,T,Compare,Allocator>::operator=(const map<Key,T,Compare,Allocator>& x)
 	{
-		// todo
+		// Complexity: O(size() + x.size());
+		if (this != &x)
+			_tree = x._tree;
 		return (*this);
 	}
 	
@@ -48,7 +61,8 @@ namespace ft
 	typename map<Key,T,Compare,Allocator>::allocator_type
 	map<Key,T,Compare,Allocator>::get_allocator() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.get_allocator();
 	}
 
 	// =====================
@@ -59,56 +73,64 @@ namespace ft
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::begin()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.begin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_iterator
 	map<Key,T,Compare,Allocator>::begin() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.begin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::end()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.end();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_iterator
 	map<Key,T,Compare,Allocator>::end() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.end();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::reverse_iterator
 	map<Key,T,Compare,Allocator>::rbegin()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rbegin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_reverse_iterator
 	map<Key,T,Compare,Allocator>::rbegin() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rbegin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::reverse_iterator
 	map<Key,T,Compare,Allocator>::rend()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rend();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_reverse_iterator
 	map<Key,T,Compare,Allocator>::rend() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rend();
 	}
 
 	// ====================
@@ -119,22 +141,24 @@ namespace ft
 	bool
 	map<Key,T,Compare,Allocator>::empty() const
 	{
-		return false;
-		// todo
+		// Complexity: O(1);
+		return _tree.empty();
 	}
 	
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::size_type
 	map<Key,T,Compare,Allocator>::size() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.size();
 	}
 	
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::size_type
 	map<Key,T,Compare,Allocator>::max_size() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.max_size();
 	}
 
 	// =====================
@@ -143,9 +167,23 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	T&
+	map<Key,T,Compare,Allocator>::at(const Key& key)
+	{
+		// Complexity: O(log(size()))
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+	const T&
+	map<Key,T,Compare,Allocator>::at(const Key& key) const
+	{
+		// Complexity: O(log(size()))
+	}
+
+	template <class Key, class T, class Compare, class Allocator>
+	T&
 	map<Key,T,Compare,Allocator>::operator[](const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size()))
 	}
 
 	// =====================
@@ -156,14 +194,20 @@ namespace ft
 	pair<typename map<Key,T,Compare,Allocator>::iterator, bool>
 	map<Key,T,Compare,Allocator>::insert(const value_type& x)
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.insert(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::insert(iterator position, const value_type& x)
 	{
-		// todo
+		/*
+		Complexity: 
+			insertion in position:	amortized O(1)
+			else:					O(log(size()))
+		*/
+		return _tree.insert(position, x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -171,42 +215,49 @@ namespace ft
 	void
 	map<Key,T,Compare,Allocator>::insert(InputIterator first, InputIterator last)
 	{
-		// todo
+		/*
+		N = distance(first, last)
+		Complexity: O(N * log(size() + N))
+		*/
+		_tree.insert(first, last);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	map<Key,T,Compare,Allocator>::erase(iterator position)
 	{
-		// todo
+		// Complexity: amortized O(1)
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::size_type
 	map<Key,T,Compare,Allocator>::erase(const key_type& x)
 	{
-		// todo
+		// Complexity: O(size() + count(x))
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	map<Key,T,Compare,Allocator>::erase(iterator first, iterator last)
 	{
-		// todo
+		// Complexity: O(size() + distance(first, last))
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	map<Key,T,Compare,Allocator>::swap(map<Key,T,Compare,Allocator>& other)
 	{
-		// todo
+		// Complexity: O(1)
+		if (this != &other)
+			ft::swap(_tree, other._tree);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	map<Key,T,Compare,Allocator>::clear()
 	{
-		// todo
+		// Complexity: O(size())
+		_tree.clear();
 	}
 
 	// =====================
@@ -217,14 +268,16 @@ namespace ft
 	typename map<Key,T,Compare,Allocator>::key_compare
 	map<Key,T,Compare,Allocator>::key_comp() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _key_comp;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::value_compare
 	map<Key,T,Compare,Allocator>::value_comp() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _value_comp;
 	}
 
 	// =====================
@@ -249,42 +302,43 @@ namespace ft
 	typename map<Key,T,Compare,Allocator>::size_type
 	map<Key,T,Compare,Allocator>::count(const key_type& x) const
 	{
-		// todo
+		// N = elements found
+		// Complexity: O(log(size()) + N)
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::lower_bound(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_iterator
 	map<Key,T,Compare,Allocator>::lower_bound(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::upper_bound(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_iterator
 	map<Key,T,Compare,Allocator>::upper_bound(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	pair<typename map<Key,T,Compare,Allocator>::iterator, typename map<Key,T,Compare,Allocator>::iterator>
 	map<Key,T,Compare,Allocator>::equal_range(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -292,7 +346,7 @@ namespace ft
 		typename map<Key,T,Compare,Allocator>::const_iterator>
 	map<Key,T,Compare,Allocator>::equal_range(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
 	}
 
 	// =====================
@@ -302,14 +356,22 @@ namespace ft
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
 	{
-		// todo
+		/*
+		Complexity:
+			if x.size() != y.size():	O(1)
+			else:						O(size())
+		*/
 		return false;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator!=(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y)
 	{
-		// todo
+		/*
+		Complexity:
+			if x.size() != y.size():	O(1)
+			else:						O(size())
+		*/
 		return false;
 	}
 

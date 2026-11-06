@@ -9,8 +9,8 @@ namespace ft
 		//	Construct / Destruct
 		// ======================
 
-		template <class T, class Allocator, class Compare>
-		rbtree<T, Allocator, Compare>::rbtree(const Allocator& alloc, const Compare& comp)
+		template <class T, class Compare, class Allocator>
+		rbtree<T,Compare,Allocator>::rbtree(const Allocator& alloc, const Compare& comp)
 			:	_alloc(alloc),
 				_node_alloc(alloc),
 				_comp(comp),
@@ -29,15 +29,29 @@ namespace ft
 			}
 		}
 
-		template <class T, class Allocator, class Compare>
-		rbtree<T, Allocator, Compare>::rbtree(const rbtree<T, Allocator, Compare>& x)
+		template <class T, class Compare, class Allocator>
+		rbtree<T,Compare,Allocator>::rbtree(const rbtree& x)
+			:	_alloc(x._alloc),
+				_node_alloc(x._node_alloc),
+				_comp(x._comp),
+				_root(0),
+				_sentinel(0),
+				_size(0)
 		{
-			(void) x;
-			// todo
+			try
+			{
+				init_sentinel();
+				insert(x.begin(), x.end());
+			}
+			catch(...)
+			{
+				destroy_all();
+				throw;
+			}
 		}
 
-		template <class T, class Allocator, class Compare>
-		rbtree<T, Allocator, Compare>::~rbtree()
+		template <class T, class Compare, class Allocator>
+		rbtree<T,Compare,Allocator>::~rbtree()
 		{
 			destroy_all();
 		}
@@ -46,77 +60,89 @@ namespace ft
 		//	    Assignement
 		// =====================
 
-		template <class T, class Allocator, class Compare>
-		rbtree<T, Allocator, Compare>&
-		rbtree<T, Allocator, Compare>::operator=(const rbtree& x)
+		template <class T, class Compare, class Allocator>
+		rbtree<T,Compare,Allocator>&
+		rbtree<T,Compare,Allocator>::operator=(const rbtree& x)
 		{
+			if (this != &x)
+			{
+				clear();
+				insert(x.begin(), x.end());
+			}
 			(void) x;
 			// todo
+		}
+
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::allocator_type
+		rbtree<T,Compare,Allocator>::get_allocator() const
+		{
+			return _alloc;
 		}
 
 		// =====================
 		//	     Iterators
 		// =====================
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::iterator
-		rbtree<T, Allocator, Compare>::begin()
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::iterator
+		rbtree<T,Compare,Allocator>::begin()
 		{
 			// Complexity: O(1)
 			return iterator(_sentinel->left, _sentinel);
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::const_iterator
-		rbtree<T, Allocator, Compare>::begin() const
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::const_iterator
+		rbtree<T,Compare,Allocator>::begin() const
 		{
 			// Complexity: O(1)
 			return const_iterator(_sentinel->left, _sentinel);
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::iterator
-		rbtree<T, Allocator, Compare>::end()
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::iterator
+		rbtree<T,Compare,Allocator>::end()
+		{
+			// Complexity: O(1)
+			return iterator(_sentinel, _sentinel);
+		}
+
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::const_iterator	
+		rbtree<T,Compare,Allocator>::end() const
 		{
 			// Complexity: O(1)
 			return const_iterator(_sentinel, _sentinel);
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::const_iterator	
-		rbtree<T, Allocator, Compare>::end() const
-		{
-			// Complexity: O(1)
-			return const_iterator(_sentinel, _sentinel);
-		}
-
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::reverse_iterator
-		rbtree<T, Allocator, Compare>::rbegin()
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::reverse_iterator
+		rbtree<T,Compare,Allocator>::rbegin()
 		{
 			// Complexity: O(1)
 			return reverse_iterator(end());
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::const_reverse_iterator
-		rbtree<T, Allocator, Compare>::rbegin() const
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::const_reverse_iterator
+		rbtree<T,Compare,Allocator>::rbegin() const
 		{
 			// Complexity: O(1)
 			return const_reverse_iterator(end());
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::reverse_iterator
-		rbtree<T, Allocator, Compare>::rend()
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::reverse_iterator
+		rbtree<T,Compare,Allocator>::rend()
 		{
 			// Complexity: O(1)
 			return reverse_iterator(begin());
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::const_reverse_iterator
-		rbtree<T, Allocator, Compare>::rend() const
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::const_reverse_iterator
+		rbtree<T,Compare,Allocator>::rend() const
 		{
 			// Complexity: O(1)
 			return const_reverse_iterator(begin());
@@ -126,25 +152,57 @@ namespace ft
 		//	     Capacity
 		// ====================
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::size_type
-		rbtree<T, Allocator, Compare>::size() const
+		template <class T, class Compare, class Allocator>
+		bool
+		rbtree<T,Compare,Allocator>::empty() const
+		{
+			// Complexity: O(1)
+			return (_size == 0);
+		}
+
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::size_type
+		rbtree<T,Compare,Allocator>::size() const
 		{
 			// Complexity: O(1)
 			return _size;
+		}
+
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::size_type
+		rbtree<T,Compare,Allocator>::max_size() const
+		{
+			// Complexity: O(1)
+			return _alloc.max_size();
 		}
 
 		// =====================
 		//	     Modifiers
 		// =====================
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::iterator
+		rbtree<T,Compare,Allocator>::insert(iterator pos, const T& value)
+		{
+			// todo
+		}
+
+		template <class T, class Compare, class Allocator>
+		template <class InputIterator>
 		void 
-		rbtree<T, Allocator, Compare>::insert(const T& value)
+		rbtree<T,Compare,Allocator>::insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type*)
+		{
+			insert_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
+		}
+
+		template <class T, class Compare, class Allocator>
+		void 
+		rbtree<T,Compare,Allocator>::insert(const T& value)
 		{
 			node_pointer node = new_node(value);
 			node_pointer curr = _root;
 			node_pointer parent = 0;
+
 			// searching insert position
 			while (curr != _sentinel)
 			{
@@ -167,13 +225,46 @@ namespace ft
 			update_sentinelle(node);
 		}
 
+		template <class T, class Compare, class Allocator>
+		void
+		rbtree<T,Compare,Allocator>::clear()
+		{
+			clear_sub_tree(_root);
+			_root = _sentinel;
+			_sentinel->left = _sentinel;
+			_sentinel->right = _sentinel;
+		}
+
 		// =====================
 		//	  Private-Members
 		// =====================
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
+		template <class InputIt>
 		void
-		rbtree<T, Allocator, Compare>::rotate_left(node_pointer x)
+		rbtree<T,Compare,Allocator>::insert_dispatch(InputIt first, InputIt last, input_iterator_tag)
+		{
+			vector<T, Allocator> tmp;
+			for (; first != last; ++first)
+				tmp.push_back(*first);
+			insert_dispatch(tmp.begin(), tmp.end(), forward_iterator_tag());
+		}
+
+		template <class T, class Compare, class Allocator>
+		template <class ForwardIt>
+		void
+		rbtree<T,Compare,Allocator>::insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
+		{
+			while (first != last)
+			{
+				insert(*first);
+				++first;
+			}
+		}
+
+		template <class T, class Compare, class Allocator>
+		void
+		rbtree<T,Compare,Allocator>::rotate_left(node_pointer x)
 		{
 			node_pointer y = x->right;
 			x->right = y->left;
@@ -190,9 +281,9 @@ namespace ft
 			x->parent = y;
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void 
-		rbtree<T, Allocator, Compare>::rotate_right(node_pointer y)
+		rbtree<T,Compare,Allocator>::rotate_right(node_pointer y)
 		{
 			node_pointer x = y->left;
 			y->left = x->right;
@@ -209,9 +300,9 @@ namespace ft
 			y->parent = x;
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::fix_insert(node_pointer z)
+		rbtree<T,Compare,Allocator>::fix_insert(node_pointer z)
 		{
 			// Case: Parent is red, needing adjustment
 			while (z->parent && z->parent->color == RED)
@@ -273,9 +364,9 @@ namespace ft
 			_root->color = BLACK;
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::transplant(node_pointer u, node_pointer v)
+		rbtree<T,Compare,Allocator>::transplant(node_pointer u, node_pointer v)
 		{
 			if (!u->parent)
 				_root = v;
@@ -286,9 +377,9 @@ namespace ft
 			v->parent = u->parent;
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::delete_data(T value)
+		rbtree<T,Compare,Allocator>::delete_data(T value)
 		{
 			node_pointer z = search(_root, value);
 			if (z == _sentinel)
@@ -328,9 +419,9 @@ namespace ft
 				fix_delete(x);
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::fix_delete(node_pointer x)
+		rbtree<T,Compare,Allocator>::fix_delete(node_pointer x)
 		{
 			while (x != _root && x->color == BLACK)
 			{
@@ -408,9 +499,9 @@ namespace ft
 			x->color = BLACK;
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::node_pointer
-		rbtree<T, Allocator, Compare>::search(node_pointer node, T value)
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::node_pointer
+		rbtree<T,Compare,Allocator>::search(node_pointer node, T value)
 		{
 			if (node == _sentinel || value)
 				return node;
@@ -419,9 +510,9 @@ namespace ft
 			return search(node->right, value);
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::node_pointer
-		rbtree<T, Allocator, Compare>::minimum(node_pointer node)
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::node_pointer
+		rbtree<T,Compare,Allocator>::minimum(node_pointer node)
 		{
 			while (node->left != _sentinel)
 				node = node->left;
@@ -432,9 +523,35 @@ namespace ft
 		//	      Utils
 		// ======================
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::update_sentinelle(node_pointer new_node)
+		rbtree<T,Compare,Allocator>::destroy_all()
+		{
+			clear();
+			if (_sentinel)
+			{
+				_alloc.destroy(&_sentinel->value);
+				_node_alloc.deallocate(_sentinel, 1);
+				_sentinel = 0;
+			}
+		}
+
+		template <class T, class Compare, class Allocator>
+		void
+		rbtree<T,Compare,Allocator>::clear_sub_tree(node_pointer subtree)
+		{
+			if (!subtree || subtree == _sentinel)
+				return ;
+			clear_sub_tree(subtree->left);
+			clear_sub_tree(subtree->right);
+			_alloc.destroy(&subtree->value);
+			_node_alloc.deallocate(subtree, 1);
+			--_size;
+		}
+
+		template <class T, class Compare, class Allocator>
+		void
+		rbtree<T,Compare,Allocator>::update_sentinelle(node_pointer new_node)
 		{
 			if (_size == 1)
 			{
@@ -447,9 +564,9 @@ namespace ft
 				_sentinel->right = new_node;
 		}
 
-		template <class T, class Allocator, class Compare>
-		typename rbtree<T, Allocator, Compare>::node_pointer
-		rbtree<T, Allocator, Compare>::new_node(const T& value)
+		template <class T, class Compare, class Allocator>
+		typename rbtree<T,Compare,Allocator>::node_pointer
+		rbtree<T,Compare,Allocator>::new_node(const T& value)
 		{
 			node_pointer tmp = _node_alloc.allocate(1);
 			detail::MemoryGuard<rbtree_node<T>, node_allocator> guard(_node_alloc);
@@ -463,53 +580,22 @@ namespace ft
 			return tmp;
 		}
 
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		void
-		rbtree<T, Allocator, Compare>::init_sentinel()
+		rbtree<T,Compare,Allocator>::init_sentinel()
 		{
 			node_pointer tmp = _node_alloc.allocate(1);
 			tmp->left = 0;
 			tmp->right = 0;
 			tmp->parent = 0;
-			tmp->value = 0;
 			tmp->color = BLACK;
 			_sentinel = tmp;
 			_root = _sentinel;
 		}
 
-		template <class T, class Allocator, class Compare>
-		void
-		rbtree<T, Allocator, Compare>::destroy_all()
-		{
-			queue<node_pointer> q;
-			if (_root != _sentinel)
-				q.push(_root);
-			while (!q.empty())
-			{
-				int level = q.size();
-				for (int i = 0; i < level; ++i)
-				{
-					node_pointer node = q.front();
-					if (node->left != _sentinel)
-						q.push(node->left);
-					if (node->right != _sentinel)
-						q.push(node->right);
-					_alloc.destroy(&node->value);
-					_node_alloc.deallocate(node, 1);
-					q.pop();
-				}
-			}
-			_root = 0;
-			if (_sentinel)
-			{
-				_node_alloc.deallocate(_sentinel, 1);
-				_sentinel = 0;
-			}
-		}
-
-		template <class T, class Allocator, class Compare>
+		template <class T, class Compare, class Allocator>
 		bool
-		rbtree<T, Allocator, Compare>::is_valid_tree() const
+		rbtree<T,Compare,Allocator>::is_valid_tree() const
 		{
 			vector<size_t> black_counts;
 			queue<node_pointer> q;

@@ -14,10 +14,8 @@ namespace ft
 	template <class Key, class T, class Compare = less<Key>, class Allocator = std::allocator<pair<const Key, T> > >
 	class map
 	{
-		private:
-			typedef detail::rbtree<T>						tree;
 		public:
-		// types:
+			// types:
 			typedef Key					key_type;
 			typedef T					mapped_type;
 			typedef pair<const Key, T>	value_type;
@@ -28,13 +26,6 @@ namespace ft
 			typedef typename Allocator::const_reference	const_reference;
 			typedef typename Allocator::pointer			pointer;
 			typedef typename Allocator::const_pointer	const_pointer;
-
-			typedef typename tree::iterator					iterator;
-			typedef typename tree::const_iterator 			const_iterator;
-			typedef typename tree::reverse_iterator			reverse_iterator;
-			typedef typename tree::const_reverse_iterator	const_reverse_iterator;
-			typedef typename tree::size_type				size_type;
-			typedef typename tree::difference_type			difference_type;
 
 			class value_compare : public binary_function<value_type,value_type,bool>
 			{
@@ -48,6 +39,16 @@ namespace ft
 						return comp(x.first, y.first);
 					}
 			};
+		private:
+			typedef detail::rbtree<pair<const Key,T>, value_compare,  Allocator>	tree;
+		public:
+			// types:
+			typedef typename tree::iterator					iterator;
+			typedef typename tree::const_iterator 			const_iterator;
+			typedef typename tree::reverse_iterator			reverse_iterator;
+			typedef typename tree::const_reverse_iterator	const_reverse_iterator;
+			typedef typename tree::size_type				size_type;
+			typedef typename tree::difference_type			difference_type;
 
 			explicit map(const Compare& comp = Compare(), const Allocator& = Allocator());
 			template <class InputIterator>
@@ -70,6 +71,8 @@ namespace ft
 			size_type	size() const;
 			size_type	max_size() const;
 			// element access:
+			T& at(const Key& key);
+			const T& at(const Key& key) const;
 			T& operator[](const key_type& x);
 			// modifiers:
 			pair<iterator, bool>	insert(const value_type& x);
@@ -95,7 +98,9 @@ namespace ft
 			pair<iterator,iterator>				equal_range(const key_type& x);
 			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 		private:
-
+			Compare													_key_comp;
+			value_compare											_value_comp;
+			detail::rbtree<value_type, value_compare, Allocator>	_tree;
 	};
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);

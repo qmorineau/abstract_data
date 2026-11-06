@@ -10,20 +10,23 @@
 
 void test()
 {
-	using namespace ft::detail;
-	typedef rbtree<int> T;
+	// using namespace ft::detail;
+	// typedef rbtree<int> T;
 
-	T tree;
-	tree.insert(1);
-	tree.print();
-	tree.insert(3);
-	tree.print();
-	tree.insert(2);
-	tree.print();
-	tree.insert(4);
-	tree.print();
-	tree.insert(5);
-	tree.print();
+	// T tree;
+	// tree.insert(1);
+	// tree.print();
+	// tree.insert(3);
+	// tree.print();
+	// tree.insert(2);
+	// tree.print();
+	// tree.insert(4);
+	// tree.print();
+	// tree.insert(5);
+	// tree.print();
+
+	ft::map<int, int> m;
+
 }
 
 std::size_t ThrowingCounter::count = 0;
