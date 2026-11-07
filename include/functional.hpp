@@ -64,6 +64,27 @@ namespace ft
 			return lhs <= rhs;
 		}
 	};
+
+	namespace detail
+	{
+		template <class Pair>
+		struct select_first
+		{
+			const typename Pair::first_type& operator()(const Pair& p) const
+			{
+				return p.first;
+			}
+		};
+
+		template <class T>
+		struct identity
+		{
+			const T& operator()(const T& x) const
+			{
+				return x;
+			}
+		};
+	}
 }
 
 #endif

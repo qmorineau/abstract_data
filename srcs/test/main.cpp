@@ -31,6 +31,8 @@ void test()
 		m.insert(p);
 	}
 	print(m);
+	ft::map<int, int>::iterator it = m.find(-15);
+	std::cout << it->second << std::endl;
 }
 
 std::size_t ThrowingCounter::count = 0;

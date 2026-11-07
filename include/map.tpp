@@ -9,9 +9,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	map<Key,T,Compare,Allocator>::map(const Compare& comp, const Allocator& alloc)
-		:	_key_comp(comp),
-			_value_comp(comp),
-			_tree(alloc, _value_comp)
+		: _tree(comp, alloc)
 	{
 		// Complexity: O(1);
 	}
@@ -19,9 +17,7 @@ namespace ft
 	template <class Key, class T, class Compare, class Allocator>
 	template <class InputIterator>
 	map<Key,T,Compare,Allocator>::map(InputIterator first, InputIterator last, const Compare& comp, const Allocator& alloc)
-		:	_key_comp(comp),
-			_value_comp(comp),
-			_tree(alloc, _value_comp)
+		: _tree(comp, alloc)
 	{
 		// N = distance(first, last)
 		// Complexity: O(N * log(N));
@@ -30,9 +26,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	map<Key,T,Compare,Allocator>::map(const map& x)
-		:	_key_comp(x._key_comp),
-			_value_comp(x._value_comp),
-			_tree(x._tree)
+		: _tree(x._tree)
 	{
 		// Complexity: O(x.size());
 	}
@@ -272,7 +266,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::key_comp() const
 	{
 		// Complexity: O(1);
-		return _key_comp;
+		return _tree.key_comp();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -280,7 +274,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::value_comp() const
 	{
 		// Complexity: O(1);
-		return _value_comp;
+		return value_comp(_tree.key_comp());
 	}
 
 	// =====================
@@ -291,14 +285,16 @@ namespace ft
 	typename map<Key,T,Compare,Allocator>::iterator
 	map<Key,T,Compare,Allocator>::find(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.find(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::const_iterator
 	map<Key,T,Compare,Allocator>::find(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.find(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -364,7 +360,19 @@ namespace ft
 			if x.size() != y.size():	O(1)
 			else:						O(size())
 		*/
-		return false;
+		if (x.size() != y.size())
+			return false;
+		typedef typename map<Key,T,Compare,Allocator>::const_iterator const_iterator;
+		const_iterator itx = x.begin();
+		const_iterator ity = y.begin();
+		const_iterator x_end = x.end();
+		const_iterator y_end = y.end();
+		for (; itx != x_end && ity != y_end; ++itx, ++ity)
+		{
+			if (!(*itx == *ity))
+				return false;
+		}
+		return true;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -375,7 +383,7 @@ namespace ft
 			if x.size() != y.size():	O(1)
 			else:						O(size())
 		*/
-		return false;
+		return !(x == y);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

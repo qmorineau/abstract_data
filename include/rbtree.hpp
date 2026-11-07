@@ -14,7 +14,7 @@ namespace ft
 {
 	namespace detail
 	{
-		template <class T, class Compare = less<T>, class Allocator = std::allocator<T> >
+		template <class Key, class T, class KeyOfValue, class Compare = less<Key>, class Allocator = std::allocator<T> >
 		class rbtree
 		{
 			public:
@@ -35,7 +35,7 @@ namespace ft
 				typedef ft::reverse_iterator<iterator>			reverse_iterator;
 				typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 				// construct/copy/destroy:
-				rbtree(const Allocator& = Allocator(), const Compare& = Compare());
+				rbtree(const Compare& = Compare(), const Allocator& = Allocator());
 				rbtree(const rbtree& x);
 				~rbtree();
 				rbtree& operator=(const rbtree& x);
@@ -58,18 +58,23 @@ namespace ft
 				iterator	insert(iterator pos, const T& value);
 				template <class InputIterator>
 				void		insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
-				void clear();
-				// operations
-				iterator		lower_bound(const value_type& x);
-				const_iterator	lower_bound(const value_type& x) const;
-				iterator		upper_bound(const value_type& x);
-				const_iterator	upper_bound(const value_type& x) const;
+				void 		clear();
+				// observers:
+				Compare			key_comp() const;
+				// operations:
+				iterator		find(const Key& x);
+				const_iterator	find(const Key& x) const;
+				iterator		lower_bound(const Key& x);
+				const_iterator	lower_bound(const Key& x) const;
+				iterator		upper_bound(const Key& x);
+				const_iterator	upper_bound(const Key& x) const;
 			private:
 				typedef typename Allocator::template rebind<rbtree_node<T> >::other	node_allocator;
 
 				Allocator			_alloc;
 				node_allocator		_node_alloc;
 				Compare				_comp;
+				KeyOfValue			_key_of;
 
 				node_pointer 		_root;
 				node_pointer 		_sentinel;
@@ -81,7 +86,7 @@ namespace ft
 				void transplant(node_pointer u, node_pointer v);
 				void delete_data(T value);
 				void fix_delete(node_pointer x);
-				node_pointer search(node_pointer node, T value);
+				node_pointer search(node_pointer node, Key key);
 				node_pointer minimum(node_pointer node);
 				// utils
 				template <class InputIt>

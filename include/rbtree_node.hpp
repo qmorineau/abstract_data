@@ -14,8 +14,8 @@ namespace ft
 		template <typename T>
 		struct rbtree_node
 		{
-			node_color	color;
-			T			value;
+			node_color		color;
+			T				value;
 			rbtree_node*	left;
 			rbtree_node*	right;
 			rbtree_node*	parent;

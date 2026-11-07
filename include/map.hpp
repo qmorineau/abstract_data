@@ -40,7 +40,11 @@ namespace ft
 					}
 			};
 		private:
-			typedef detail::rbtree<pair<const Key,T>, value_compare,  Allocator>	tree;
+			typedef detail::rbtree<Key,
+				pair<const Key,T>,
+				detail::select_first<pair<const Key, T> >,
+				Compare,
+				Allocator>									tree;
 		public:
 			// types:
 			typedef typename tree::iterator					iterator;
@@ -98,9 +102,7 @@ namespace ft
 			pair<iterator,iterator>				equal_range(const key_type& x);
 			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 		private:
-			Compare													_key_comp;
-			value_compare											_value_comp;
-			detail::rbtree<value_type, value_compare, Allocator>	_tree;
+			tree			_tree;
 	};
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator==(const map<Key,T,Compare,Allocator>& x, const map<Key,T,Compare,Allocator>& y);
@@ -122,8 +124,6 @@ namespace ft
 	template <class Key, class T, class Compare = less<Key>, class Allocator = std::allocator<pair<const Key, T> > >
 	class multimap
 	{
-		private:
-			typedef detail::rbtree<T>						tree;
 		public:
 			// types:
 			typedef Key					key_type;
@@ -137,13 +137,6 @@ namespace ft
 			typedef typename Allocator::pointer			pointer;
 			typedef typename Allocator::const_pointer	const_pointer;
 
-			typedef typename tree::iterator					iterator;
-			typedef typename tree::const_iterator 			const_iterator;
-			typedef typename tree::reverse_iterator			reverse_iterator;
-			typedef typename tree::const_reverse_iterator	const_reverse_iterator;
-			typedef typename tree::size_type				size_type;
-			typedef typename tree::difference_type			difference_type;
-
 			class value_compare : public binary_function<value_type,value_type,bool>
 			{
 				friend class multimap;
@@ -156,6 +149,21 @@ namespace ft
 						return comp(x.first, y.first);
 					}
 			};
+		private:
+			typedef detail::rbtree<Key,
+				pair<const Key,T>,
+				detail::select_first<pair<const Key, T> >,
+				Compare,
+				Allocator>									tree;
+		public:
+			// types
+			typedef typename tree::iterator					iterator;
+			typedef typename tree::const_iterator 			const_iterator;
+			typedef typename tree::reverse_iterator			reverse_iterator;
+			typedef typename tree::const_reverse_iterator	const_reverse_iterator;
+			typedef typename tree::size_type				size_type;
+			typedef typename tree::difference_type			difference_type;
+
 			// construct/copy/destroy:
 			explicit multimap(const Compare& comp = Compare(), const Allocator& = Allocator());
 			template <class InputIterator>
