@@ -164,6 +164,15 @@ namespace ft
 	map<Key,T,Compare,Allocator>::at(const Key& key)
 	{
 		// Complexity: O(log(size()))
+		try
+		{
+			reference pair = _tree.at(key);
+			return pair.second;
+		}
+		catch(const ft::out_of_range&)
+		{
+			throw ft::out_of_range("map::at");
+		}	
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -171,6 +180,15 @@ namespace ft
 	map<Key,T,Compare,Allocator>::at(const Key& key) const
 	{
 		// Complexity: O(log(size()))
+		try
+		{
+			const_reference pair = _tree.at(key);
+			return pair.second;
+		}
+		catch(const ft::out_of_range&)
+		{
+			throw ft::out_of_range("map::at");
+		}	
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -178,6 +196,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::operator[](const key_type& x)
 	{
 		// Complexity: O(log(size()))
+		return _tree[x];
 	}
 
 	// =====================
@@ -310,6 +329,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::lower_bound(const key_type& x)
 	{
 		// Complexity: O(log(size())
+		return _tree.lower_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -317,6 +337,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::lower_bound(const key_type& x) const
 	{
 		// Complexity: O(log(size())
+		return _tree.lower_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -324,6 +345,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::upper_bound(const key_type& x)
 	{
 		// Complexity: O(log(size())
+		return _tree.upper_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -331,6 +353,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::upper_bound(const key_type& x) const
 	{
 		// Complexity: O(log(size())
+		return _tree.upper_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

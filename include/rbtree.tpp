@@ -176,6 +176,40 @@ namespace ft
 			return _alloc.max_size();
 		}
 
+		// ====================
+		//	  Element Access
+		// ====================
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::reference
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::at(const Key& key)
+		{
+			// Complexity: O(log(size()))
+			node_pointer node = search(_root, key);
+			if (node == _sentinel)
+				throw ft::out_of_range("rbtree::at");
+			return node->value;
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::const_reference
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::at(const Key& key) const
+		{
+			// Complexity: O(log(size()))
+			node_pointer node = search(_root, key);
+			if (node == _sentinel)
+				throw ft::out_of_range("rbtree::at");
+			return node->value;
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::reference
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::operator[](const Key& key)
+		{
+			// Complexity: O(log(size()))
+			return search(_root, key)->value;
+		}
+
 		// =====================
 		//	     Modifiers
 		// =====================
@@ -225,7 +259,6 @@ namespace ft
 			++_size;
 			fix_insert(node);
 			update_sentinel(node);
-			print();
 			return iterator(node, _sentinel);
 		}
 
@@ -248,6 +281,7 @@ namespace ft
 		Compare
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::key_comp() const
 		{
+			// Complexity: O(1);
 			return _comp;
 		}
 
@@ -275,28 +309,88 @@ namespace ft
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::lower_bound(const Key& x)
 		{
-			// todo
+			// Complexity: O(log(size()))
+			node_pointer curr = _root;
+			node_pointer res = _sentinel;
+			while (true)
+			{
+				if (curr == _sentinel)
+					break;
+				if (!_comp(_key_of(curr->value), x))
+				{
+					res = curr;
+					curr = curr->left;
+				}
+				else
+					curr = curr->right;
+			}
+			return iterator(res, _sentinel);
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::const_iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::lower_bound(const Key& x) const
 		{
-			// todo
+			// Complexity: O(log(size()))
+			node_pointer curr = _root;
+			node_pointer res = _sentinel;
+			while (true)
+			{
+				if (curr == _sentinel)
+					break;
+				if (_comp(x, _key_of(curr->value)))
+				{
+					res = curr;
+					curr = curr->left;
+				}
+				else
+					curr = curr->right;
+			}
+			return const_iterator(res, _sentinel);
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::upper_bound(const Key& x)
 		{
-			// todo
+			// Complexity: O(log(size()))
+			node_pointer curr = _root;
+			node_pointer res = _sentinel;
+			while (true)
+			{
+				if (curr == _sentinel)
+					break;
+				if (!_comp(x, _key_of(curr->value)))
+				{
+					res = curr;
+					curr = curr->left;
+				}
+				else
+					curr = curr->right;
+			}
+			return iterator(res, _sentinel);
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::const_iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::upper_bound(const Key& x) const
 		{
-			// todo
+			// Complexity: O(log(size()))
+			node_pointer curr = _root;
+			node_pointer res = _sentinel;
+			while (true)
+			{
+				if (curr == _sentinel)
+					break;
+				if (!_comp(x, _key_of(curr->value)))
+				{
+					res = curr;
+					curr = curr->left;
+				}
+				else
+					curr = curr->right;
+			}
+			return const_iterator(res, _sentinel);
 		}
 
 		// =====================
@@ -591,12 +685,14 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::destroy_all()
 		{
+			// Complexity: O(size())
 			clear();
 			if (_sentinel)
 			{
 				_alloc.destroy(&_sentinel->value);
 				_node_alloc.deallocate(_sentinel, 1);
 				_sentinel = 0;
+				_root = 0;
 			}
 		}
 

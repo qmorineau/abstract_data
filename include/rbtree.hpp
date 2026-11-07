@@ -5,6 +5,7 @@
 
 #include "rbtree_iterator.hpp"
 #include "rbtree_node.hpp"
+#include "stdexcept.hpp"
 #include "guards.hpp"
 #include "functional.hpp"
 #include "vector.hpp"
@@ -53,6 +54,10 @@ namespace ft
 				bool		empty() const;
 				size_t		size() const;
 				size_type	max_size() const;
+				// element access:
+				reference at(const Key& key);
+				const_reference at(const Key& key) const;
+				reference operator[](const Key& key);
 				// modifier:
 				iterator	insert(const T& value);
 				iterator	insert(iterator pos, const T& value);

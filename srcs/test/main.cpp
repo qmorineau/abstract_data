@@ -2,7 +2,7 @@
 
 void test()
 {
-	// using namespace ft::detail;
+	// using namespace ::detail;
 	// typedef rbtree<int> T;
 
 	// T tree;
@@ -19,20 +19,21 @@ void test()
 
 	int count = 0;
 
-	ft::map<int, int> m;
+	ns::map<int, int> m;
 	for (int i = 0; i < 15; ++i)
 	{
-		ft::pair<int, int> p(i, ++count);
+		ns::pair<int, int> p(i, ++count);
 		m.insert(p);
 	}
 	for (int i = -2; i > -20; --i)
 	{
-		ft::pair<int, int> p(i, ++count);
+		ns::pair<int, int> p(i, ++count);
 		m.insert(p);
 	}
 	print(m);
-	ft::map<int, int>::iterator it = m.find(-15);
-	std::cout << it->second << std::endl;
+	ns::map<int, int>::iterator it = m.upper_bound(0);
+	if (it != m.end())
+		std::cout << it->second << std::endl;
 }
 
 std::size_t ThrowingCounter::count = 0;
@@ -42,7 +43,7 @@ bool		ThrowingCounter::enabled = true;
 int main()
 {
 	test();
-	return 1;
+	return 0;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
