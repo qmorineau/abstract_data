@@ -322,6 +322,7 @@ namespace ft
 	{
 		// N = elements found
 		// Complexity: O(log(size()) + N)
+		return _tree.count(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -361,6 +362,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::equal_range(const key_type& x)
 	{
 		// Complexity: O(log(size())
+		return _tree.equal_range(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -369,6 +371,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::equal_range(const key_type& x) const
 	{
 		// Complexity: O(log(size())
+		return _tree.equal_range(x);
 	}
 
 	// =====================

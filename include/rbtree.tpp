@@ -306,6 +306,21 @@ namespace ft
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::size_type
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::count(const Key& x) const
+		{
+			// Complexity: O(log(size()) + element found)
+			pair<const_iterator, const_iterator> range = equal_range(x);
+			size_type count = 0;
+			while (range->first != range->second)
+			{
+				++count;
+				++range->first;
+			}
+			return count;
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::lower_bound(const Key& x)
 		{
@@ -391,6 +406,24 @@ namespace ft
 					curr = curr->right;
 			}
 			return const_iterator(res, _sentinel);
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		pair<typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator,
+			typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator>
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::equal_range(const Key& x)
+		{
+			// Complexity: O(log(size()))
+			return ft::make_pair(lower_bound(x), upper_bound(x));
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		pair<typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::const_iterator,
+			typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::const_iterator>
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::equal_range(const Key& x) const
+		{
+			// Complexity: O(log(size()))
+			return ft::make_pair(lower_bound(x), upper_bound(x));
 		}
 
 		// =====================

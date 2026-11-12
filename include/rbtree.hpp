@@ -10,6 +10,7 @@
 #include "functional.hpp"
 #include "vector.hpp"
 #include "queue.hpp"
+#include "utility.hpp"
 
 namespace ft
 {
@@ -69,10 +70,13 @@ namespace ft
 				// operations:
 				iterator		find(const Key& x);
 				const_iterator	find(const Key& x) const;
+				size_type		count(const Key& x) const;
 				iterator		lower_bound(const Key& x);
 				const_iterator	lower_bound(const Key& x) const;
 				iterator		upper_bound(const Key& x);
 				const_iterator	upper_bound(const Key& x) const;
+				pair<iterator, iterator>				equal_range(const Key& x);
+				pair<const_iterator, const_iterator>	equal_range(const Key& x) const;
 			private:
 				typedef typename Allocator::template rebind<rbtree_node<T> >::other	node_allocator;
 
