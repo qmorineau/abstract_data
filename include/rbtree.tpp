@@ -264,6 +264,44 @@ namespace ft
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		void
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::erase(iterator position)
+		{
+			// Complexity: amortized O(1)
+			node_pointer ptr = position.base();
+			delete_data(ptr);
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::size_type
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::erase(const Key& x)
+		{
+			// Complexity: O(log(size()) + count(x))
+			size_type removed_nodes = 0;
+			while (true)
+			{
+				node_pointer to_delete = search(_root, x);
+				if (to_delete == _sentinel)
+					return removed_nodes;
+				delete_data(to_delete);
+				++removed_nodes;
+			}
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		void
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::erase(iterator first, iterator last)
+		{
+			// Complexity: O(log(size()) + distance(first, last))
+			while (first != last)
+			{
+				node_pointer ptr = first.base();
+				++first;
+				delete_data(ptr);
+			}
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::clear()
 		{
 			// Complexity: O(size());
@@ -526,7 +564,7 @@ namespace ft
 				}
 				else
 				{
-					// symmetric cass for when z's parent is the right child
+					// symmetric cases for when z's parent is the right child
 					y = z->parent->parent->left;
 					if (y->color == RED)
 					{
@@ -561,7 +599,7 @@ namespace ft
 		{
 			if (!u->parent)
 				_root = v;
-			else if (u == u->parent.left)
+			else if (u == u->parent->left)
 				u->parent->left = v;
 			else
 				u->parent->right = v;
@@ -570,9 +608,8 @@ namespace ft
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		void
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::delete_data(T value)
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::delete_data(node_pointer& z)
 		{
-			node_pointer z = search(_root, value);
 			if (z == _sentinel)
 				return ;
 			node_pointer x = 0;
@@ -580,12 +617,12 @@ namespace ft
 			node_color y_base_color = y->color;
 			if (z->left == _sentinel)
 			{
-				node_pointer x = z->right;
-				transplant();
+				x = z->right;
+				transplant(z, z->right);
 			}
 			else if (z->right == _sentinel)
 			{
-				x = z->right;
+				x = z->left;
 				transplant(z, z->left);
 			}
 			else
@@ -594,7 +631,7 @@ namespace ft
 				y_base_color = y->color;
 				x = y->right;
 				if (y->parent == z)
-					x.parent = y;
+					x->parent = y;
 				else
 				{
 					transplant(y, y->right);
@@ -608,6 +645,10 @@ namespace ft
 			}
 			if (y_base_color == BLACK)
 				fix_delete(x);
+			_alloc.destroy(&z->value);
+			_node_alloc.deallocate(z, 1);
+			--_size;
+			update_sentinel();
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
@@ -644,7 +685,7 @@ namespace ft
 							w = x->parent->right;
 						}
 						// Case 3: Right child of sibling is red
-						w.color = x->parent->color;
+						w->color = x->parent->color;
 						x->parent->color = BLACK;
 						w->right->color = BLACK;
 						rotate_left(x->parent);
@@ -663,23 +704,23 @@ namespace ft
 						rotate_right(x->parent);
 						w = x->parent->left;
 					}
-					if (w->left->color == BLACK && w->left->color == BLACK)
+					if (w->left->color == BLACK && w->right->color == BLACK)
 					{
 						w->color = RED;
 						x = x->parent; // Move up the tree
 					}
 					else
 					{
-						if (w->right->color == BLACK)
+						if (w->left->color == BLACK)
 						{
-							// Case 3: sibling is black, left child is red, right is black
-							w->left->color = BLACK;
+							// Case 3: sibling is black, left child is black, right is red
+							w->right->color = BLACK;
 							w->color = RED;
 							rotate_left(w);
 							w = x->parent->left;
 						}
 						// Case 3: Right child of sibling is red
-						w.color = x->parent->color;
+						w->color = x->parent->color;
 						x->parent->color = BLACK;
 						w->right->color = BLACK;
 						rotate_right(x->parent);
@@ -688,11 +729,12 @@ namespace ft
 				}
 			}
 			x->color = BLACK;
+			_sentinel->color = BLACK;
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, Key key)
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, const Key& key)
 		{
 			if (node == _sentinel || _key_of(node->value) == key)
 				return node;
@@ -763,6 +805,20 @@ namespace ft
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		void
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::update_sentinel()
+		{
+			node_pointer tmp = _root;
+			while (tmp != _sentinel && tmp->left != _sentinel)
+				tmp = tmp->left;
+			_sentinel->left = tmp;
+			tmp = _root;
+			while (tmp != _sentinel && tmp->right != _sentinel)
+				tmp = tmp->right;
+			_sentinel->right = tmp;
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::new_node(const T& value)
 		{
@@ -799,7 +855,10 @@ namespace ft
 			queue<node_pointer> q;
 			queue<node_pointer> leafs;
 			if (_sentinel->color != BLACK)
+			{
+				std::cout << "SENTINELLE RED WTF==============" << std::endl;
 				return false;
+			}
 			if (_root != _sentinel)
 				q.push(_root);
 			else
@@ -830,14 +889,20 @@ namespace ft
 						break;
 					}
 					if (node->color == RED && node->parent->color == RED)
+					{
+						std::cerr << "DOUBLE RED =========" << std::endl;
 						return false;
+					}
 					node = node->parent;
 				}
 			}
 			for (size_t i = 1; i < black_counts.size(); ++i)
 			{
 				if (black_counts[0] != black_counts[i])
+				{
+					std::cerr << "BLACK COUNT DIFF =========" << std::endl;
 					return false;
+				}
 			}
 			return true;
 		}

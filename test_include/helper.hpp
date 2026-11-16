@@ -97,7 +97,7 @@ struct dispatch_print<ns::pair<T1, T2> >
 {
 	static void print(const ns::pair<T1, T2>& value)
 	{
-		std::cout << "[" << value.first << "]->[" << value.second << "] ";
+		std::cout << "\"" << value.first << "\"->\"" << value.second << "\"";
 	}
 };
 

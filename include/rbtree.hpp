@@ -64,6 +64,9 @@ namespace ft
 				iterator	insert(iterator pos, const T& value);
 				template <class InputIterator>
 				void		insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
+				void		erase(iterator position);
+				size_type	erase(const Key& x);
+				void		erase(iterator first, iterator last);
 				void 		clear();
 				// observers:
 				Compare			key_comp() const;
@@ -93,9 +96,9 @@ namespace ft
 				void rotate_right(node_pointer y);
 				void fix_insert(node_pointer z);
 				void transplant(node_pointer u, node_pointer v);
-				void delete_data(T value);
+				void delete_data(node_pointer& z);
 				void fix_delete(node_pointer x);
-				node_pointer search(node_pointer node, Key key);
+				node_pointer search(node_pointer node, const Key& key);
 				node_pointer minimum(node_pointer node);
 				// utils
 				template <class InputIt>
@@ -105,12 +108,14 @@ namespace ft
 				void			destroy_all();
 				void			clear_sub_tree(node_pointer subtree);
 				void			update_sentinel(node_pointer new_node);
+				void			update_sentinel();
 				node_pointer	new_node(const T& value);
 				void			init_sentinel();
 				bool			is_valid_tree() const;
 			public:
 				void print() const
 				{
+					std::cout << "size = " << _size << std::endl;
 					std::cout << "is valid: " << (is_valid_tree() == true ? "true" : "false") << std::endl;
 					queue<node_pointer> q;
 					q.push(_root);

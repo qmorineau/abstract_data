@@ -2,38 +2,17 @@
 
 void test()
 {
-	// using namespace ::detail;
-	// typedef rbtree<int> T;
-
-	// T tree;
-	// tree.insert(1);
-	// tree.print();
-	// tree.insert(3);
-	// tree.print();
-	// tree.insert(2);
-	// tree.print();
-	// tree.insert(4);
-	// tree.print();
-	// tree.insert(5);
-	// tree.print();
-
 	int count = 0;
 
 	ns::map<int, int> m;
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
-		ns::pair<int, int> p(i, ++count);
-		m.insert(p);
-	}
-	for (int i = -2; i > -20; --i)
-	{
-		ns::pair<int, int> p(i, ++count);
+		ns::pair<int, int> p(0, ++count);
 		m.insert(p);
 	}
 	print(m);
-	ns::map<int, int>::iterator it = m.upper_bound(0);
-	if (it != m.end())
-		std::cout << it->second << std::endl;
+	m.erase(m.begin());
+	print(m);
 }
 
 std::size_t ThrowingCounter::count = 0;
