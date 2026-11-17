@@ -77,6 +77,9 @@ struct container_traits_default
 		has_swap = 0,
 		has_push = 0,
 		has_pop = 0,
+		// observers
+		has_key_comp = 0,
+		has_value_comp = 0,
 		// operations
 		has_splice = 0,
 		has_merge = 0,
@@ -85,6 +88,11 @@ struct container_traits_default
 		has_reverse = 0,
 		has_unique = 0,
 		has_sort = 0,
+		has_find = 0,
+		has_count = 0,
+		has_lower_bound = 0,
+		has_upper_bound = 0,
+		has_equal_range = 0,
 		// non member
 		has_is_equal_operator = 0,
 		has_is_different_operator = 0,
@@ -282,19 +290,40 @@ struct container_traits<ns::queue<T, Alloc> > : container_traits_default
 	};
 };
 
-// define traits for each container
-// template <typename Key, typename T, typename Compare, typename Alloc>
-// struct container_traits<nm::map<Key, Compare, Alloc>
-// {
-// 	enum
-// 	{
-// 		has_begin = 1,
-// 		has_rbegin = 1,
-// 		has_end = 1,
-// 		has_rend = 1,
-// 		has_push_back = 1
-// 		// [...]
-// 	};
-// };
+template <typename Key, typename T, typename Compare, typename Alloc>
+struct container_traits<ns::map<Key,T,Compare,Alloc> > : container_traits_default
+{
+	enum
+	{
+		// common
+		has_get_allocator = 1,
+		// iterators
+		has_begin = 1,
+		has_end = 1,
+		has_rbegin = 1,
+		has_rend = 1,
+		// capacity
+		has_empty = 1,
+		has_size = 1,
+		has_max_size = 1,
+		// element access
+		has_at = 1,
+		has_operator_square_bracket = 1,
+		// modifiers
+		has_insert = 1,
+		has_erase = 1,
+		has_swap = 1,
+		has_clear = 1,
+		// observers
+		has_key_comp = 1,
+		has_value_comp = 1,
+		// operations
+		has_find = 1,
+		has_count = 1,
+		has_lower_bound = 1,
+		has_upper_bound = 1,
+		has_equal_range = 1
+	};
+};
 
 #endif

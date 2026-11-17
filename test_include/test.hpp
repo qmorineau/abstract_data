@@ -87,7 +87,7 @@ void test_priority_queue();
 template <template <typename, typename> class Container>
 void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
-void test_associative_container();
+void test_associative_container(std::string name);
 template <template <typename, typename> class Container>
 void test_container_adaptor(std::string name, container_adaptator c);
 
@@ -105,6 +105,8 @@ void test_modifiers_func();
 template <typename Container>
 void test_operations_func();
 template <typename Container>
+void test_observers_func();
+template <typename Container>
 void test_non_member_func();
 
 // Helper
@@ -121,6 +123,7 @@ void print(Container& c);
 #include "template/generic_test/2_test_iterators_func.tpp"
 #include "template/generic_test/2_test_modifiers_func.tpp"
 #include "template/generic_test/2_test_operations_func.tpp"
+#include "template/generic_test/2_test_observers_func.tpp"
 #include "template/generic_test/2_test_non_member_func.tpp"
 
 #include "template/generic_test/1_test_sequence_container.tpp"

@@ -21,8 +21,8 @@ bool		ThrowingCounter::enabled = true;
 
 int main()
 {
-	test();
-	return 0;
+	// test();
+	// return 0;
 	std::cout << "=======================================" << std::endl 
 	<< "Testing ::containers" << std::endl
 	<< "=======================================" << std::endl << std::endl;
@@ -36,7 +36,7 @@ int main()
 	// test_sequence_container<ns::deque>("deque");
 	// test_sequence_container<ns::list>("list");
 
-	// test_associative_container<ns::map>();
+	test_associative_container<ns::map>("map");
 	// test_associative_container<ns::set>();
 	// test_associative_container<ns::multimap>();
 	// test_associative_container<ns::multiset>();

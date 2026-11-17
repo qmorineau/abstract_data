@@ -122,6 +122,56 @@ struct test_sort_comp
 };
 
 template <typename Container>
+struct test_find
+{
+	static void run()
+	{
+		std::cout << "===== Test: iterator find(const key_type& x) =====" << std::endl;
+
+		std::cout << "===== Test: const_iterator find(const key_type& x) const =====" << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_count
+{
+	static void run()
+	{
+		std::cout << "===== Test: count(const key_type& x) =====" << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_lower_bound
+{
+	static void run()
+	{
+		std::cout << "===== Test: iterator lower_bound(const key_type& x) =====" << std::endl;
+		std::cout << "===== Test: const_iterator lower_bound(const key_type& x) const =====" << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_upper_bound
+{
+	static void run()
+	{
+		std::cout << "===== Test: iterator upper_bound(const key_type& x) =====" << std::endl;
+		std::cout << "===== Test: const_iterator upper_bound(const key_type& x) const =====" << std::endl;
+	}
+};
+
+template <typename Container>
+struct test_equal_range
+{
+	static void run()
+	{
+		std::cout << "===== Test: pair<iterator,iterator> equal_range(const key_type& x) =====" << std::endl;
+		std::cout << "===== Test: pair<const_iterator,const_iterator> equal_range(const key_type& x) const =====" << std::endl;
+	}
+};
+
+template <typename Container>
 void test_operations_func()
 {
 	std::cout << "=======================================" << std::endl 
@@ -139,6 +189,11 @@ void test_operations_func()
 	RUN_IF(has_unique, test_unique_pred, Container);
 	RUN_IF(has_sort, test_sort, Container);
 	RUN_IF(has_sort, test_sort_comp, Container);
+	RUN_IF(has_find, test_find, Container);
+	RUN_IF(has_count, test_count, Container);
+	RUN_IF(has_lower_bound, test_lower_bound, Container);
+	RUN_IF(has_upper_bound, test_upper_bound, Container);
+	RUN_IF(has_equal_range, test_equal_range, Container);
 }
 
 #endif

@@ -785,23 +785,23 @@ namespace ft
 			// N = number of element in src tree
 			// Complexity: O(N)
 			if (src == nill)
-				return src;
-			node_pointer node = new_node();
-			detail::MemoryGuard<T, Allocator> node_guard(_node_alloc);
+				return _sentinel;
+			node_pointer node = new_node(src->value);
+			detail::MemoryGuard<node_type, node_allocator> node_guard(_node_alloc);
 			node_guard.push(node, sizeof(node_type));
+			detail::ConstructGuard<T, Allocator, iterator> construct_guard(_alloc, iterator(node, _sentinel));
+			construct_guard.push();
+			node->parent = parent;
 
-			detail::MemoryGuard<T, Allocator> left_guard(_alloc);
+			detail::MemoryGuard<node_type, node_allocator> left_guard(_node_alloc);
 			node->left = clone_subtree(src->left, src, nill);
-			left_guard.push(node->left);
+			left_guard.push(node->left, sizeof(node_type));
 
-			detail::MemoryGuard<T, Allocator> right_guard(_alloc);
 			node->right = clone_subtree(src->right, src, nill);
-			right_guard.push(node->right);
 
-			_alloc.construct(&node->value, src->value);
-			node_guard.release();
 			left_guard.release();
-			right_guard.release();
+			construct_guard.release();
+			node_guard.release();
 			return node;
 		}
 
@@ -813,7 +813,6 @@ namespace ft
 			clear();
 			if (_sentinel)
 			{
-				_alloc.destroy(&_sentinel->value);
 				_node_alloc.deallocate(_sentinel, 1);
 				_sentinel = 0;
 				_root = 0;
