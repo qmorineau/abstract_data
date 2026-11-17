@@ -243,7 +243,6 @@ namespace ft
 	map<Key,T,Compare,Allocator>::erase(iterator position)
 	{
 		// Complexity: amortized O(1)
-		_tree.erase(position);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -251,7 +250,6 @@ namespace ft
 	map<Key,T,Compare,Allocator>::erase(const key_type& x)
 	{
 		// Complexity: O(size() + count(x))
-		return _tree.erase(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -259,7 +257,6 @@ namespace ft
 	map<Key,T,Compare,Allocator>::erase(iterator first, iterator last)
 	{
 		// Complexity: O(size() + distance(first, last))
-		_tree.erase(first, last);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

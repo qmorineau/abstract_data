@@ -25,6 +25,7 @@ namespace ft
 				typedef size_t				size_type;
 				typedef ptrdiff_t			difference_type;
 				typedef Allocator			allocator_type;
+				typedef rbtree_node<T>		node_type;
 				typedef rbtree_node<T>*		node_pointer;
 
 				typedef typename Allocator::reference			reference;
@@ -106,6 +107,7 @@ namespace ft
 				template <class ForwardIt>
 				void insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
 				void			destroy_all();
+				node_pointer	clone_subtree(node_pointer src, node_pointer parent, node_pointer nill);
 				void			clear_sub_tree(node_pointer subtree);
 				void			update_sentinel(node_pointer new_node);
 				void			update_sentinel();

@@ -18,6 +18,7 @@ namespace ft
 				_sentinel(0),
 				_size(0)
 		{
+			// Complexity: O(1)
 			try
 			{
 				init_sentinel();
@@ -36,12 +37,13 @@ namespace ft
 				_comp(x._comp),
 				_root(0),
 				_sentinel(0),
-				_size(0)
+				_size(x._size)
 		{
+			// Complexity: O(x.size())
 			try
 			{
 				init_sentinel();
-				insert(x.begin(), x.end());
+				_root = clone_subtree(x._root, 0, x._sentinel);
 			}
 			catch(...)
 			{
@@ -53,6 +55,7 @@ namespace ft
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::~rbtree()
 		{
+			// Complexity: O(size());
 			destroy_all();
 		}
 
@@ -64,19 +67,19 @@ namespace ft
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>&
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::operator=(const rbtree& x)
 		{
+			// Complexity: O(size() + x.size());
 			if (this != &x)
 			{
 				clear();
-				insert(x.begin(), x.end());
+				_root = clone_subtree(x._root, 0, x._sentinel);
 			}
-			(void) x;
-			// todo
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::allocator_type
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::get_allocator() const
 		{
+			// Complexity: O(1);
 			return _alloc;
 		}
 
@@ -218,6 +221,11 @@ namespace ft
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert(iterator pos, const T& value)
 		{
+			/*
+			Complexity: 
+				insertion in position:	amortized O(1)
+				else:					O(log(size()))
+			*/
 			// todo
 		}
 
@@ -226,6 +234,10 @@ namespace ft
 		void 
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type*)
 		{
+			/*
+			N = distance(first, last)
+			Complexity: O(N * log(size() + N))
+			*/
 			insert_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
 		}
 
@@ -473,6 +485,10 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_dispatch(InputIt first, InputIt last, input_iterator_tag)
 		{
+			/*
+			N = distance(first, last)
+			Complexity: O(N * log(size() + N))
+			*/
 			vector<T, Allocator> tmp;
 			for (; first != last; ++first)
 				tmp.push_back(*first);
@@ -484,6 +500,10 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
 		{
+			/*
+			N = distance(first, last)
+			Complexity: O(N * log(size() + N))
+			*/
 			while (first != last)
 			{
 				insert(*first);
@@ -736,6 +756,7 @@ namespace ft
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, const Key& key)
 		{
+			// Complexity: O(log(N))
 			if (node == _sentinel || _key_of(node->value) == key)
 				return node;
 			if (_comp(key, _key_of(node->value)))
@@ -747,6 +768,7 @@ namespace ft
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::minimum(node_pointer node)
 		{
+			// Complexity: O(log(N))
 			while (node->left != _sentinel)
 				node = node->left;
 			return node;
@@ -755,6 +777,33 @@ namespace ft
 		// ======================
 		//	      Utils
 		// ======================
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::clone_subtree(node_pointer src, node_pointer parent, node_pointer nill)
+		{
+			// N = number of element in src tree
+			// Complexity: O(N)
+			if (src == nill)
+				return src;
+			node_pointer node = new_node();
+			detail::MemoryGuard<T, Allocator> node_guard(_node_alloc);
+			node_guard.push(node, sizeof(node_type));
+
+			detail::MemoryGuard<T, Allocator> left_guard(_alloc);
+			node->left = clone_subtree(src->left, src, nill);
+			left_guard.push(node->left);
+
+			detail::MemoryGuard<T, Allocator> right_guard(_alloc);
+			node->right = clone_subtree(src->right, src, nill);
+			right_guard.push(node->right);
+
+			_alloc.construct(&node->value, src->value);
+			node_guard.release();
+			left_guard.release();
+			right_guard.release();
+			return node;
+		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		void
@@ -775,6 +824,7 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::clear_sub_tree(node_pointer subtree)
 		{
+			// Complexity: O(subtree.size())
 			if (!subtree || subtree == _sentinel)
 				return ;
 			clear_sub_tree(subtree->left);
@@ -788,6 +838,7 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::update_sentinel(node_pointer new_node)
 		{
+			// Complexity: O(1)
 			if (_size == 1)
 			{
 				_sentinel->left = new_node;
@@ -808,6 +859,7 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::update_sentinel()
 		{
+			// Complexity: O(1)
 			node_pointer tmp = _root;
 			while (tmp != _sentinel && tmp->left != _sentinel)
 				tmp = tmp->left;
@@ -822,6 +874,7 @@ namespace ft
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::new_node(const T& value)
 		{
+			// Complexity: O(1)
 			node_pointer tmp = _node_alloc.allocate(1);
 			detail::MemoryGuard<rbtree_node<T>, node_allocator> guard(_node_alloc);
 			guard.push(tmp, 1);
@@ -838,6 +891,7 @@ namespace ft
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::init_sentinel()
 		{
+			// Complexity: O(1)
 			node_pointer tmp = _node_alloc.allocate(1);
 			tmp->left = tmp;
 			tmp->right = tmp;
@@ -855,10 +909,7 @@ namespace ft
 			queue<node_pointer> q;
 			queue<node_pointer> leafs;
 			if (_sentinel->color != BLACK)
-			{
-				std::cout << "SENTINELLE RED WTF==============" << std::endl;
 				return false;
-			}
 			if (_root != _sentinel)
 				q.push(_root);
 			else
@@ -889,20 +940,14 @@ namespace ft
 						break;
 					}
 					if (node->color == RED && node->parent->color == RED)
-					{
-						std::cerr << "DOUBLE RED =========" << std::endl;
 						return false;
-					}
 					node = node->parent;
 				}
 			}
 			for (size_t i = 1; i < black_counts.size(); ++i)
 			{
 				if (black_counts[0] != black_counts[i])
-				{
-					std::cerr << "BLACK COUNT DIFF =========" << std::endl;
 					return false;
-				}
 			}
 			return true;
 		}
