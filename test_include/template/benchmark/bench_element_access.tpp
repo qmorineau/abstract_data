@@ -110,6 +110,26 @@ struct bench_operator_square_bracket
 };
 
 template <class C>
+struct bench_map_at
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
+template <class C>
+struct bench_map_operator_square_bracket
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
+template <class C>
 struct bench_front
 {
 	static void run(const std::string& name)
@@ -239,6 +259,8 @@ void bench_element_access(const std::string& name)
 {
     RUN_BENCH_IF(has_at, bench_at, C, name);
     RUN_BENCH_IF(has_operator_square_bracket, bench_operator_square_bracket, C, name);
+	RUN_BENCH_IF(has_map_at, bench_map_at, C, name);
+	RUN_BENCH_IF(has_map_operator_square_bracket, bench_map_operator_square_bracket, C, name);
     RUN_BENCH_IF(has_front, bench_front, C, name);
     RUN_BENCH_IF(has_back, bench_back, C, name);
     RUN_BENCH_IF(has_data, bench_data, C, name);

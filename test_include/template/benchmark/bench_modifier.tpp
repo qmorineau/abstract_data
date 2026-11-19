@@ -341,6 +341,37 @@ struct bench_insert_it
 };
 
 template <class C>
+struct bench_map_insert_value
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
+template <class C>
+struct bench_map_insert_pos_value
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
+template <class C>
+struct bench_map_insert_it
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
+
+template <class C>
 struct bench_erase_pos
 {
 	static void run(const std::string& name)
@@ -394,6 +425,17 @@ struct bench_erase_it
 		} while (!t.isEnoughTime());
     }
 };
+
+template <class C>
+struct bench_map_erase
+{
+	static void run(const std::string& name)
+    {
+        (void) name;
+		// todo
+	}
+};
+
 
 template <class C>
 struct bench_swap
@@ -458,8 +500,12 @@ void bench_modifier(const std::string& name)
     RUN_BENCH_IF(has_insert, bench_insert_value, C, name);
     RUN_BENCH_IF(has_insert, bench_insert_n_value, C, name);
     RUN_BENCH_IF(has_insert, bench_insert_it, C, name);
+	RUN_BENCH_IF(has_map_insert, bench_map_insert_value, C, name);
+	RUN_BENCH_IF(has_map_insert, bench_map_insert_pos_value, C, name);
+	RUN_BENCH_IF(has_map_insert, bench_map_insert_it, C, name);
     RUN_BENCH_IF(has_erase, bench_erase_pos, C, name);
     RUN_BENCH_IF(has_erase, bench_erase_it, C, name);
+	RUN_BENCH_IF(has_map_erase, bench_map_erase, C, name);
     RUN_BENCH_IF(has_swap, bench_swap, C, name);
     RUN_BENCH_IF(has_clear, bench_clear, C, name);
 }
