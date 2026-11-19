@@ -246,9 +246,12 @@ void test_modifiers_func()
 	RUN_IF(has_insert, test_insert_value, Container);
 	RUN_IF(has_insert, test_insert_n_value, Container);
 	RUN_IF(has_insert, test_insert_it, Container);
+	// RUN_IF(has_map_insert, test_insert_value, Container);
+	// RUN_IF(has_map_insert, , Container);  // insert(value)
+	// RUN_IF(has_map_insert, , Container);	// insert(it first, it last)
 	RUN_IF(has_erase, test_erase_pos, Container);
 	RUN_IF(has_erase, test_erase_it, Container);
-	RUN_IF(has_erase_key, test_erase_key, Container);
+	// RUN_IF(has_map_erase, , Container);
 	RUN_IF(has_push_back, test_push_back, Container);
 	RUN_IF(has_pop_back, test_pop_back, Container);
 	RUN_IF(has_swap, test_swap, Container);

@@ -75,9 +75,9 @@ namespace ft
 			size_type	size() const;
 			size_type	max_size() const;
 			// element access:
-			T& at(const Key& key);
-			const T& at(const Key& key) const;
-			T& operator[](const key_type& x);
+			mapped_type& at(const Key& key);
+			const mapped_type& at(const Key& key) const;
+			mapped_type operator[](const key_type& x);
 			// modifiers:
 			pair<iterator, bool>	insert(const value_type& x);
 			iterator				insert(iterator position, const value_type& x);

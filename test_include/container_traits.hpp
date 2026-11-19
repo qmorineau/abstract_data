@@ -49,6 +49,8 @@ struct container_traits_default
 		// element access
 		has_at = 0,
 		has_operator_square_bracket = 0,
+		has_map_at = 0,
+		has_map_operator_square_bracket = 0,
 		has_front = 0,
 		has_back = 0,
 		has_data = 0,
@@ -68,8 +70,9 @@ struct container_traits_default
 		// modifiers
 		has_clear = 0,
 		has_insert = 0,
+		has_map_insert = 0,
 		has_erase = 0,
-		has_erase_key = 0,
+		has_map_erase = 0,
 		has_push_front = 0,
 		has_pop_front = 0,
 		has_push_back = 0,
@@ -307,11 +310,11 @@ struct container_traits<ns::map<Key,T,Compare,Alloc> > : container_traits_defaul
 		has_size = 1,
 		has_max_size = 1,
 		// element access
-		has_at = 1,
-		has_operator_square_bracket = 1,
+		has_map_at = 1,
+		has_map_operator_square_bracket = 1,
 		// modifiers
-		has_insert = 1,
-		has_erase = 1,
+		has_map_insert = 1,
+		has_map_erase = 1,
 		has_swap = 1,
 		has_clear = 1,
 		// observers

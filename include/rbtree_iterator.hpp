@@ -43,6 +43,9 @@ namespace ft
 				// getter
 				rbtree_node<T>* base(void) const;
 			private:
+				template <class T2, class Pointer2, class Reference2>
+				friend class rbtree_iterator;
+
 				rbtree_node<T>* _current;
 				rbtree_node<T>* _null;
 		};

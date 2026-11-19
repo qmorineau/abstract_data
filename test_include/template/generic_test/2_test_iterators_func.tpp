@@ -22,7 +22,10 @@ struct test_begin
 		Container c = fill_n<Container>(size);
 		iterator it = c.begin();
 		const_iterator cit = c.begin();
-		std::cout << *it << "|" << *cit << "|" << (it == cit) << std::endl;
+		print_value(*it);
+		std::cout << "|";
+		print_value(*cit);
+		std::cout << "|" << (it == cit) << std::endl;
 	}
 };
 
@@ -39,7 +42,10 @@ struct test_rbegin
 		Container c = fill_n<Container>(size);
 		reverse_iterator it = c.rbegin();
 		const_reverse_iterator cit = c.rbegin();
-		std::cout << *it << "|" << *cit << "|" << (it == cit) << std::endl;
+		print_value(*it);
+		std::cout << "|";
+		print_value(*cit);
+		std::cout << "|" << (it == cit) << std::endl;
 	}
 };
 

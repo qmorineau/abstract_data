@@ -107,7 +107,9 @@ namespace ft
 		rbtree_iterator<T, Pointer, Reference>&
 		rbtree_iterator<T, Pointer, Reference>::operator--(void)
 		{
-			if (_current->left != _null)
+			if (_current == _null)
+				_current = _current->right;	
+			else if (_current->left != _null)
 			{
 				_current = _current->left;
 				while (_current->right != _null)

@@ -26,8 +26,20 @@
 	# define NAMESPACE_NAME "ft"
 #endif
 
-template <typename T>	struct is_throwing				{static const bool value = false;};
-template <>				struct is_throwing<Throwing>	{static const bool value = true;};
+template <typename T>
+struct is_throwing				{static const bool value = false;};
+
+template <>
+struct is_throwing<Throwing>	{static const bool value = true;};
+
+template <typename T>
+struct is_throwing<const T>		{static const bool value = is_throwing<T>::value;};
+
+template <typename A, typename B>
+struct is_throwing<ns::pair<A, B> >
+{
+	static const bool value = is_throwing<A>::value || is_throwing<B>::value;
+};
 
 template <typename Runner, bool Sweep>
 struct sweep_runner
@@ -114,6 +126,9 @@ template <typename Container>
 Container fill_n(size_t n);
 template <typename Container>
 typename Container::value_type generate_value(size_t n);
+// Print
+template <typename T>
+void print_value(const T& v);
 template <typename Container>
 void print(Container& c);
 

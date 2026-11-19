@@ -10,12 +10,12 @@ static void test_associative_container_func(std::string type)
 	<< "=======================================" << std::endl 
 	<< "=======================================" << std::endl << std::endl;
 	test_common_func<Container>();
-	// test_element_access_func<Container>();
-	// test_iterators_func<Container>();
-	// test_capacity_func<Container>();
-	// test_modifiers_func<Container>();
-	// test_operations_func<Container>();
-	// test_non_member_func<Container>();
+	test_element_access_func<Container>();
+	test_iterators_func<Container>();
+	test_capacity_func<Container>();
+	test_modifiers_func<Container>();
+	test_operations_func<Container>();
+	test_non_member_func<Container>();
 }
 
 template <template <typename, typename, typename, typename> class Container, typename K, typename V>

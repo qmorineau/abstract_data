@@ -24,6 +24,15 @@ struct value_generator<std::string>
 	}
 };
 
+template <class K, class V>
+struct value_generator<ns::pair<const K, V> >
+{
+	static ns::pair<const K, V> make(int i)
+	{
+		return ns::pair<const K, V>(value_generator<K>::make(i), value_generator<V>::make(i));
+	}
+};
+
 template <typename Container>
 struct fill_dispatch
 {
@@ -100,6 +109,12 @@ struct dispatch_print<ns::pair<T1, T2> >
 		std::cout << "\"" << value.first << "\"->\"" << value.second << "\"";
 	}
 };
+
+template <typename T>
+void print_value(const T& v)
+{
+	dispatch_print<T>::print(v);	
+}
 
 template <typename Container>
 void print(Container& c)

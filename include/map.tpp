@@ -160,7 +160,7 @@ namespace ft
 	// =====================
 
 	template <class Key, class T, class Compare, class Allocator>
-	T&
+	typename map<Key,T,Compare,Allocator>::mapped_type&
 	map<Key,T,Compare,Allocator>::at(const Key& key)
 	{
 		// Complexity: O(log(size()))
@@ -176,7 +176,7 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
-	const T&
+	const typename map<Key,T,Compare,Allocator>::mapped_type&
 	map<Key,T,Compare,Allocator>::at(const Key& key) const
 	{
 		// Complexity: O(log(size()))
@@ -192,7 +192,7 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
-	T&
+	typename map<Key,T,Compare,Allocator>::mapped_type
 	map<Key,T,Compare,Allocator>::operator[](const key_type& x)
 	{
 		// Complexity: O(log(size()))
@@ -268,7 +268,7 @@ namespace ft
 	{
 		// Complexity: O(1)
 		if (this != &other)
-			ft::swap(_tree, other._tree);
+			_tree.swap(other._tree);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

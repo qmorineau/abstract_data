@@ -28,7 +28,9 @@ struct test_at
 			try
 			{
 				reference v = c.at(i);
-				std::cout << "v&:"<< v << "|";
+				std::cout << "v&:";
+				print_value(v);
+				std::cout << "|";
 			}
 			catch(const ns::out_of_range& e)
 			{
@@ -46,7 +48,9 @@ struct test_at
 			try
 			{
 				const_reference cv = cc.at(i);
-				std::cout << "const v&:" << cv << "|";
+				std::cout << "const v&:";
+				print_value(cv);
+				std::cout << "|";
 			}
 			catch(const ns::out_of_range& e)
 			{
@@ -96,7 +100,11 @@ struct test_front
 		reference v = c.front();
 		const Container cc = fill_n<Container>(size);
 		const_reference cv = cc.front();
-		std::cout << "v&:"<< v << "| const v&:" << cv << std::endl;
+		std::cout << "v&:";
+		print_value(v);
+		std::cout << "| const v&:";
+		print_value(cv);
+		std::cout << std::endl;
 	}
 };
 
@@ -115,7 +123,11 @@ struct test_back
 			reference v = c.back();
 			const Container cc = fill_n<Container>(size);
 			const_reference cv = cc.back();
-			std::cout << "v&:"<< v << "| const v&:" << cv << "||";
+			std::cout << "v&:";
+			print_value(v);
+			std::cout << "| const v&:";
+			print_value(cv);
+			std::cout << std::endl;
 		}
 		std::cout << std::endl;
 	}
@@ -156,7 +168,11 @@ struct test_top
 			reference v = c.top();
 			const Container cc = fill_n<Container>(i);
 			const_reference cv = cc.top();
-			std::cout << "v&:"<< v << "| const v&:" << cv << "||";
+			std::cout << "v&:";
+			print_value(v);
+			std::cout << "| const v&:";
+			print_value(cv);
+			std::cout << std::endl;
 		}
 	}
 };
@@ -169,6 +185,8 @@ void test_element_access_func()
 	<< "=======================================" << std::endl;
 	RUN_IF(has_at, test_at, Container);
 	RUN_IF(has_operator_square_bracket, test_operator_square_bracket, Container);
+	// RUN_IF(has_map_at, test_at, Container);
+	// RUN_IF(has_map_operator_square_bracket, test_operator_square_bracket, Container);
 	RUN_IF(has_front, test_front, Container);
 	RUN_IF(has_back, test_back, Container);
 	RUN_IF(has_data, test_data, Container);

@@ -68,6 +68,7 @@ namespace ft
 				void		erase(iterator position);
 				size_type	erase(const Key& x);
 				void		erase(iterator first, iterator last);
+				void		swap(rbtree& other);
 				void 		clear();
 				// observers:
 				Compare			key_comp() const;

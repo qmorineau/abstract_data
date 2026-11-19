@@ -94,6 +94,7 @@ struct Throwing
 
 		bool	operator==(const Throwing& other) const	{return _n == other._n;};
 		bool	operator<(const Throwing& other) const	{return _n < other._n;};
+		bool	operator>(const Throwing& other) const	{return _n > other._n;};
 		int		data() const {return _n;}
 	private:
 		int _n;

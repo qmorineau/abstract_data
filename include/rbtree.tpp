@@ -73,6 +73,7 @@ namespace ft
 				clear();
 				_root = clone_subtree(x._root, 0, x._sentinel);
 			}
+			return *this;
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
@@ -176,7 +177,7 @@ namespace ft
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::max_size() const
 		{
 			// Complexity: O(1)
-			return _alloc.max_size();
+			return ft::min(_alloc.max_size(), _node_alloc.max_size());
 		}
 
 		// ====================
@@ -227,6 +228,8 @@ namespace ft
 				else:					O(log(size()))
 			*/
 			// todo
+			(void) value;
+			return pos;
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
@@ -309,6 +312,24 @@ namespace ft
 				node_pointer ptr = first.base();
 				++first;
 				delete_data(ptr);
+			}
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		void
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::swap(rbtree& other)
+		{
+			// Complexity: O(size());
+			if (this != &other)
+			{
+				ft::swap(_alloc, other._alloc);
+				ft::swap(_node_alloc, other._node_alloc);
+				ft::swap(_comp, other._comp);
+				ft::swap(_key_of, other._key_of);
+
+				ft::swap(_root, other._root);
+				ft::swap(_sentinel, other._sentinel);
+				ft::swap(_size, other._size);
 			}
 		}
 
