@@ -8,23 +8,26 @@
 #include "container_traits.hpp"
 #include "helper.hpp"
 
+const double NS_PER_MS = 1000000.0;
+
 class TimerAccum
 {
 	public:
-		TimerAccum(const std::string& label) : _iterations(0), _label(label), _total(0)
+		TimerAccum(const std::string& label, double target_ms = 10) : _iterations(0), _label(label), _total(0), _target(target_ms * NS_PER_MS)
 		{}
 		~TimerAccum()
 		{
 			std::cout << _label << ": " << _total << " nseconds; " << _iterations << " iterations" << std::endl;
 		}
 		void	addIterations(size_t i) {_iterations += i;};
-		bool	isEnoughTime() const {return _total > 1000000.0;};
+		bool	isEnoughTime() const {return _total > _target;};
 		double& total() {return _total;}
 		double& operator*() {return _total;};
 	private:
 		size_t			_iterations;
 		std::string 	_label;
 		double			_total;
+		const double	_target;
 };
 
 class Accum

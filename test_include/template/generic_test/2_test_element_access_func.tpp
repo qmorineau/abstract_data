@@ -87,6 +87,27 @@ struct test_operator_square_bracket
 };
 
 template <typename Container>
+struct test_map_at
+{
+	static void run()
+	{
+		std::cout << "===== Test: at() =====" << std::endl;
+		// todo
+	}
+};
+
+template <typename Container>
+struct test_map_operator_square_bracket
+{
+	static void run()
+	{
+		std::cout << "===== Test: operator[] =====" << std::endl;
+		// todo
+		// don't forget to test if element doesn't exist the insert
+	}
+};
+
+template <typename Container>
 struct test_front
 {
 	static void run()
@@ -185,8 +206,8 @@ void test_element_access_func()
 	<< "=======================================" << std::endl;
 	RUN_IF(has_at, test_at, Container);
 	RUN_IF(has_operator_square_bracket, test_operator_square_bracket, Container);
-	// RUN_IF(has_map_at, test_at, Container);
-	// RUN_IF(has_map_operator_square_bracket, test_operator_square_bracket, Container);
+	RUN_IF(has_map_at, test_map_at, Container);
+	RUN_IF(has_map_operator_square_bracket, test_map_operator_square_bracket, Container);
 	RUN_IF(has_front, test_front, Container);
 	RUN_IF(has_back, test_back, Container);
 	RUN_IF(has_data, test_data, Container);

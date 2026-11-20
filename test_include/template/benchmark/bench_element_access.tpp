@@ -15,18 +15,20 @@ struct bench_at
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					reference ref = c.at(0);
-					do_not_optimize(&ref);
-					clobber();
-					ref = c.at(500);
-					do_not_optimize(&ref);
-					clobber();
-					ref = c.at(999);
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						reference ref = c.at(0);
+						do_not_optimize(&ref);
+						clobber();
+						ref = c.at(500);
+						do_not_optimize(&ref);
+						clobber();
+						ref = c.at(999);
+						do_not_optimize(&ref);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -36,18 +38,20 @@ struct bench_at
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					const_reference ref1 = c.at(0);
-					do_not_optimize(&ref1);
-					clobber();
-					const_reference ref2 = c.at(500);
-					do_not_optimize(&ref2);
-					clobber();
-					const_reference ref3 = c.at(999);
-					do_not_optimize(&ref3);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						const_reference ref1 = c.at(0);
+						do_not_optimize(&ref1);
+						clobber();
+						const_reference ref2 = c.at(500);
+						do_not_optimize(&ref2);
+						clobber();
+						const_reference ref3 = c.at(999);
+						do_not_optimize(&ref3);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -69,18 +73,20 @@ struct bench_operator_square_bracket
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					reference ref = c[0];
-					do_not_optimize(&ref);
-					clobber();
-					ref = c[500];
-					do_not_optimize(&ref);
-					clobber();
-					ref = c[999];
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						reference ref = c[0];
+						do_not_optimize(&ref);
+						clobber();
+						ref = c[500];
+						do_not_optimize(&ref);
+						clobber();
+						ref = c[999];
+						do_not_optimize(&ref);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -90,18 +96,20 @@ struct bench_operator_square_bracket
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					const_reference ref1 = c[0];
-					do_not_optimize(&ref1);
-					clobber();
-					const_reference ref2 = c[500];
-					do_not_optimize(&ref2);
-					clobber();
-					const_reference ref3 = c[999];
-					do_not_optimize(&ref3);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						const_reference ref1 = c[0];
+						do_not_optimize(&ref1);
+						clobber();
+						const_reference ref2 = c[500];
+						do_not_optimize(&ref2);
+						clobber();
+						const_reference ref3 = c[999];
+						do_not_optimize(&ref3);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -114,8 +122,66 @@ struct bench_map_at
 {
 	static void run(const std::string& name)
     {
-        (void) name;
-		// todo
+        typedef typename C::mapped_type mapped_type;
+		typedef typename C::key_type key_type;
+		key_type key1 = generate_value<C>(0).first;
+		key_type key2 = generate_value<C>(500).first;
+		key_type key3 = generate_value<C>(999).first;
+		key_type key4 = generate_value<C>(777).first;
+        C c = fill_n<C>(1000);
+		do_not_optimize(&c);
+        {
+            TimerAccum t("mapped_type& " + name + "::at()");
+			do
+			{
+				size_t size = 1000;
+				{
+					Accum acc(*t);
+					for (size_t i = 0; i < size; ++i)
+					{
+						mapped_type& ref = c.at(key1);
+						do_not_optimize(&ref);
+						clobber();
+						ref = c.at(key2);
+						do_not_optimize(&ref);
+						clobber();
+						ref = c.at(key3);
+						do_not_optimize(&ref);
+						clobber();
+						ref = c.at(key4);
+						do_not_optimize(&ref);
+						clobber();
+					}
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
+        }
+        {
+            TimerAccum t("const mapped_type& " + name + "::at() const");
+			do
+			{
+				size_t size = 1000;
+				{
+					Accum acc(*t);
+					for (size_t i = 0; i < size; ++i)
+					{
+						const mapped_type& ref1 = c.at(key1);
+						do_not_optimize(&ref1);
+						clobber();
+						const mapped_type& ref2 = c.at(key2);
+						do_not_optimize(&ref2);
+						clobber();
+						const mapped_type& ref3 = c.at(key3);
+						do_not_optimize(&ref3);
+						clobber();
+						const mapped_type& ref4 = c.at(key4);
+						do_not_optimize(&ref4);
+						clobber();
+					}
+				}
+				t.addIterations(size);
+			} while (!t.isEnoughTime());
+        }
 	}
 };
 
@@ -124,8 +190,38 @@ struct bench_map_operator_square_bracket
 {
 	static void run(const std::string& name)
     {
-        (void) name;
-		// todo
+        typedef typename C::mapped_type mapped_type;
+		typedef typename C::key_type key_type;
+        C c = fill_n<C>(1000);
+		do_not_optimize(&c);
+        TimerAccum t("mapped_type " + name + "::operator[]");
+		do
+		{
+			key_type key1 = generate_value<C>(0).first;
+			key_type key2 = generate_value<C>(500).first;
+			key_type key3 = generate_value<C>(999).first;
+			key_type key4 = generate_value<C>(777).first;
+			size_t size = 1000;
+			{
+				Accum acc(*t);
+				for (size_t i = 0; i < size; ++i)
+				{
+					mapped_type ref = c[key1];
+					do_not_optimize(&ref);
+					clobber();
+					ref = c[key2];
+					do_not_optimize(&ref);
+					clobber();
+					ref = c[key3];
+					do_not_optimize(&ref);
+					clobber();
+					ref = c[key4];
+					do_not_optimize(&ref);
+					clobber();
+				}
+			}
+			t.addIterations(size);
+		} while (!t.isEnoughTime());
 	}
 };
 
@@ -143,12 +239,14 @@ struct bench_front
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					reference ref = c.front();
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						reference ref = c.front();
+						do_not_optimize(&ref);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -158,12 +256,14 @@ struct bench_front
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					const_reference ref = c.front();
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						const_reference ref = c.front();
+						do_not_optimize(&ref);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -185,12 +285,14 @@ struct bench_back
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					reference ref = c.back();
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						reference ref = c.back();
+						do_not_optimize(&ref);
+						clobber();
+					}	
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -200,12 +302,14 @@ struct bench_back
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					const_reference ref = c.back();
-					do_not_optimize(&ref);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						const_reference ref = c.back();
+						do_not_optimize(&ref);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -226,12 +330,14 @@ struct bench_data
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					value_type* data = c.data();
-					do_not_optimize(data);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						value_type* data = c.data();
+						do_not_optimize(data);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());
@@ -241,12 +347,14 @@ struct bench_data
 			do
 			{
 				size_t size = 1000;
-				for (size_t i = 0; i < size; ++i)
 				{
 					Accum acc(*t);
-					const value_type* data = c.data();
-					do_not_optimize(data);
-					clobber();
+					for (size_t i = 0; i < size; ++i)
+					{
+						const value_type* data = c.data();
+						do_not_optimize(data);
+						clobber();
+					}
 				}
 				t.addIterations(size);
 			} while (!t.isEnoughTime());

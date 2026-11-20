@@ -29,7 +29,7 @@ struct value_generator<ns::pair<const K, V> >
 {
 	static ns::pair<const K, V> make(int i)
 	{
-		return ns::pair<const K, V>(value_generator<K>::make(i), value_generator<V>::make(i));
+		return ns::pair<const K, V>(value_generator<K>::make(i / 10), value_generator<V>::make(i));
 	}
 };
 

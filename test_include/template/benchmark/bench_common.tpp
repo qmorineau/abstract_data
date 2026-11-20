@@ -10,12 +10,14 @@ struct bench_constructor_destructor
 		do
 		{
 			size_t size = 10000;
-			for (size_t i = 0; i < size; ++i)
 			{
 				Accum acc(*t);
-				C c;
-				do_not_optimize(&c);
-				clobber();
+				for (size_t i = 0; i < size; ++i)
+				{
+					C c;
+					do_not_optimize(&c);
+					clobber();
+				}
 			}
 			t.addIterations(size);
 		} while (!t.isEnoughTime());
@@ -32,11 +34,13 @@ struct bench_copy_constructor
 		do
 		{
 			size_t size = 10;
-			for (size_t i = 0; i < size; ++i)
 			{
 				Accum acc(*t);
-				C tmp(to_copy);
-            	touch_all(tmp);
+				for (size_t i = 0; i < size; ++i)
+				{
+					C tmp(to_copy);
+	            	touch_all(tmp);
+				}
 			}
 			t.addIterations(size);
 		} while (!t.isEnoughTime());
@@ -55,11 +59,13 @@ struct bench_copy_operator
 		do
 		{
 			size_t size = 10;
-			for (size_t i = 0; i < size; ++i)
 			{
 				Accum acc(*t);
-				dest = to_copy;
-				touch_all(dest);
+				for (size_t i = 0; i < size; ++i)
+				{
+					dest = to_copy;
+					touch_all(dest);
+				}
 			}
 			t.addIterations(size);
 		} while (!t.isEnoughTime());
@@ -126,13 +132,15 @@ struct bench_get_allocator
         TimerAccum t(name + "::get_allocator");
 		do
 		{
-			size_t size = 100;
-			for (size_t i = 0; i < size; ++i)
+			size_t size = 1000;
 			{
 				Accum acc(*t);
-				typename C::allocator_type a = c.get_allocator();
-				do_not_optimize(&a);
-				clobber();
+				for (size_t i = 0; i < size; ++i)
+				{
+					typename C::allocator_type a = c.get_allocator();
+					do_not_optimize(&a);
+					clobber();
+				}
 			}
 			t.addIterations(size);
 		} while (!t.isEnoughTime());

@@ -161,7 +161,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename map<Key,T,Compare,Allocator>::mapped_type&
-	map<Key,T,Compare,Allocator>::at(const Key& key)
+	map<Key,T,Compare,Allocator>::at(const key_type& key)
 	{
 		// Complexity: O(log(size()))
 		try
@@ -177,7 +177,7 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	const typename map<Key,T,Compare,Allocator>::mapped_type&
-	map<Key,T,Compare,Allocator>::at(const Key& key) const
+	map<Key,T,Compare,Allocator>::at(const key_type& key) const
 	{
 		// Complexity: O(log(size()))
 		try
@@ -192,11 +192,11 @@ namespace ft
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
-	typename map<Key,T,Compare,Allocator>::mapped_type
+	typename map<Key,T,Compare,Allocator>::mapped_type&
 	map<Key,T,Compare,Allocator>::operator[](const key_type& x)
 	{
 		// Complexity: O(log(size()))
-		return _tree[x];
+		return _tree[x].second;
 	}
 
 	// =====================
