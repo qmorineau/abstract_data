@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <iterator>
 #include <string>
 #include <cassert>
 
@@ -121,6 +122,9 @@ void test_observers_func();
 template <typename Container>
 void test_non_member_func();
 
+template <typename Container>
+void test_input_iterators_func();
+
 // Helper
 template <typename Container>
 Container fill_n(size_t n);
@@ -140,6 +144,7 @@ void print(Container& c);
 #include "template/generic_test/2_test_operations_func.tpp"
 #include "template/generic_test/2_test_observers_func.tpp"
 #include "template/generic_test/2_test_non_member_func.tpp"
+#include "template/generic_test/2_test_input_iterators_func.tpp"
 
 #include "template/generic_test/1_test_sequence_container.tpp"
 #include "template/generic_test/1_test_associative_container.tpp"

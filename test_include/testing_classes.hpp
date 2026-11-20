@@ -24,11 +24,13 @@ class Foo
 		bool operator==(const Foo& other) const						{return _n == other._n;}
 		~Foo()														{if (_allocated_ptr) {delete _allocated_ptr;}}
 		int		data() const 										{return _n;}
+		void	setData(int value)									{_n = value;}
 	private:
 		Bar*	_allocated_ptr;
 		int		_n;
 };
 std::ostream& operator<<(std::ostream& out_stream, const Foo& f);
+std::istream& operator>>(std::istream& input_stream, Foo& t);
 
 // SilenceScope
 
@@ -92,14 +94,16 @@ struct Throwing
 		Throwing& operator=(const Throwing&)			{ThrowingCounter::tick(); return *this;}
 		~Throwing() {}
 
-		bool	operator==(const Throwing& other) const	{return _n == other._n;};
-		bool	operator<(const Throwing& other) const	{return _n < other._n;};
-		bool	operator>(const Throwing& other) const	{return _n > other._n;};
+		bool	operator==(const Throwing& other) const	{return _n == other._n;}
+		bool	operator<(const Throwing& other) const	{return _n < other._n;}
+		bool	operator>(const Throwing& other) const	{return _n > other._n;}
 		int		data() const {return _n;}
+		void	setData(int value) {_n = value;}
 	private:
 		int _n;
 };
 std::ostream& operator<<(std::ostream& out_stream, const Throwing& t);
+std::istream& operator>>(std::istream& input_stream, Throwing& t);
 
 // Predicate
 

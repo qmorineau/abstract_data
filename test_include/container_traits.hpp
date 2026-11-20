@@ -44,6 +44,7 @@ struct container_traits_default
 		has_constructor_destructor = 1,
 		has_copy_constructor = 1,
 		has_copy_operator = 1,
+		has_constructor_it = 0,
 		has_assign = 0,
 		has_get_allocator = 0,
 		// element access
@@ -118,6 +119,7 @@ struct container_traits<ns::vector<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
+		has_constructor_it = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access
@@ -162,6 +164,7 @@ struct container_traits<ns::deque<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
+		has_constructor_it = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access
@@ -203,6 +206,7 @@ struct container_traits<ns::list<T, Alloc> > : container_traits_default
 	enum
 	{
 		// common
+		has_constructor_it = 1,
 		has_assign = 1,
 		has_get_allocator = 1,
 		// element access
@@ -293,12 +297,23 @@ struct container_traits<ns::queue<T, Alloc> > : container_traits_default
 	};
 };
 
+template <typename T, typename Alloc>
+struct container_traits<ns::priority_queue<T, Alloc> > : container_traits_default
+{
+	enum
+	{
+		// common
+		has_constructor_it = 1
+	};
+};
+
 template <typename Key, typename T, typename Compare, typename Alloc>
 struct container_traits<ns::map<Key,T,Compare,Alloc> > : container_traits_default
 {
 	enum
 	{
 		// common
+		has_constructor_it = 1,
 		has_get_allocator = 1,
 		// iterators
 		has_begin = 1,

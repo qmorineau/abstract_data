@@ -15,13 +15,10 @@
 - splice test with different list and same list
 ### priority_queue
 - specific test with all fonction (no operator==, will be weird to adapt generic for this)
-### others
-- use inputiterator for some test (iterator that are consume when value retrieved)
 
 ## Benchmark
 ### Generic
-- capacity functions
-- iterator functions
+- capacity functions (resize, reserve)
 - operations functions
 ### Specific
 - deque
