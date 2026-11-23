@@ -1,15 +1,24 @@
 #ifndef TEST_INPUT_ITERATORS_FUNC_TPP
 #define TEST_INPUT_ITERATORS_FUNC_TPP
 
-static void fill_input_stream(std::istringstream& stream, int test = -1)
+template <class input_it>
+static input_it init(int test = -1)
 {
 	if (test == 0)
-		stream.str("");
+	{
+		input_it::reset("");
+		return input_it(true);
+	}
 	else if (test == 1)
-		stream.str("19");
+	{
+		input_it::reset("19");
+		return input_it(true);
+	}
 	else
-		stream.str("42 41 40 39 38 37 36 35 34 33");
-	stream.clear();
+	{
+		input_it::reset("420 410 400 390 380 370 360 350 340 330");
+		return input_it(true);
+	}
 }
 
 template <typename Container>
@@ -18,15 +27,13 @@ struct input_test_constructor_it
 	static void run()
 	{
 		std::cout << "===== InputIt Test: constructor(InputIt first, InputIt last) =====" << std::endl;
-		typedef typename Container::value_type value_type;
+		typedef typename Container::value_type	value_type;
+		typedef test_input_iterator<value_type>	input_it;
 
 		for (int i = 0; i < 3; ++i)
 		{
-			std::istringstream stream;
-			fill_input_stream(stream, i);
-
-			std::istream_iterator<value_type> first(stream);
-			std::istream_iterator<value_type> last;
+			input_it first = init<input_it>(i);
+			input_it last;
 
 			Container c(first, last);
 			print(c);
@@ -42,14 +49,12 @@ struct input_test_assign_it
 	{
 		std::cout << "===== InputIt Test: assign(InputIt first, InputIt last) =====" << std::endl;
 		typedef typename Container::value_type value_type;
+		typedef test_input_iterator<value_type>	input_it;
 
 		for (int i = 0; i < 3; ++i)
 		{
-			std::istringstream stream;
-			fill_input_stream(stream, i);
-
-			std::istream_iterator<value_type> first(stream);
-			std::istream_iterator<value_type> last;
+			input_it first = init<input_it>(i);
+			input_it last;
 
 			Container c;
 			c.assign(first, last);
@@ -66,14 +71,12 @@ struct input_test_insert_it
 	{
 		std::cout << "===== InputIt Test: insert(it pos, InputIt first, InputIt last) =====" << std::endl;
 		typedef typename Container::value_type value_type;
+		typedef test_input_iterator<value_type>	input_it;
 
 		for (int i = 0; i < 3; ++i)
 		{
-			std::istringstream stream;
-			fill_input_stream(stream, i);
-
-			std::istream_iterator<value_type> first(stream);
-			std::istream_iterator<value_type> last;
+			input_it first = init<input_it>(i);
+			input_it last;
 
 			Container c;
 			c.insert(c.begin(), first, last);

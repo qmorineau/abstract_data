@@ -102,8 +102,27 @@ struct test_map_operator_square_bracket
 	static void run()
 	{
 		std::cout << "===== Test: operator[] =====" << std::endl;
-		// todo
-		// don't forget to test if element doesn't exist the insert
+		typedef typename Container::mapped_type mapped_type;
+		typedef typename Container::key_type key_type;
+		size_t size = 10;
+		Container c = fill_n<Container>(size);
+		for (size_t i = 0; i < size; ++i)
+		{
+			ns::pair<key_type, mapped_type> p = generate_value<Container>(i * 10);
+
+			print_value(p);
+			mapped_type& ret = c[p.first];
+			std::cout << ret << "|";
+		}
+		std::cout << std::endl << "insert:";
+		for (size_t i = size; i < size * 2; ++i)
+		{
+			ns::pair<key_type, mapped_type> p = generate_value<Container>(i * 10);
+			print_value(p);
+			mapped_type& ret = c[p.first];
+			std::cout << ret << "|";
+		}
+		print(c);
 	}
 };
 

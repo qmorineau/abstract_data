@@ -1,8 +1,14 @@
 #ifndef TESTING_CLASSES_HPP
 #define TESTING_CLASSES_HPP
 
+#include <iterator>
 #include <string>
+#include <sstream>
+#include <istream>
 #include <iostream>
+
+template <class T>
+T new_value(size_t n);
 
 class Foo
 {
@@ -138,5 +144,52 @@ struct BinaryPredGreaterThan
 	BinaryPredGreaterThan() {};
 	bool operator()(T v1, T v2) const {return v1 > v2;};
 };
+
+// Input Iterator Testing
+template <class T>
+class test_input_iterator : public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, T*, T&>
+{
+	public:
+		typedef T*						pointer;
+		typedef T						reference;
+		typedef T 						value_type;
+		typedef std::ptrdiff_t			difference_type;
+		typedef std::input_iterator_tag	iterator_category;
+
+		static void reset(const std::string& content)
+		{
+			s_stream.clear();
+			s_stream.str(content);
+			advance();
+		}
+
+		test_input_iterator() : _end(true) {}
+		explicit test_input_iterator(bool) : _end(false) {}
+
+		reference operator*(void) const			{return new_value<T>(s_cur);}
+		pointer operator->(void) const			{advance();}
+		test_input_iterator& operator++(void)	{advance(); return *this;}
+		test_input_iterator operator++(int)		{advance();}
+		bool operator==(const test_input_iterator& other)
+		{
+			return at_end() == other.at_end();
+		}
+		bool operator!=(const test_input_iterator& other)
+		{
+			return !(*this == other);
+		}
+	private:
+		static void advance()	{s_valid = static_cast<bool>(s_stream >> s_cur);}
+		bool	at_end() const	{return _end || !s_valid;}
+
+		bool	_end;
+
+		static std::istringstream	s_stream;
+		static int					s_cur;
+		static bool					s_valid;
+};
+template <typename T> std::istringstream test_input_iterator<T>::s_stream;
+template <typename T> int                test_input_iterator<T>::s_cur = 0;
+template <typename T> bool               test_input_iterator<T>::s_valid = false;
 
 #endif

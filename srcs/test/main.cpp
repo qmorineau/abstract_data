@@ -32,13 +32,13 @@ int main()
 	// test_exceptions();
 	// test_iterators();
 	// test_helpers();
-	test_sequence_container<ns::vector>("vector");
-	test_sequence_container<ns::deque>("deque");
-	test_sequence_container<ns::list>("list");
+	// test_sequence_container<ns::vector>("vector");
+	// test_sequence_container<ns::deque>("deque");
+	// test_sequence_container<ns::list>("list");
 
-	// test_associative_container<ns::map>("map");
-	// test_associative_container<ns::set>();
+	test_associative_container<ns::map>("map");
 	// test_associative_container<ns::multimap>();
+	// test_associative_container<ns::set>();
 	// test_associative_container<ns::multiset>();
 
 	// test_container_adaptor<ns::stack>("stack", STACK);

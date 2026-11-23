@@ -92,6 +92,14 @@ typename Container::value_type generate_value(size_t n)
 	return value_generator<value_type>::make(static_cast<int>(n));
 }
 
+template <class T>
+T new_value(size_t n)
+{
+	NoThrowScope guard;
+
+	return value_generator<T>::make(static_cast<int>(n));
+}
+
 template <typename T>
 struct dispatch_print
 {
@@ -125,7 +133,7 @@ void print(Container& c)
 		dispatch_print<typename Container::value_type>::print(*it);
 		std::cout << "|";
 	}
-	std::cout << std::endl;
+	std::cout << "size:" << c.size() << std::endl;
 }
 
 #endif
