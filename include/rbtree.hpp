@@ -3,14 +3,16 @@
 
 #include <memory>
 
-#include "rbtree_iterator.hpp"
-#include "rbtree_node.hpp"
 #include "stdexcept.hpp"
 #include "guards.hpp"
 #include "functional.hpp"
 #include "vector.hpp"
 #include "queue.hpp"
 #include "utility.hpp"
+
+#include "rbtree_iterator.hpp"
+#include "rbtree_helpers.hpp"
+#include "rbtree_node.hpp"
 
 namespace ft
 {
@@ -59,12 +61,11 @@ namespace ft
 				// element access:
 				reference at(const Key& key);
 				const_reference at(const Key& key) const;
-				reference operator[](const Key& key);
 				// modifier:
-				iterator	insert(const T& value);
-				iterator	insert(iterator pos, const T& value);
-				template <class InputIterator>
-				void		insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type* = 0);
+				pair<iterator, bool>	insert_unique(const T& value);
+				pair<iterator, bool>	insert_multi(const T& value);
+				iterator				insert_unique(iterator pos, const T& value);
+				iterator				insert_multi(iterator pos, const T& value);
 				void		erase(iterator position);
 				size_type	erase(const Key& x);
 				void		erase(iterator first, iterator last);
@@ -101,12 +102,7 @@ namespace ft
 				void delete_data(node_pointer& z);
 				void fix_delete(node_pointer x);
 				node_pointer search(node_pointer node, const Key& key);
-				node_pointer minimum(node_pointer node);
 				// utils
-				template <class InputIt>
-				void insert_dispatch(InputIt first, InputIt last, input_iterator_tag);
-				template <class ForwardIt>
-				void insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag);
 				void			destroy_all();
 				node_pointer	clone_subtree(node_pointer src, node_pointer parent, node_pointer nill);
 				void			clear_sub_tree(node_pointer subtree);

@@ -73,24 +73,7 @@ namespace ft
 		rbtree_iterator<T, Pointer, Reference>&
 		rbtree_iterator<T, Pointer, Reference>::operator++(void)
 		{
-			if (_current->right != _null)
-			{
-				_current = _current->right;
-				while (_current->left != _null)
-					_current = _current->left;
-			}
-			else
-			{
-				rbtree_node<T>*	old = _current;
-				_current = _current->parent;
-				while (_current && _current->right == old)
-				{
-					old = _current;
-					_current = _current->parent;
-				}
-				if (!_current)
-					_current = _null;
-			}
+			_current = next(_current, _null);
 			return *this;
 		}
 
@@ -107,26 +90,7 @@ namespace ft
 		rbtree_iterator<T, Pointer, Reference>&
 		rbtree_iterator<T, Pointer, Reference>::operator--(void)
 		{
-			if (_current == _null)
-				_current = _current->right;	
-			else if (_current->left != _null)
-			{
-				_current = _current->left;
-				while (_current->right != _null)
-					_current = _current->right;
-			}
-			else
-			{
-				rbtree_node<T>*	old = _current;
-				_current = _current->parent;
-				while (_current && _current->left == old)
-				{
-					old = _current;
-					_current = _current->parent;
-				}
-				if (!_current)
-					_current = _null;
-			}
+			_current = prev(_current, _null);
 			return *this;
 		}
 

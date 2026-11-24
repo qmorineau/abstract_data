@@ -5,6 +5,7 @@
 #include "cstddef.hpp"
 
 #include "rbtree_node.hpp"
+#include "rbtree_helpers.hpp"
 
 namespace ft
 {

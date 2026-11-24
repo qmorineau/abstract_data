@@ -206,50 +206,58 @@ namespace ft
 			return node->value;
 		}
 
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::reference
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::operator[](const Key& key)
-		{
-			// Complexity: O(log(size()))
-			return search(_root, key)->value;
-		}
-
 		// =====================
 		//	     Modifiers
 		// =====================
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert(iterator pos, const T& value)
-		{
-			/*
-			Complexity: 
-				insertion in position:	amortized O(1)
-				else:					O(log(size()))
-			*/
-			// todo
-			(void) value;
-			return pos;
-		}
-
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		template <class InputIterator>
-		void 
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert(InputIterator first, InputIterator last, typename enable_if<!is_integral<InputIterator>::value>::type*)
-		{
-			/*
-			N = distance(first, last)
-			Complexity: O(N * log(size() + N))
-			*/
-			insert_dispatch(first, last, typename iterator_traits<InputIterator>::iterator_category());
-		}
-
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert(const T& value)
+		pair<typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator, bool>
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_unique(const T& value)
 		{
 			// Complexity: O(log(size()));
-			Key key = _key_of(value);
+			const Key& key = _key_of(value);
+			node_pointer curr = _root;
+			node_pointer parent = 0;
+			bool go_left = false;
+
+			// searching insert position
+			while (curr != _sentinel)
+			{
+				parent = curr;
+				if (_comp(key, _key_of(curr->value)))
+				{
+					go_left = true;
+					curr = curr->left;
+				}
+				else if (_comp(_key_of(curr->value), key))
+				{
+					go_left = false;
+					curr = curr->right;
+				}
+				else
+					return ft::make_pair(iterator(curr, _sentinel), false);
+			}
+			// insertion
+			node_pointer node = new_node(value);
+			node->parent = parent;
+			if (!parent)
+				_root = node;
+			else if (go_left)
+				parent->left = node;
+			else
+				parent->right = node;
+			++_size;
+			fix_insert(node);
+			update_sentinel(node);
+			return ft::make_pair(iterator(node, _sentinel), true);
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		pair<typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator, bool>
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_multi(const T& value)
+		{
+			// Complexity: O(log(size()));
+			const Key& key = _key_of(value);
 			node_pointer node = new_node(value);
 			node_pointer curr = _root;
 			node_pointer parent = 0;
@@ -274,7 +282,73 @@ namespace ft
 			++_size;
 			fix_insert(node);
 			update_sentinel(node);
+			return pair<iterator, bool>(iterator(node, _sentinel), true);
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_unique(iterator pos, const T& value)
+		{
+			/*
+			Complexity: 
+				insertion in position:	amortized O(1)
+				else:					O(log(size()))
+			*/
+			if (_root == _sentinel)
+				return insert_unique(value).first;
+
+			const Key& key = _key_of(value);
+			node_pointer	hint = pos.base();
+			node_pointer	before = prev(hint, _sentinel);
+			node_pointer	parent;
+			bool			go_left;
+
+			if (before == _sentinel)
+			{
+				if (!_comp(key, _key_of(hint->value)))
+					return insert_unique(value).first;
+				parent = hint;
+				go_left = true;
+			}
+			else
+			{
+				if (!_comp(_key_of(before->value), key) || (hint != _sentinel && !_comp(key, _key_of(hint->value))))
+					return insert_unique(value).first;
+				if (before->right == _sentinel)
+				{
+					parent = before;
+					go_left = false;
+				}
+				else
+				{
+					parent = hint;
+					go_left = true;
+				}
+			}
+			node_pointer node = new_node(value);
+			node->parent = parent;
+			if (go_left)
+				parent->left = node;
+			else
+				parent->right = node;
+			++_size;
+			fix_insert(node);
+			update_sentinel(node);
 			return iterator(node, _sentinel);
+		}
+
+		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
+		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::iterator
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_multi(iterator pos, const T& value)
+		{
+			/*
+			Complexity: 
+				insertion in position:	amortized O(1)
+				else:					O(log(size()))
+			*/
+			// todo
+			(void) value;
+			return pos;
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
@@ -502,37 +576,6 @@ namespace ft
 		// =====================
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		template <class InputIt>
-		void
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_dispatch(InputIt first, InputIt last, input_iterator_tag)
-		{
-			/*
-			N = distance(first, last)
-			Complexity: O(N * log(size() + N))
-			*/
-			vector<T, Allocator> tmp;
-			for (; first != last; ++first)
-				tmp.push_back(*first);
-			insert_dispatch(tmp.begin(), tmp.end(), forward_iterator_tag());
-		}
-
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		template <class ForwardIt>
-		void
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::insert_dispatch(ForwardIt first, ForwardIt last, forward_iterator_tag)
-		{
-			/*
-			N = distance(first, last)
-			Complexity: O(N * log(size() + N))
-			*/
-			while (first != last)
-			{
-				insert(*first);
-				++first;
-			}
-		}
-
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		void
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::rotate_left(node_pointer x)
 		{
@@ -668,7 +711,7 @@ namespace ft
 			}
 			else
 			{
-				y = minimum(z->right);
+				y = minimum(z->right, _sentinel);
 				y_base_color = y->color;
 				x = y->right;
 				if (y->parent == z)
@@ -783,16 +826,6 @@ namespace ft
 			if (_comp(key, _key_of(node->value)))
 				return search(node->left, key);
 			return search(node->right, key);
-		}
-
-		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
-		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::minimum(node_pointer node)
-		{
-			// Complexity: O(log(N))
-			while (node->left != _sentinel)
-				node = node->left;
-			return node;
 		}
 
 		// ======================

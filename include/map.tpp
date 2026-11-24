@@ -21,7 +21,8 @@ namespace ft
 	{
 		// N = distance(first, last)
 		// Complexity: O(N * log(N));
-		_tree.insert(first, last);
+		for (;first != last; ++first)
+			_tree.insert_unique(*first);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -196,7 +197,10 @@ namespace ft
 	map<Key,T,Compare,Allocator>::operator[](const key_type& x)
 	{
 		// Complexity: O(log(size()))
-		return _tree[x].second;
+		iterator it = _tree.lower_bound(x);
+		if (it == end() || key_comp()(x, it->first))
+			it = _tree.insert_unique(it, value_type(x, mapped_type()));
+		return it->second;
 	}
 
 	// =====================
@@ -208,10 +212,10 @@ namespace ft
 	map<Key,T,Compare,Allocator>::insert(const value_type& x)
 	{
 		// Complexity: O(log(size()))
-		iterator ret = _tree.insert(x);
+		iterator ret = _tree.insert_unique(x).first;
 		if (ret == end())
-			return pair<iterator, bool>(ret, false);
-		return pair<iterator, bool>(ret, true);
+			return ft::make_pair(ret, false);
+		return ft::make_pair(ret, true);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -223,7 +227,7 @@ namespace ft
 			insertion in position:	amortized O(1)
 			else:					O(log(size()))
 		*/
-		return _tree.insert(position, x);
+		return _tree.insert_unique(position, x).first;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -235,7 +239,8 @@ namespace ft
 		N = distance(first, last)
 		Complexity: O(N * log(size() + N))
 		*/
-		_tree.insert(first, last);
+		for (; first != last; ++first)
+			_tree.insert_unique(*first);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
