@@ -818,7 +818,7 @@ namespace ft
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
 		typename rbtree<Key,T,KeyOfValue,Compare,Allocator>::node_pointer
-		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, const Key& key)
+		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, const Key& key) const
 		{
 			// Complexity: O(log(N))
 			if (node == _sentinel || _key_of(node->value) == key)

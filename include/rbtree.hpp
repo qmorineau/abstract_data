@@ -101,7 +101,7 @@ namespace ft
 				void transplant(node_pointer u, node_pointer v);
 				void delete_data(node_pointer& z);
 				void fix_delete(node_pointer x);
-				node_pointer search(node_pointer node, const Key& key);
+				node_pointer search(node_pointer node, const Key& key) const;
 				// utils
 				void			destroy_all();
 				node_pointer	clone_subtree(node_pointer src, node_pointer parent, node_pointer nill);

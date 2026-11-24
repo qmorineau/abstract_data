@@ -109,6 +109,60 @@ struct test_insert_it
 };
 
 template <typename Container>
+struct test_map_insert_value
+{
+	static void run()
+	{
+		std::cout << "===== Test: pair<iterator, bool> insert(const value_type& x) =====" << std::endl;
+		typedef typename Container::iterator iterator;
+
+		Container c;
+		size_t size = 100;
+		for (size_t i = 0; i < size; i += 10)
+		{
+			ns::pair<iterator, bool> p;
+			if (i % 2)
+				p = c.insert(generate_value<Container>(i));
+			else
+				p = c.insert(generate_value<Container>(size - i));
+			print_value(*p.first);
+			std::cout << ", bool=" << p.second << "|";
+		}
+		std::cout << std::endl;
+		print<Container>(c);
+		std::cout << "key exit:";
+		for (size_t i = 0; i < size; i += 10)
+		{
+			ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
+			print_value(*p.first);
+			std::cout << ", bool=" << p.second << "|";
+		}
+		std::cout << std::endl;
+		print<Container>(c);
+	}
+};
+
+template <typename Container>
+struct test_map_insert_pos
+{
+	static void run()
+	{
+		std::cout << "===== Test: iterator insert(iterator position, const value_type& x) =====" << std::endl;
+		// todo
+	}
+};
+
+template <typename Container>
+struct test_map_insert_it
+{
+	static void run()
+	{
+		std::cout << "===== Test: insert(iterator first, iterator last) =====" << std::endl;
+		// todo
+	}
+};
+
+template <typename Container>
 struct test_erase_pos
 {
 	static void run()
@@ -246,9 +300,9 @@ void test_modifiers_func()
 	RUN_IF(has_insert, test_insert_value, Container);
 	RUN_IF(has_insert, test_insert_n_value, Container);
 	RUN_IF(has_insert, test_insert_it, Container);
-	// RUN_IF(has_map_insert, test_insert_value, Container);
-	// RUN_IF(has_map_insert, , Container);  // insert(value)
-	// RUN_IF(has_map_insert, , Container);	// insert(it first, it last)
+	RUN_IF(has_map_insert, test_map_insert_value, Container);
+	RUN_IF(has_map_insert, test_map_insert_pos, Container);
+	RUN_IF(has_map_insert, test_map_insert_it, Container);
 	RUN_IF(has_erase, test_erase_pos, Container);
 	RUN_IF(has_erase, test_erase_it, Container);
 	// RUN_IF(has_map_erase, , Container);

@@ -212,10 +212,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::insert(const value_type& x)
 	{
 		// Complexity: O(log(size()))
-		iterator ret = _tree.insert_unique(x).first;
-		if (ret == end())
-			return ft::make_pair(ret, false);
-		return ft::make_pair(ret, true);
+		return _tree.insert_unique(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

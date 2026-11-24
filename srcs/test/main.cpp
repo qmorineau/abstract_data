@@ -2,17 +2,13 @@
 
 void test()
 {
-	int count = 0;
-
 	ns::map<int, int> m;
 	for (int i = 0; i < 3; ++i)
 	{
-		ns::pair<int, int> p(0, ++count);
-		m.insert(p);
+		typedef typename ns::map<int, int>::iterator iterator;
+		ns::pair<iterator, bool> p = m.insert(ns::make_pair<int, int>(1, 2));
+		std::cout << (*p.first).first << "---" << (*p.first).second << "|" << p.second << std::endl;
 	}
-	print(m);
-	m.erase(m.begin());
-	print(m);
 }
 
 std::size_t ThrowingCounter::count = 0;

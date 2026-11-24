@@ -92,7 +92,49 @@ struct test_map_at
 	static void run()
 	{
 		std::cout << "===== Test: at() =====" << std::endl;
-		// todo
+		typedef typename Container::size_type size_type;
+		typedef typename Container::mapped_type mapped_type;
+
+		size_type size = 10;
+		{
+			Container c = fill_n<Container>(size);
+			for (size_type i = 0; i < size * 2; ++i)
+			{
+				try
+				{
+					mapped_type& ret = c.at(generate_value<Container>(i).first);
+					std::cout << ret << "|";
+				}
+				catch(const ns::out_of_range& e)
+				{
+					std::cout << "good except|";
+				}
+				catch (...)
+				{
+					std::cout << "test_map_at(): wrong exception|";
+				}
+			}
+		}
+		std::cout << std::endl << "const:";
+		{
+			const Container c = fill_n<Container>(size);
+			for (size_type i = 0; i < size * 2; ++i)
+			{
+				try
+				{
+					const mapped_type& ret = c.at(generate_value<Container>(i).first);
+					std::cout << ret << "|";
+				}
+				catch(const ns::out_of_range& e)
+				{
+					std::cout << "good except|";
+				}
+				catch (...)
+				{
+					std::cout << "test_map_at() const: wrong exception|";
+				}
+			}
+		}
 	}
 };
 
