@@ -9,27 +9,33 @@ namespace ft
 
 	template <class Key, class T, class Compare, class Allocator>
 	multimap<Key,T,Compare,Allocator>::multimap(const Compare& comp, const Allocator& alloc)
+		: _tree(comp, alloc)
 	{
-		// todo
+		// Complexity: O(1);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	template <class InputIterator>
 	multimap<Key,T,Compare,Allocator>::multimap(InputIterator first, InputIterator last, const Compare& comp, const Allocator& alloc)
+		: _tree(comp, alloc)
 	{
-		// todo
+		// N = distance(first, last)
+		// Complexity: O(N * log(N));
+		for (;first != last; ++first)
+			_tree.insert_multi(*first);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	multimap<Key,T,Compare,Allocator>::multimap(const multimap& x)
+		: _tree(x._tree)
 	{
-		// todo
+		// Complexity: O(x.size());
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	multimap<Key,T,Compare,Allocator>::~multimap()
 	{
-		// todo
+		// Complexity: O(size());
 	}
 
 	// =====================
@@ -40,7 +46,9 @@ namespace ft
 	multimap<Key,T,Compare,Allocator>&
 	multimap<Key,T,Compare,Allocator>::operator=(const multimap<Key,T,Compare,Allocator>& x)
 	{
-		// todo
+		// Complexity: O(size() + x.size());
+		if (this != &x)
+			_tree = x._tree;
 		return (*this);
 	}
 	
@@ -48,7 +56,8 @@ namespace ft
 	typename multimap<Key,T,Compare,Allocator>::allocator_type
 	multimap<Key,T,Compare,Allocator>::get_allocator() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.get_allocator();
 	}
 
 	// =====================
@@ -59,56 +68,64 @@ namespace ft
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::begin()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.begin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_iterator
 	multimap<Key,T,Compare,Allocator>::begin() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.begin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::end()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.end();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_iterator
 	multimap<Key,T,Compare,Allocator>::end() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.end();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::reverse_iterator
 	multimap<Key,T,Compare,Allocator>::rbegin()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rbegin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_reverse_iterator
 	multimap<Key,T,Compare,Allocator>::rbegin() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rbegin();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::reverse_iterator
 	multimap<Key,T,Compare,Allocator>::rend()
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rend();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_reverse_iterator
 	multimap<Key,T,Compare,Allocator>::rend() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.rend();
 	}
 
 	// ====================
@@ -119,22 +136,24 @@ namespace ft
 	bool
 	multimap<Key,T,Compare,Allocator>::empty() const
 	{
-		return false;
-		// todo
+		// Complexity: O(1);
+		return _tree.empty();
 	}
 	
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::size_type
 	multimap<Key,T,Compare,Allocator>::size() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.size();
 	}
 	
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::size_type
 	multimap<Key,T,Compare,Allocator>::max_size() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.max_size();
 	}
 
 	// =====================
@@ -145,14 +164,20 @@ namespace ft
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::insert(const value_type& x)
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.insert_multi(x).first;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::insert(iterator position, const value_type& x)
 	{
-		// todo
+		/*
+		Complexity: 
+			insertion in position:	amortized O(1)
+			else:					O(log(size()))
+		*/
+		return _tree.insert_multi(position, x).first;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -160,42 +185,53 @@ namespace ft
 	void
 	multimap<Key,T,Compare,Allocator>::insert(InputIterator first, InputIterator last)
 	{
-		// todo
+		/*
+		N = distance(first, last)
+		Complexity: O(N * log(size() + N))
+		*/
+		for (; first != last; ++first)
+			_tree.insert_multi(*first);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	multimap<Key,T,Compare,Allocator>::erase(iterator position)
 	{
-		// todo
+		// Complexity: amortized O(1)
+		_tree.erase(position);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::size_type
 	multimap<Key,T,Compare,Allocator>::erase(const key_type& x)
 	{
-		// todo
+		// Complexity: O(size() + count(x))
+		_tree.erase(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	multimap<Key,T,Compare,Allocator>::erase(iterator first, iterator last)
 	{
-		// todo
+		// Complexity: O(size() + distance(first, last))
+		_tree.erase(first, last);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	multimap<Key,T,Compare,Allocator>::swap(multimap<Key,T,Compare,Allocator>& other)
 	{
-		// todo
+		// Complexity: O(1)
+		if (this != &other)
+			_tree.swap(other._tree);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	void
 	multimap<Key,T,Compare,Allocator>::clear()
 	{
-		// todo
+		// Complexity: O(size())
+		_tree.clear();
 	}
 
 	// =====================
@@ -206,14 +242,16 @@ namespace ft
 	typename multimap<Key,T,Compare,Allocator>::key_compare
 	multimap<Key,T,Compare,Allocator>::key_comp() const
 	{
-		// todo
+		// Complexity: O(1);
+		return _tree.key_comp();
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::value_compare
 	multimap<Key,T,Compare,Allocator>::value_comp() const
 	{
-		// todo
+		// Complexity: O(1);
+		return value_comp(_tree.key_comp());
 	}
 
 	// =====================
@@ -224,56 +262,65 @@ namespace ft
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::find(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.find(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_iterator
 	multimap<Key,T,Compare,Allocator>::find(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size()))
+		return _tree.find(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::size_type
 	multimap<Key,T,Compare,Allocator>::count(const key_type& x) const
 	{
-		// todo
+		// N = elements found
+		// Complexity: O(log(size()) + N)
+		return _tree.count(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::lower_bound(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.lower_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_iterator
 	multimap<Key,T,Compare,Allocator>::lower_bound(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.lower_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::iterator
 	multimap<Key,T,Compare,Allocator>::upper_bound(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.upper_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	typename multimap<Key,T,Compare,Allocator>::const_iterator
 	multimap<Key,T,Compare,Allocator>::upper_bound(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.upper_bound(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	pair<typename multimap<Key,T,Compare,Allocator>::iterator, typename multimap<Key,T,Compare,Allocator>::iterator>
 	multimap<Key,T,Compare,Allocator>::equal_range(const key_type& x)
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.equal_range(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -281,7 +328,8 @@ namespace ft
 		typename multimap<Key,T,Compare,Allocator>::const_iterator>
 	multimap<Key,T,Compare,Allocator>::equal_range(const key_type& x) const
 	{
-		// todo
+		// Complexity: O(log(size())
+		return _tree.equal_range(x);
 	}
 
 	// =====================
@@ -291,15 +339,35 @@ namespace ft
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator==(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y)
 	{
-		// todo
-		return false;
+		/*
+		Complexity:
+			if x.size() != y.size():	O(1)
+			else:						O(size())
+		*/
+		if (x.size() != y.size())
+			return false;
+		typedef typename map<Key,T,Compare,Allocator>::const_iterator const_iterator;
+		const_iterator itx = x.begin();
+		const_iterator ity = y.begin();
+		const_iterator x_end = x.end();
+		const_iterator y_end = y.end();
+		for (; itx != x_end && ity != y_end; ++itx, ++ity)
+		{
+			if (!(*itx == *ity))
+				return false;
+		}
+		return true;
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator!=(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y)
 	{
-		// todo
-		return false;
+		/*
+		Complexity:
+			if x.size() != y.size():	O(1)
+			else:						O(size())
+		*/
+		return !(x == y);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

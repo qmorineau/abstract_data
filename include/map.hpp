@@ -18,8 +18,8 @@ namespace ft
 			// types:
 			typedef Key					key_type;
 			typedef T					mapped_type;
-			typedef Compare				key_compare;
 			typedef pair<const Key, T>	value_type;
+			typedef Compare				key_compare;
 			typedef Allocator			allocator_type;
 
 			typedef typename Allocator::reference		reference;
@@ -209,7 +209,7 @@ namespace ft
 			pair<iterator,iterator>				equal_range(const key_type& x);
 			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 		private:
-
+			tree			_tree;
 	};
 	template <class Key, class T, class Compare, class Allocator>
 	bool operator==(const multimap<Key,T,Compare,Allocator>& x, const multimap<Key,T,Compare,Allocator>& y);

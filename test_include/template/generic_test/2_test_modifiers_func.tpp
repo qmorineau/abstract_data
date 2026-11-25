@@ -130,12 +130,44 @@ struct test_map_insert_value
 		}
 		std::cout << std::endl;
 		print<Container>(c);
-		std::cout << "key exit:";
+		std::cout << "key exist:";
 		for (size_t i = 0; i < size; i += 10)
 		{
 			ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
 			print_value(*p.first);
 			std::cout << ", bool=" << p.second << "|";
+		}
+		std::cout << std::endl;
+		print<Container>(c);
+	}
+};
+
+template <typename Container>
+struct test_multimap_insert_value
+{
+	static void run()
+	{
+		std::cout << "===== Test: pair<iterator, bool> insert(const value_type& x) =====" << std::endl;
+		typedef typename Container::iterator iterator;
+
+		Container c;
+		size_t size = 100;
+		for (size_t i = 0; i < size; i += 10)
+		{
+			iterator it;
+			if (i % 2)
+				it = c.insert(generate_value<Container>(i));
+			else
+				it = c.insert(generate_value<Container>(size - i));
+			print_value(*it);
+		}
+		std::cout << std::endl;
+		print<Container>(c);
+		std::cout << "key exist:";
+		for (size_t i = 0; i < size; i += 10)
+		{
+			iterator it = c.insert(generate_value<Container>(i));
+			print_value(*it);
 		}
 		std::cout << std::endl;
 		print<Container>(c);
@@ -303,6 +335,9 @@ void test_modifiers_func()
 	RUN_IF(has_map_insert, test_map_insert_value, Container);
 	RUN_IF(has_map_insert, test_map_insert_pos, Container);
 	RUN_IF(has_map_insert, test_map_insert_it, Container);
+	RUN_IF(has_multimap_insert, test_multimap_insert_value, Container);
+	RUN_IF(has_multimap_insert, test_map_insert_pos, Container);
+	RUN_IF(has_multimap_insert, test_map_insert_it, Container);
 	RUN_IF(has_erase, test_erase_pos, Container);
 	RUN_IF(has_erase, test_erase_it, Container);
 	// RUN_IF(has_map_erase, , Container);

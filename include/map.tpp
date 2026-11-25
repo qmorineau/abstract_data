@@ -298,7 +298,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::value_comp() const
 	{
 		// Complexity: O(1);
-		return value_comp(_tree.key_comp());
+		return value_compare(_tree.key_comp());
 	}
 
 	// =====================

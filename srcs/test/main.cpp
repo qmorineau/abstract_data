@@ -33,7 +33,7 @@ int main()
 	// test_sequence_container<ns::list>("list");
 
 	test_associative_container<ns::map>("map");
-	// test_associative_container<ns::multimap>();
+	test_associative_container<ns::multimap>("multimap");
 	// test_associative_container<ns::set>();
 	// test_associative_container<ns::multiset>();
 

@@ -346,9 +346,47 @@ namespace ft
 				insertion in position:	amortized O(1)
 				else:					O(log(size()))
 			*/
-			// todo
-			(void) value;
-			return pos;
+			if (_root == _sentinel)
+				return insert_unique(value).first;
+
+			const Key& key = _key_of(value);
+			node_pointer	hint = pos.base();
+			node_pointer	before = prev(hint, _sentinel);
+			node_pointer	parent;
+			bool			go_left;
+
+			if (before == _sentinel)
+			{
+				if (!_comp(key, _key_of(hint->value)))
+					return insert_multi(value).first;
+				parent = hint;
+				go_left = true;
+			}
+			else
+			{
+				if (!_comp(_key_of(before->value), key) || (hint != _sentinel && !_comp(key, _key_of(hint->value))))
+					return insert_multi(value).first;
+				if (before->right == _sentinel)
+				{
+					parent = before;
+					go_left = false;
+				}
+				else
+				{
+					parent = hint;
+					go_left = true;
+				}
+			}
+			node_pointer node = new_node(value);
+			node->parent = parent;
+			if (go_left)
+				parent->left = node;
+			else
+				parent->right = node;
+			++_size;
+			fix_insert(node);
+			update_sentinel(node);
+			return iterator(node, _sentinel);
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
