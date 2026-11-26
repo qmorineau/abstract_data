@@ -180,6 +180,6 @@ namespace ft
 }
 
 #include "set.tpp"
-// #include "multiset.tpp"
+#include "multiset.tpp"
 
 #endif

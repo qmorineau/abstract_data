@@ -177,7 +177,7 @@ namespace ft
 			insertion just before pos:	amortized O(1)
 			else:						O(log(size()))
 		*/
-		return _tree.insert_multi(position, x).first;
+		return _tree.insert_multi(position, x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

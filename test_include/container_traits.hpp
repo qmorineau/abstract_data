@@ -72,10 +72,10 @@ struct container_traits_default
 		// modifiers
 		has_clear = 0,
 		has_insert = 0,
-		has_map_insert = 0,
-		has_multimap_insert = 0,
+		has_pair_associative_insert = 0,
+		has_associative_insert = 0,
 		has_erase = 0,
-		has_map_erase = 0,
+		has_associative_erase = 0,
 		has_push_front = 0,
 		has_pop_front = 0,
 		has_push_back = 0,
@@ -330,8 +330,8 @@ struct container_traits<ns::map<Key,T,Compare,Alloc> > : container_traits_defaul
 		has_map_at = 1,
 		has_map_operator_square_bracket = 1,
 		// modifiers
-		has_map_insert = 1,
-		has_map_erase = 1,
+		has_pair_associative_insert = 1,
+		has_associative_erase = 1,
 		has_swap = 1,
 		has_clear = 1,
 		// observers
@@ -364,8 +364,8 @@ struct container_traits<ns::multimap<Key,T,Compare,Alloc> > : container_traits_d
 		has_size = 1,
 		has_max_size = 1,
 		// modifiers
-		has_multimap_insert = 1,
-		has_map_erase = 1,
+		has_associative_insert = 1,
+		has_associative_erase = 1,
 		has_swap = 1,
 		has_clear = 1,
 		// observers
@@ -398,8 +398,42 @@ struct container_traits<ns::set<Key,Compare,Alloc> > : container_traits_default
 		has_size = 1,
 		has_max_size = 1,
 		// modifiers
-		has_map_insert = 1,
-		has_map_erase = 1,
+		has_pair_associative_insert = 1,
+		has_associative_erase = 1,
+		has_swap = 1,
+		has_clear = 1,
+		// observers
+		has_key_comp = 1,
+		has_value_comp = 1,
+		// operations
+		has_find = 1,
+		has_count = 1,
+		has_lower_bound = 1,
+		has_upper_bound = 1,
+		has_equal_range = 1
+	};
+};
+
+template <typename Key, typename Compare, typename Alloc>
+struct container_traits<ns::multiset<Key,Compare,Alloc> > : container_traits_default
+{
+	enum
+	{
+		// common
+		has_constructor_it = 1,
+		has_get_allocator = 1,
+		// iterators
+		has_begin = 1,
+		has_end = 1,
+		has_rbegin = 1,
+		has_rend = 1,
+		// capacity
+		has_empty = 1,
+		has_size = 1,
+		has_max_size = 1,
+		// modifiers
+		has_associative_insert = 1,
+		has_associative_erase = 1,
 		has_swap = 1,
 		has_clear = 1,
 		// observers

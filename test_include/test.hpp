@@ -100,9 +100,9 @@ void test_priority_queue();
 template <template <typename, typename> class Container>
 void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
-void test_associative_container(std::string name);
+void test_map_associative_container(std::string name);
 template <template <typename, typename, typename> class Container>
-void test_associative_container(std::string name);
+void test_set_associative_container(std::string name);
 template <template <typename, typename> class Container>
 void test_container_adaptor(std::string name, container_adaptator c);
 

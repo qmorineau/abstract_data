@@ -11,10 +11,10 @@ The goal is to match the behavior and interface of the standard containers while
 | `vector`         | done           | done  | done        |
 | `list`           | done           | done  | todo        |
 | `deque`          | done           | todo  | todo        |
-| `map`            | -              | -     | -           |
-| `set`            | -              | -     | -           |
-| `multimap`       | -              | -     | -           |
-| `multiset`       | -              | -     | -           |
+| `map`            | done           | todo  | -           |
+| `set`            | done           | todo  | -           |
+| `multimap`       | done           | todo  | -           |
+| `multiset`       | -              | todo  | -           |
 | `stack`          | done           | done  | done        |
 | `queue`          | done           | done  | todo        |
 | `priority_queue` | done           | todo  | todo        |

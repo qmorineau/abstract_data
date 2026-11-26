@@ -109,7 +109,7 @@ struct test_insert_it
 };
 
 template <typename Container>
-struct test_map_insert_value
+struct test_pair_associative_insert_value
 {
 	static void run()
 	{
@@ -117,80 +117,153 @@ struct test_map_insert_value
 		typedef typename Container::iterator iterator;
 
 		Container c;
-		size_t size = 100;
-		for (size_t i = 0; i < size; i += 10)
+		size_t size = 300;
 		{
-			ns::pair<iterator, bool> p;
-			if (i % 2)
-				p = c.insert(generate_value<Container>(i));
-			else
-				p = c.insert(generate_value<Container>(size - i));
-			print_value(*p.first);
-			std::cout << ", bool=" << p.second << "|";
+			for (size_t i = 0; i < size; i += 20)
+			{
+				ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
+				print_value(*p.first);
+				std::cout << ", bool=" << p.second << std::endl;
+				print<Container>(c);
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-		print<Container>(c);
-		std::cout << "key exist:";
-		for (size_t i = 0; i < size; i += 10)
 		{
-			ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
-			print_value(*p.first);
-			std::cout << ", bool=" << p.second << "|";
+			std::cout << "insert in between:";
+			for (size_t i = 10; i < size; i += 20)
+			{
+				ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
+				print_value(*p.first);
+				std::cout << ", bool=" << p.second << std::endl;
+				print<Container>(c);
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-		print<Container>(c);
+		{
+			std::cout << "key exist:";
+			for (size_t i = 0; i < size; i += 10)
+			{
+				ns::pair<iterator, bool> p = c.insert(generate_value<Container>(i));
+				print_value(*p.first);
+				std::cout << ", bool=" << p.second << std::endl;
+				print<Container>(c);
+			}
+			std::cout << std::endl;
+		}
 	}
 };
 
 template <typename Container>
-struct test_multimap_insert_value
+struct test_associative_insert_value
 {
 	static void run()
 	{
-		std::cout << "===== Test: pair<iterator, bool> insert(const value_type& x) =====" << std::endl;
+		std::cout << "===== Test: iterator insert(const value_type& x) =====" << std::endl;
 		typedef typename Container::iterator iterator;
 
 		Container c;
-		size_t size = 100;
-		for (size_t i = 0; i < size; i += 10)
+		size_t size = 300;
 		{
-			iterator it;
-			if (i % 2)
-				it = c.insert(generate_value<Container>(i));
-			else
-				it = c.insert(generate_value<Container>(size - i));
-			print_value(*it);
+			for (size_t i = 0; i < size; i += 20)
+			{
+				iterator it = c.insert(generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-		print<Container>(c);
-		std::cout << "key exist:";
-		for (size_t i = 0; i < size; i += 10)
 		{
-			iterator it = c.insert(generate_value<Container>(i));
-			print_value(*it);
+			std::cout << "insert in between:";
+			for (size_t i = 10; i < size; i += 20)
+			{
+				iterator it = c.insert(generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
 		}
-		std::cout << std::endl;
-		print<Container>(c);
+		{
+			std::cout << "key exist:";
+			for (size_t i = 0; i < size; i += 10)
+			{
+				iterator it = c.insert(generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
+		}
 	}
 };
 
 template <typename Container>
-struct test_map_insert_pos
+struct test_associative_insert_pos
 {
 	static void run()
 	{
 		std::cout << "===== Test: iterator insert(iterator position, const value_type& x) =====" << std::endl;
-		// todo
+		typedef typename Container::iterator iterator;
+
+		Container c;
+		size_t size = 300;
+		{
+			for (size_t i = 10; i < size; i += 20)
+			{
+				iterator it = c.insert(c.end(), generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
+		}
+		{
+			std::cout << "insert in between:";
+			for (size_t i = size; i > 1; i -= 20)
+			{
+				iterator it = c.insert(c.begin(), generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
+		}
+		{
+			std::cout << "key exist:";
+			for (size_t i = 0; i < size; i += 10)
+			{
+				iterator it = c.insert(c.begin(), generate_value<Container>(i));
+				print_value(*it);
+				std::cout << "||";
+				print<Container>(c);
+			}
+			std::cout << std::endl;
+		}
 	}
 };
 
 template <typename Container>
-struct test_map_insert_it
+struct test_associative_insert_it
 {
 	static void run()
 	{
 		std::cout << "===== Test: insert(iterator first, iterator last) =====" << std::endl;
-		// todo
+		size_t size = 10;
+		Container c = fill_n<Container>(size);
+		std::vector<typename Container::value_type> v = fill_n<std::vector<typename Container::value_type> >(size * 2);
+		{
+			c.insert(v.begin(), v.begin() + 5);
+			print<Container>(c);
+		}
+		{
+			c.insert(v.begin() + 2, v.begin() + 7);
+			print<Container>(c);
+		}
+		{
+			c.insert(v.begin(), v.end());
+			print<Container>(c);
+		}
 	}
 };
 
@@ -332,15 +405,15 @@ void test_modifiers_func()
 	RUN_IF(has_insert, test_insert_value, Container);
 	RUN_IF(has_insert, test_insert_n_value, Container);
 	RUN_IF(has_insert, test_insert_it, Container);
-	RUN_IF(has_map_insert, test_map_insert_value, Container);
-	RUN_IF(has_map_insert, test_map_insert_pos, Container);
-	RUN_IF(has_map_insert, test_map_insert_it, Container);
-	RUN_IF(has_multimap_insert, test_multimap_insert_value, Container);
-	RUN_IF(has_multimap_insert, test_map_insert_pos, Container);
-	RUN_IF(has_multimap_insert, test_map_insert_it, Container);
+	RUN_IF(has_pair_associative_insert, test_pair_associative_insert_value, Container);
+	RUN_IF(has_pair_associative_insert, test_associative_insert_pos, Container);
+	RUN_IF(has_pair_associative_insert, test_associative_insert_it, Container);
+	RUN_IF(has_associative_insert, test_associative_insert_value, Container);
+	RUN_IF(has_associative_insert, test_associative_insert_pos, Container);
+	RUN_IF(has_associative_insert, test_associative_insert_it, Container);
 	RUN_IF(has_erase, test_erase_pos, Container);
 	RUN_IF(has_erase, test_erase_it, Container);
-	// RUN_IF(has_map_erase, , Container);
+	// RUN_IF(has_associative_erase, , Container);
 	RUN_IF(has_push_back, test_push_back, Container);
 	RUN_IF(has_pop_back, test_pop_back, Container);
 	RUN_IF(has_swap, test_swap, Container);

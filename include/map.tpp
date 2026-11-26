@@ -224,7 +224,7 @@ namespace ft
 			insertion just after pos:	amortized O(1)
 			else:						O(log(size()))
 		*/
-		return _tree.insert_unique(position, x).first;
+		return _tree.insert_unique(position, x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
