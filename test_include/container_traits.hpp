@@ -19,6 +19,7 @@
 #include "queue.hpp"
 
 #include "map.hpp"
+#include "set.hpp"
 
 #ifdef STD
 	namespace ns = std;
@@ -364,6 +365,40 @@ struct container_traits<ns::multimap<Key,T,Compare,Alloc> > : container_traits_d
 		has_max_size = 1,
 		// modifiers
 		has_multimap_insert = 1,
+		has_map_erase = 1,
+		has_swap = 1,
+		has_clear = 1,
+		// observers
+		has_key_comp = 1,
+		has_value_comp = 1,
+		// operations
+		has_find = 1,
+		has_count = 1,
+		has_lower_bound = 1,
+		has_upper_bound = 1,
+		has_equal_range = 1
+	};
+};
+
+template <typename Key, typename Compare, typename Alloc>
+struct container_traits<ns::set<Key,Compare,Alloc> > : container_traits_default
+{
+	enum
+	{
+		// common
+		has_constructor_it = 1,
+		has_get_allocator = 1,
+		// iterators
+		has_begin = 1,
+		has_end = 1,
+		has_rbegin = 1,
+		has_rend = 1,
+		// capacity
+		has_empty = 1,
+		has_size = 1,
+		has_max_size = 1,
+		// modifiers
+		has_map_insert = 1,
 		has_map_erase = 1,
 		has_swap = 1,
 		has_clear = 1,

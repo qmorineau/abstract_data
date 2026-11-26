@@ -29,7 +29,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::map(const map& x)
 		: _tree(x._tree)
 	{
-		// Complexity: O(x.size());
+		// Complexity: O(size());
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -221,8 +221,8 @@ namespace ft
 	{
 		/*
 		Complexity: 
-			insertion in position:	amortized O(1)
-			else:					O(log(size()))
+			insertion just after pos:	amortized O(1)
+			else:						O(log(size()))
 		*/
 		return _tree.insert_unique(position, x).first;
 	}

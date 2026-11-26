@@ -34,7 +34,7 @@ int main()
 
 	test_associative_container<ns::map>("map");
 	test_associative_container<ns::multimap>("multimap");
-	// test_associative_container<ns::set>();
+	test_associative_container<ns::set>("set");
 	// test_associative_container<ns::multiset>();
 
 	// test_container_adaptor<ns::stack>("stack", STACK);

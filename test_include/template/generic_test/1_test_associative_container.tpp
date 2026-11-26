@@ -19,6 +19,8 @@ static void test_associative_container_func(std::string type)
 	test_input_iterators_func<Container>();
 }
 
+// Map / Multimap
+
 template <template <typename, typename, typename, typename> class Container, typename K, typename V>
 static void test_associative_container_value_type(std::string& name, std::string& key, std::string value)
 {
@@ -36,6 +38,24 @@ static void test_associative_container_key_type(std::string& name, std::string k
 }
 
 template <template <typename, typename, typename, typename> class Container>
+void test_associative_container(std::string name)
+{
+	test_associative_container_key_type<Container, int>(name, "int");
+	test_associative_container_key_type<Container, std::string>(name, "std::string");
+	test_associative_container_key_type<Container, Foo>(name, "Foo");
+	test_associative_container_key_type<Container, Throwing>(name, "Throwing");
+}
+
+// Set / Multiset
+
+template <template <typename, typename, typename> class Container, typename K>
+static void test_associative_container_key_type(std::string& name, std::string key)
+{
+	test_associative_container_func<Container<K,std::less<K>,std::allocator<K> > >(name + "<" + key + ",std::less<" + key + "> > >");
+	test_associative_container_func<Container<K,std::greater<K>,std::allocator<K> > >(name + "<" + key + ",std::greater<" + key + "> > >");
+}
+
+template <template <typename, typename, typename> class Container>
 void test_associative_container(std::string name)
 {
 	test_associative_container_key_type<Container, int>(name, "int");

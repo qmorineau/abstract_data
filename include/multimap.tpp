@@ -174,8 +174,8 @@ namespace ft
 	{
 		/*
 		Complexity: 
-			insertion in position:	amortized O(1)
-			else:					O(log(size()))
+			insertion just before pos:	amortized O(1)
+			else:						O(log(size()))
 		*/
 		return _tree.insert_multi(position, x).first;
 	}

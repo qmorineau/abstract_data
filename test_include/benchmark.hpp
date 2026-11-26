@@ -13,7 +13,7 @@ const double NS_PER_MS = 1000000.0;
 class TimerAccum
 {
 	public:
-		TimerAccum(const std::string& label, double target_ms = 10) : _iterations(0), _label(label), _total(0), _target(target_ms * NS_PER_MS)
+		TimerAccum(const std::string& label, double target_ms = 1000) : _iterations(0), _label(label), _total(0), _target(target_ms * NS_PER_MS)
 		{}
 		~TimerAccum()
 		{

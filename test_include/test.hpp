@@ -101,6 +101,8 @@ template <template <typename, typename> class Container>
 void test_sequence_container(std::string name);
 template <template <typename, typename, typename, typename> class Container>
 void test_associative_container(std::string name);
+template <template <typename, typename, typename> class Container>
+void test_associative_container(std::string name);
 template <template <typename, typename> class Container>
 void test_container_adaptor(std::string name, container_adaptator c);
 

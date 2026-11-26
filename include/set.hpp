@@ -14,7 +14,7 @@ namespace ft
 	class set
 	{
 		private:
-			typedef detail::rbtree<Key>	tree;
+			typedef detail::rbtree<Key, Key, detail::identity<Key>, Compare, Allocator>	tree;
 		public:
 			// types:
 			typedef Key			key_type;
@@ -75,7 +75,7 @@ namespace ft
 			iterator				upper_bound(const key_type& x) const;
 			pair<iterator,iterator>	equal_range(const key_type& x) const;
 		private:
-
+			tree	_tree;
 	};
 	template <class Key, class Compare, class Allocator>
 	bool operator==(const set<Key,Compare,Allocator>& x, const set<Key,Compare,Allocator>& y);
@@ -99,7 +99,7 @@ namespace ft
 	class multiset
 	{
 		private:
-			typedef detail::rbtree<Key>	tree;
+			typedef detail::rbtree<Key, Key, detail::identity<Key>, Compare, Allocator>	tree;
 		public:
 			// types:
 			typedef Key			key_type;
@@ -160,6 +160,7 @@ namespace ft
 			iterator				upper_bound(const key_type& x) const;
 			pair<iterator,iterator>	equal_range(const key_type& x) const;
 		private:
+			tree	_tree;
 	};
 	template <class Key, class Compare, class Allocator>
 	bool operator==(const multiset<Key,Compare,Allocator>& x, const multiset<Key,Compare,Allocator>& y);
@@ -179,6 +180,6 @@ namespace ft
 }
 
 #include "set.tpp"
-#include "multiset.tpp"
+// #include "multiset.tpp"
 
 #endif

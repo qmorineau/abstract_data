@@ -107,8 +107,22 @@ struct bench_sort
 {
 	static void run(const std::string& name)
     {
-        (void) name;
-		// todo
+		TimerAccum t(name + "::sort()");
+		std::vector<typename C::value_type> v;
+        for (size_t i = 1000; i > 0; --i)
+			v.push_back(generate_value<C>(i));
+		do
+		{
+			for (size_t i = 0; i < 100; ++i)
+			{
+				C c(v.begin(), v.end());
+				do_not_optimize(&c);
+				Accum acc(*t);
+				c.sort();
+				clobber();
+			}
+			t.addIterations(100);
+		} while (!t.isEnoughTime());
 	}
 };
 

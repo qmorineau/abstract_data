@@ -3,14 +3,14 @@
 template <class C>
 static void bench_unit(const std::string name)
 {
-	bench_common<C>(name);
-	bench_element_access<C>(name);
-	bench_iterators<C>(name);
-	bench_capacity<C>(name);
-	bench_observers<C>(name);
+	// bench_common<C>(name);
+	// bench_element_access<C>(name);
+	// bench_iterators<C>(name);
+	// bench_capacity<C>(name);
+	// bench_observers<C>(name);
 	bench_operations<C>(name);
-	bench_modifier<C>(name);
-	bench_non_member<C>(name);
+	// bench_modifier<C>(name);
+	// bench_non_member<C>(name);
 }
 
 // Sequence
