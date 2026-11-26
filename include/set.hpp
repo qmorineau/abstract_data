@@ -69,11 +69,15 @@ namespace ft
 			key_compare		key_comp() const;
 			value_compare	value_comp() const;
 			// set operations:
-			iterator				find(const key_type& x) const;
-			size_type				count(const key_type& x) const;
-			iterator				lower_bound(const key_type& x) const;
-			iterator				upper_bound(const key_type& x) const;
-			pair<iterator,iterator>	equal_range(const key_type& x) const;
+			iterator		find(const key_type& x);
+			const_iterator	find(const key_type& x) const;
+			size_type		count(const key_type& x) const;
+			iterator		lower_bound(const key_type& x);
+			const_iterator	lower_bound(const key_type& x) const;
+			iterator		upper_bound(const key_type& x);
+			const_iterator	upper_bound(const key_type& x) const;
+			pair<iterator,iterator>				equal_range(const key_type& x);
+			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 		private:
 			tree	_tree;
 	};
@@ -154,11 +158,15 @@ namespace ft
 			key_compare		key_comp() const;
 			value_compare	value_comp() const;
 			// set operations:
-			iterator				find(const key_type& x) const;
-			size_type				count(const key_type& x) const;
-			iterator				lower_bound(const key_type& x) const;
-			iterator				upper_bound(const key_type& x) const;
-			pair<iterator,iterator>	equal_range(const key_type& x) const;
+			iterator		find(const key_type& x);
+			const_iterator	find(const key_type& x) const;
+			size_type		count(const key_type& x) const;
+			iterator		lower_bound(const key_type& x);
+			const_iterator	lower_bound(const key_type& x) const;
+			iterator		upper_bound(const key_type& x);
+			const_iterator	upper_bound(const key_type& x) const;
+			pair<iterator,iterator>				equal_range(const key_type& x);
+			pair<const_iterator,const_iterator>	equal_range(const key_type& x) const;
 		private:
 			tree	_tree;
 	};

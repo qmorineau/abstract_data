@@ -412,6 +412,7 @@ namespace ft
 				delete_data(to_delete);
 				++removed_nodes;
 			}
+			return removed_nodes;
 		}
 
 		template <class Key, class T, class KeyOfValue, class Compare, class Allocator>
@@ -859,7 +860,7 @@ namespace ft
 		rbtree<Key,T,KeyOfValue,Compare,Allocator>::search(node_pointer node, const Key& key) const
 		{
 			// Complexity: O(log(N))
-			if (node == _sentinel || _key_of(node->value) == key)
+			if (node == _sentinel || (!_comp(_key_of(node->value), key) && !_comp(key, _key_of(node->value))))
 				return node;
 			if (_comp(key, _key_of(node->value)))
 				return search(node->left, key);

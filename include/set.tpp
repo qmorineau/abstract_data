@@ -206,7 +206,7 @@ namespace ft
 	set<Key, Compare, Allocator>::erase(const key_type& x)
 	{
 		// Complexity: O(size() + count(x))
-		_tree.erase(x);
+		return _tree.erase(x);
 	}
 
 	template <class Key, class Compare, class Allocator>
@@ -260,6 +260,14 @@ namespace ft
 
 	template <class Key, class Compare, class Allocator>
 	typename set<Key, Compare, Allocator>::iterator
+	set<Key, Compare, Allocator>::find(const key_type& x)
+	{
+		// Complexity: O(log(size()))
+		return _tree.find(x);
+	}
+
+	template <class Key, class Compare, class Allocator>
+	typename set<Key, Compare, Allocator>::const_iterator
 	set<Key, Compare, Allocator>::find(const key_type& x) const
 	{
 		// Complexity: O(log(size()))
@@ -277,6 +285,14 @@ namespace ft
 
 	template <class Key, class Compare, class Allocator>
 	typename set<Key, Compare, Allocator>::iterator
+	set<Key, Compare, Allocator>::lower_bound(const key_type& x)
+	{
+		// Complexity: O(log(size())
+		return _tree.lower_bound(x);
+	}
+
+	template <class Key, class Compare, class Allocator>
+	typename set<Key, Compare, Allocator>::const_iterator
 	set<Key, Compare, Allocator>::lower_bound(const key_type& x) const
 	{
 		// Complexity: O(log(size())
@@ -285,6 +301,14 @@ namespace ft
 
 	template <class Key, class Compare, class Allocator>
 	typename set<Key, Compare, Allocator>::iterator
+	set<Key, Compare, Allocator>::upper_bound(const key_type& x)
+	{
+		// Complexity: O(log(size())
+		return _tree.upper_bound(x);
+	}
+
+	template <class Key, class Compare, class Allocator>
+	typename set<Key, Compare, Allocator>::const_iterator
 	set<Key, Compare, Allocator>::upper_bound(const key_type& x) const
 	{
 		// Complexity: O(log(size())
@@ -293,6 +317,14 @@ namespace ft
 
 	template <class Key, class Compare, class Allocator>
 	pair<typename set<Key, Compare, Allocator>::iterator, typename set<Key, Compare, Allocator>::iterator>
+	set<Key, Compare, Allocator>::equal_range(const key_type& x)
+	{
+		// Complexity: O(log(size())
+		return _tree.equal_range(x);
+	}
+
+	template <class Key, class Compare, class Allocator>
+	pair<typename set<Key, Compare, Allocator>::const_iterator, typename set<Key, Compare, Allocator>::const_iterator>
 	set<Key, Compare, Allocator>::equal_range(const key_type& x) const
 	{
 		// Complexity: O(log(size())

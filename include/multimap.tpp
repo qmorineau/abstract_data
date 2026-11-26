@@ -206,7 +206,7 @@ namespace ft
 	multimap<Key,T,Compare,Allocator>::erase(const key_type& x)
 	{
 		// Complexity: O(size() + count(x))
-		_tree.erase(x);
+		return _tree.erase(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>
@@ -251,7 +251,7 @@ namespace ft
 	multimap<Key,T,Compare,Allocator>::value_comp() const
 	{
 		// Complexity: O(1);
-		return value_comp(_tree.key_comp());
+		return value_compare(_tree.key_comp());
 	}
 
 	// =====================

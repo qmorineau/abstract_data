@@ -253,7 +253,7 @@ namespace ft
 	map<Key,T,Compare,Allocator>::erase(const key_type& x)
 	{
 		// Complexity: O(size() + count(x))
-		_tree.erase(x);
+		return _tree.erase(x);
 	}
 
 	template <class Key, class T, class Compare, class Allocator>

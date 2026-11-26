@@ -112,38 +112,38 @@ namespace ft
 				void			init_sentinel();
 				bool			is_valid_tree() const;
 			public:
-				void print() const
-				{
-					std::cout << "size = " << _size << std::endl;
-					std::cout << "is valid: " << (is_valid_tree() == true ? "true" : "false") << std::endl;
-					queue<node_pointer> q;
-					q.push(_root);
-					while (!q.empty())
-					{
-						int level = q.size();
-						for (int i = 0; i < level; ++i)
-						{
-							node_pointer n = q.front();
-							q.pop();
-							print_node(n);
-							if (n != _sentinel)
-							{
-								q.push(n->left);
-								q.push(n->right);
-							}
-							std::cout << " ";
-						}
-						std::cout << std::endl;
-					}
-					std::cout << std::endl;
-				}
-				void print_node(node_pointer n) const
-				{
-					if (n != _sentinel)
-						std::cout << (n->color == RED ? "R" : "B") << n->value.first << ":" << n->value.second;
-					else
-						std::cout << "null";
-				}
+				// void print() const
+				// {
+				// 	std::cout << "size = " << _size << std::endl;
+				// 	std::cout << "is valid: " << (is_valid_tree() == true ? "true" : "false") << std::endl;
+				// 	queue<node_pointer> q;
+				// 	q.push(_root);
+				// 	while (!q.empty())
+				// 	{
+				// 		int level = q.size();
+				// 		for (int i = 0; i < level; ++i)
+				// 		{
+				// 			node_pointer n = q.front();
+				// 			q.pop();
+				// 			print_node(n);
+				// 			if (n != _sentinel)
+				// 			{
+				// 				q.push(n->left);
+				// 				q.push(n->right);
+				// 			}
+				// 			std::cout << " ";
+				// 		}
+				// 		std::cout << std::endl;
+				// 	}
+				// 	std::cout << std::endl;
+				// }
+				// void print_node(node_pointer n) const
+				// {
+				// 	if (n != _sentinel)
+				// 		std::cout << (n->color == RED ? "R" : "B") << n->value.first << ":" << n->value.second;
+				// 	else
+				// 		std::cout << "null";
+				// }
 		};
 	}
 }
