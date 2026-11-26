@@ -63,6 +63,7 @@ namespace ft
 	template <class T, class Container = vector<T>, class Compare = less<typename Container::value_type> >
 	class priority_queue {
 		public:
+			typedef Compare								value_compare;
 			typedef typename Container::value_type		value_type;
 			typedef typename Container::size_type		size_type;
 			typedef typename Container::reference		reference;

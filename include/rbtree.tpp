@@ -537,7 +537,7 @@ namespace ft
 			{
 				if (curr == _sentinel)
 					break;
-				if (_comp(x, _key_of(curr->value)))
+				if (!_comp(_key_of(curr->value), x))
 				{
 					res = curr;
 					curr = curr->left;
@@ -559,7 +559,7 @@ namespace ft
 			{
 				if (curr == _sentinel)
 					break;
-				if (!_comp(x, _key_of(curr->value)))
+				if (_comp(x, _key_of(curr->value)))
 				{
 					res = curr;
 					curr = curr->left;
@@ -581,7 +581,7 @@ namespace ft
 			{
 				if (curr == _sentinel)
 					break;
-				if (!_comp(x, _key_of(curr->value)))
+				if (_comp(x, _key_of(curr->value)))
 				{
 					res = curr;
 					curr = curr->left;
